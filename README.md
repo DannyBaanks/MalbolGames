@@ -11,6 +11,9 @@ nueva y segregada `MALGAMES/`», «no reescribir `MALDOOM/`», «no renombrar ni
 ningún escenario»). Mover el directorio invalidaría la cadena de SHA-256. Cambiar solo la marca
 visible deja **cero hashes rotos**.
 
+**Repo:** `https://github.com/DannyBaanks/MalbolGames` (público, `master`, 128 archivos). El canon
+sigue siendo `SHA256SUMS.txt` + `sha256sum -c`, no `git log`.
+
 **Estado a 2026-10-16:** `G0` contrato congelado ✅ · `G1` oráculo doble y fixtures sellados ✅ ·
 `G2` **dos predicados de la transición calculados dentro de la VM Clásica** ✅ · el intento de
 encadenarlos en un solo programa es una **NEGATIVA MEDIDA** ❌ (causa: capacidad del kernel MBIR,
@@ -179,8 +182,11 @@ este workspace; `MALBOLGE-MB-DATABASE` queda en HEAD `d479473` con 0 archivos mo
 - `Malbolge-Engine` devuelve **exit 0 también en TIMEOUT**: el estado vive en stderr.
 - Los dos oráculos comparten autor (los escribí yo): el acuerdo C↔Python detecta despistes de
   codificación, no de semántica.
-- MalbolGames **no es repositorio git**: la persistencia es filesystem + SHA-256, sin historia
-  revisable ni recuperación por commit.
+- MalbolGames está **versionado y publicado** en `https://github.com/DannyBaanks/MalbolGames`
+  (128 archivos, `master`) desde el 2026-10-16, pero el canon sigue siendo filesystem + SHA-256:
+  `SHA256SUMS.txt` y `sha256sum -c` deciden, y las cuatro corridas se sellaron **antes** de existir
+  el repo. La historia de git no valida una afirmación; la valida su sello. `composes/` queda fuera
+  del repo público (precedente MALDOOM): el encargo se audita por su sha `b1f170b8…`.
 - La caracterización `CMP_EQ ⇔ op1 == 2 ∧ op2 ∈ {2,3,4}` es **empírica en 0..4 × 0..4**; no se
   afirma para operandos mayores.
 

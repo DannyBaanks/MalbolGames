@@ -106,3 +106,20 @@
     segregada `MALGAMES/`». Renombrar el directorio sería una operación destructiva sobre la cadena
     de hashes por un cambio de estética, y está descartada a menos que Danny la pida explícitamente
     con la migración de sellos correspondiente.
+
+## Corrección appendida — el punto 14 queda superado (2026-10-16)
+
+29. **Punto 14 superado, no borrado.** El 2026-10-15 MALGAMES **no** era repositorio git y así lo
+    dice arriba el punto 14; se deja el texto porque describe el estado bajo el cual se ejecutaron
+    las cuatro corridas. Desde el 2026-10-16 el workspace **sí** está versionado y **publicado** en
+    `https://github.com/DannyBaanks/MalbolGames` (rama `master`, commit inicial `dec39d9`, 128
+    archivos). Lo que **no** cambia: `SHA256SUMS.txt` y los sellos por corrida siguen siendo el
+    canon, la verificación sigue siendo `sha256sum -c` (rc=0 en la raíz y en las 4 corridas antes y
+    después del push), y el punto 14 sigue siendo la razón por la que la cadena de evidencia **no**
+    depende de `git log` para justificarse. La cadena de hashes precede a la historia de git, no al
+    revés.
+30. **`composes/` no está publicado.** Por decisión de Danny y por el precedente de MALDOOM (602
+    archivos versionados, cero del Compose), `composes/COMPOSE_MALGAMES_PONG_V0.md` queda en
+    `.gitignore`. Sigue en disco sin tocar y su sha `b1f170b8…` sigue citado arriba; o sea: el repo
+    público **no** es autocontenido para auditar el encargo, hay que citar el sha contra el original
+    local.

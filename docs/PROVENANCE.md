@@ -40,6 +40,7 @@ ejecutorio es el Compose, y este repo lo guarda verbatim:
 * Los archivos canónicos de MALDOOM —`vendor/`, `SHA256SUMS.txt`, `evidence/E1..E9`— no se
   renombraron, ni se movieron, ni se reescribieron. El pipeline de sellos no se tocó.
 * El monorepo `ISyCo` no tiene remote y no se empujó nada. MALGAMES tampoco es repositorio git.
+  *(Fue cierto al medir, 2026-10-15; superado el 2026-10-16 — ver «Publicación del workspace» abajo.)*
 
 ## Premisas del Compose corregidas contra los archivos
 
@@ -134,5 +135,22 @@ modelo Python de upstream. Los pasos idénticos entre A y B no son evidencia de 
 
 Medido antes de escribir nada: `MALBOLGE-MB-DATABASE` en HEAD `d479473` con
 `git status --porcelain` vacío (0 líneas modificadas) y sin ningún push. `MALDOOM` intacto. El
-monorepo `ISyCo` no tiene remote y no se empujo nada. Ningún fixture de `tests/fixtures/`, ningún
+monorepo `ISyCo` no tiene remote y no se empujó nada. Ningún fixture de `tests/fixtures/`, ningún
 oráculo y ningún documento upstream se modificaron durante la corrida.
+
+## Publicación del workspace (`2026-10-16`, a pedido expreso de Danny)
+
+| dato | valor |
+|---|---|
+| remoto | `https://github.com/DannyBaanks/MalbolGames` — **PUBLIC**, rama `master` |
+| commit inicial | `dec39d91dcd60dfc63e938f3b4c91aeae0837e34` (128 archivos versionados) |
+| excluido por `.gitignore` | `composes/` (el encargo verbatim), `build/`, `__pycache__/`, `*.pyc`, `.DS_Store` |
+| por qué se excluye `composes/` | precedente medido: MALDOOM publica 602 archivos y **cero** del Compose. El brief es el encargo, no la evidencia; su sha `b1f170b8…` sigue citado arriba y el fichero sigue en disco sin tocar |
+| dianas de esa exclusión | **8** archivos versionados citan `COMPOSE_MALGAMES_PONG_V0.md` o su sha: `README.md`, `docs/LIMITATIONS.md`, `docs/PROVENANCE.md` y **5 ficheros de evidencia sellada** (`…T194755Z/run.json`, `…T203244Z/run.json` y `verdict.md`, `…T003512Z/run.json` y `verdict.md`). En el repo público esas citas apuntan a una ruta que no existe: quedan como referencia al artefacto local, auditable por su sha. No se tocó ningún sellado para «resolverlo», porque reescribir evidencia está prohibido y rompería su hash |
+| verificación post-push | `sha256sum -c` rc=**0** en la raíz y en las 4 corridas selladas; `HEAD` local == `refs/heads/master` remoto; 4 ficheros muestreados (`README.md`, `SHA256SUMS.txt`, `vm/nested/mbir_alu_rel_pass25.mb`, `docs/PROVENANCE.md`) tienen el mismo sha256 leídos por la API de GitHub que en disco; `core.autocrlf=false`, así que git no normalizó ninguna línea |
+| orden de autoridad | el sello hasheado **precede** al commit: las cuatro corridas se cerraron siendo el workspace no-git. El repo es una capa de historia, no de validación |
+
+Lo que **no** cambió con la publicación: ningún claim de `docs/CLAIMS.md` subió de estado, ningún
+fixture se retocó, y MALDOOM / `MALBOLGE-MB-DATABASE` / el monorepo ISyCo siguen sin empujar
+(`ISyCo` no tiene remote). El punto 14 de `docs/LIMITATIONS.md` queda superado por el punto 29 del
+mismo fichero, que registra la corrección sin borrar el texto original.
