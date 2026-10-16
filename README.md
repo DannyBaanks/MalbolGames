@@ -11,13 +11,15 @@ nueva y segregada `MALGAMES/`», «no reescribir `MALDOOM/`», «no renombrar ni
 ningún escenario»). Mover el directorio invalidaría la cadena de SHA-256. Cambiar solo la marca
 visible deja **cero hashes rotos**.
 
-**Repo:** `https://github.com/DannyBaanks/MalbolGames` (público, `master`, 128 archivos). El canon
+**Repo:** `https://github.com/DannyBaanks/MalbolGames` (público, `master`, 527 archivos). El canon
 sigue siendo `SHA256SUMS.txt` + `sha256sum -c`, no `git log`.
 
 **Estado a 2026-10-16:** `G0` contrato congelado ✅ · `G1` oráculo doble y fixtures sellados ✅ ·
 `G2` **dos predicados de la transición calculados dentro de la VM Clásica** ✅ · el intento de
 encadenarlos en un solo programa es una **NEGATIVA MEDIDA** ❌ (causa: capacidad del kernel MBIR,
-no el tamaño). Ningún juego corre. Ningún frame lo calcula Malbolge. Ver `docs/CLAIMS.md`.
+no el tamaño) · `G3` **un byte calculado por una VM Clásica lo lee y lo procesa otra VM Clásica**
+✅ (una arista, un bit, un disparo). Ningún juego corre. Ningún frame lo calcula Malbolge. No hay
+red de dataflow. Ver `docs/CLAIMS.md`.
 
 ## Qué SÍ tenemos — tabla DEMOSTRADO / NEGATIVA / NOT_DEMONSTRADO
 
@@ -32,6 +34,7 @@ Cada línea dice VM, cálculo y prueba, porque sin esas tres cosas el enunciado 
 | — | `HARNESS_FIEL_A_CORPUS_UPSTREAM` | **DEMOSTRADO** | el harness de MalbolGames reproduce los 25 vectores sellados de `ALU_REL` en **salida y en pasos** (58 689–83 478), 0 desacuerdos. Sin este control, el negativo de abajo no valdría nada | `…/2026-10-16T003512Z/raw/replay_alu_rel.json` |
 | — | `MBIR_ALU_REL_IS_A_CLASSIFIER` | **DEMOSTRADO** (techo medido) | el kernel «Relational ALU» es un **clasificador acotado de operandos**, no una ALU (detalles abajo) | `evidence/pong_v0/2026-10-16T003512Z/` (19 entradas) · `SHA256SUMS.txt` `444f3ef4…` |
 | G2+ | `TICK_CHAIN_SINGLE_PROGRAM_VM` | **NEGATIVA MEDIDA** | encadenar `bounce → contact` en un solo programa por *dataflow* sobre el kernel sellado **falla**: condición (a) FALSA (0/4 en la derivación, 12/16 en la puerta) | mismo sello, `run.json.condiciones_falsables_pactadas` |
+| G3 | `HANDOFF_SINGLE_EDGE_CLASSIC_VM` | **DEMOSTRADO** | el byte que **imprime** una VM Malbolge Clásico es el byte que **lee** otra VM Malbolge Clásico por una tubería del SO, sin re-codificación del host, y la salida de la segunda depende de ese byte: 8/8 en modo `nota` (ruta de despacho + NOT) y 8/8 en modo `eco` (el artefacto **sellado** de G2 + fallback). 7 condiciones pactadas antes de correr, todas verdes | `evidence/pong_v0/2026-10-16T210612Z/` (387 entradas) · `SHA256SUMS.txt` `381843fe…` |
 
 ## Qué NO tenemos
 
@@ -42,6 +45,10 @@ Cada línea dice VM, cálculo y prueba, porque sin esas tres cosas el enunciado 
   cruzada de estado en Clásico: MALDOOM registra P2/P4/P5 como negativos (0 éxitos sobre 2,4 M de
   candidatos) y `STATE_TRANSITIONS/TICK_INC` dice `found: false`.
 - **Render ni frame.** `VM_RENDER_8x4` y `FULL_FRAME_VM` → `NOT_DEMONSTRADO`.
+- **Red de dataflow.** Desde G3 sabemos que **una** arista funciona; `MULTI_EDGE_NETWORK_CLASSIC_VM`
+  (≥2 aristas simultáneas entre ≥3 VMs) y `STATEFUL_CROSS_TICK_HANDOFF` (que viajan los 11 campos
+  de `pong1` y la segunda VM continúa el tick) siguen `NOT_DEMONSTRADO`. **Un bit, un disparo, dos
+  procesos** es todo lo que hay, y no autoriza a decir «físicas simultáneas como workers».
 - **Framing.** La VM no sabe leer la línea `pong1;…` carácter a carácter. Sin esto **ningún**
   resultado futuro puede llamarse `DIRECT_VM`, y ninguno de los predicados sellados lo es: la
   codificación estado→byte la hizo el host antes de escribir stdin.
@@ -76,6 +83,16 @@ Y el dato complementario, del escalón anterior: el **despacho** por enumeració
 (`lmao` rc=1, `Free space exceeded (Add Malbolge command)`, sin emitir `.mb`). Crecimiento
 ≈ 1 180 celdas por ruta. O sea: el muro no es el despacho, es el kernel.
 
+**Y el corolario que salió de G3: el alfabeto de una arista es de dos bytes, `{0x01, 0x02}`, y es
+por medida.** Un canal ASCII `'0'/'1'` (48/49) exigiría ≥49 rutas; con 24 quedan 2 688 celdas de
+margen y con 32 el ensamblador ya falla, así que ASCII costaría ≈90 KB: **descartado por medición,
+no por opinión**. `0x00` no puede portar dato porque es HALT. Y la gramática HeLL
+(`chr [!-&(-\[\]-~ ]`) solo cubre 0x20–0x7E, o sea ningún byte de control se escribe como literal
+`'c'`. Lo que sí funciona, sondeado: `ROT (1 << 1)` → `0x01`, `ROT (2 << 1)` y `ROT (0t2 << 1)` →
+`0x02`; **no** funcionan `1` (`0xe3`), `(1 >> 1)` (`0xa1`), `C1` (`0x54`), `C2` (`0xa8`),
+`(0t11 << 1)` (`0x04`), `(C2!1)` (`0xc6`), `(1!C2)` (`0xa8`) — en HeLL `>>` y `<<` son **rotación
+ternaria**, no shift de bits.
+
 ## Layout
 
 ```
@@ -92,6 +109,13 @@ vm/classic/ pong_codegen.py                     extension del codegen upstream (
             pong_contact_v0.{hell,mb}          predicado contact_gate, 16 rutas, 45109 B
             trit_mask_probe.py                 probe: ¿es expresable una mascara de trits en Clasico?
             probe_sizes/                       .mb de ejemplo upstream, usados solo como medida
+            handoff_codegen.py                 codegen de la arista G3: A emite 0x01/0x02, B calcula NOT/eco
+            run_handoff.py                     ejecuta la TUBERIA A|B real y evalua C1..C7 pactadas
+            probe_hell_bytes.py                sondas: que constante HeLL emite un byte crudo
+            pong_bounce_raw_v0.{hell,mb}       A de G3, 8 rutas crudas, 34111 B
+            pong_not_v0.{hell,mb}              B de G3 (NOT sobre 0x01/0x02), 27243 B
+            pong_not_v0_MUTANT_swap.{hell,mb}  control de selectividad: mismo tamano, constantes intercambiadas
+            pong_echo_v0.{hell,mb}             B sin parchar MARKERS: recibe por el fallback de eco, 27337 B
 vm/nested/  pong_nested.py                      intento de cadena bounce->contact por dataflow
             replay_alu_rel.py                  control: 25 vectores sellados, salida Y pasos
             audit_alu_rel_isa.py               rejilla de operadores 75 casos
@@ -103,6 +127,7 @@ evidence/   pong_v0/2026-10-15T194755Z/        G1: 31/31 PASS, sellado (26 entra
             pong_v0/2026-10-15T203244Z/        G2: 24/24 PASS en VM Clasico, sellado (24 entradas)
             pong_v0/2026-10-16T003152Z/        arranque fallido (error de ruta), 1 fichero, sin sello
             pong_v0/2026-10-16T003512Z/        cadena: NEGATIVA MEDIDA + techo del kernel (19)
+            pong_v0/2026-10-16T210612Z/        G3: arista A -> byte -> B entre dos VMs (387)
 ```
 
 ## Reproducir G1
@@ -162,6 +187,31 @@ cd ../../evidence/pong_v0/2026-10-16T003512Z && LC_ALL=C.UTF-8 sha256sum -c SHA2
 Los tres primeros abortan si el sha del kernel no es `3b6c011b…`. Todo es de sólo lectura fuera de
 este workspace; `MALBOLGE-MB-DATABASE` queda en HEAD `d479473` con 0 archivos modificados.
 
+## Reproducir G3 — una arista entre dos VMs (solo lectura fuera de MalbolGames)
+
+```bash
+cd "/home/danny/Development/ISyCo Git/MALGAMES/vm/classic"
+
+# 1. El alfabeto del canal NO se elige: se mide. Sin esto se intentaría ASCII y se pierde el tiempo.
+python3 probe_hell_bytes.py markers      # que constante HeLL emite 0x01/0x02 crudo
+python3 probe_hell_bytes.py ascii        # stdout crudo del A sellado de G2, 8 rutas
+
+# 2. Emisión (re-verifica el sha del generador upstream en cada llamada y aborta si cambió)
+python3 handoff_codegen.py emit-a-raw --kind bounce -o pong_bounce_raw_v0
+python3 handoff_codegen.py emit-b --variant nota -o pong_not_v0
+python3 handoff_codegen.py emit-b --variant swap -o pong_not_v0_MUTANT_swap
+python3 handoff_codegen.py emit-b --variant eco  -o pong_echo_v0
+
+# 3. La corrida: tubería real del SO, 4 parejas de interpretes x 8 casos, condiciones C1..C7
+python3 run_handoff.py --mode nota
+python3 run_handoff.py --mode eco        # cada modo: pass 8/8, todo_pass true, rc 0
+cd ../../evidence/pong_v0/2026-10-16T210612Z && LC_ALL=C.UTF-8 sha256sum -c SHA256SUMS.txt
+```
+
+`run_handoff.py` levanta `E1 A.mb … < in | tee Aout | E2 B.mb …` en UNA sola llamada a bash: no hay
+archivo intermediario ni re-codificación del host entre A y B. La expectativa se deriva de
+`oracle/pong_reference.py`, nunca de la VM. `--keep-raw DIR` vuelca los crudos con su sha256.
+
 ## Reglas de este repo
 
 1. Prohibido decir «juego funcionando», «frame de Malbolge», «100 %» o «demostrado» sin nombrar
@@ -183,19 +233,37 @@ este workspace; `MALBOLGE-MB-DATABASE` queda en HEAD `d479473` con 0 archivos mo
 - Los dos oráculos comparten autor (los escribí yo): el acuerdo C↔Python detecta despistes de
   codificación, no de semántica.
 - MalbolGames está **versionado y publicado** en `https://github.com/DannyBaanks/MalbolGames`
-  (128 archivos, `master`) desde el 2026-10-16, pero el canon sigue siendo filesystem + SHA-256:
-  `SHA256SUMS.txt` y `sha256sum -c` deciden, y las cuatro corridas se sellaron **antes** de existir
-  el repo. La historia de git no valida una afirmación; la valida su sello. `composes/` queda fuera
-  del repo público (precedente MALDOOM): el encargo se audita por su sha `b1f170b8…`.
+  (rama `master`) desde el 2026-10-16, pero el canon sigue siendo filesystem + SHA-256:
+  `SHA256SUMS.txt` y `sha256sum -c` deciden, y las cinco corridas selladas se ejecutaron **antes**
+  de que el repo público las contenga. La historia de git no valida una afirmación; la valida su
+  sello. `composes/` queda fuera del repo público (precedente MALDOOM): el encargo se audita por su
+  sha `b1f170b8…`.
 - La caracterización `CMP_EQ ⇔ op1 == 2 ∧ op2 ∈ {2,3,4}` es **empírica en 0..4 × 0..4**; no se
   afirma para operandos mayores.
+- En G3, `tee` prueba los bytes que **salieron** de A, no los que B consumió: la identificación del
+  byte en el stdin de B es una inferencia sobre C3 + C5 (pasos idénticos entre tubería y
+  alimentación directa), no una observación del syscall de lectura. Y en el modo `eco` el receptor
+  **no reconoce el símbolo**: cae al fallback de eco del generador (sondeado: con `0x01` emite `'P'`).
+  El modo fuerte es `nota`.
 
 ## Punto de continuación
 
-El escalón que estaba abierto —encadenar `bounce → contact` dentro de un mismo programa para que
-la VM derive la fila post-vertical en lugar de recibirla codificada— **se intentó y quedó cerrado
-como negativa medida** en `evidence/pong_v0/2026-10-16T003512Z/`. La causa está localizada con
-precisión, así que el siguiente paso tiene dos rutas disjuntas y ambas declarables:
+Dos escalones estaban abiertos y ahora tienen estados distintos:
+
+- Encadenar `bounce → contact` **dentro de un mismo programa** — se intentó y quedó cerrado como
+  **negativa medida** en `evidence/pong_v0/2026-10-16T003512Z/`.
+- Que el byte de una VM lo **lea** otra VM — **demostrado** en `evidence/pong_v0/2026-10-16T210612Z/`
+  (G3): una arista, un bit, un disparo, dos procesos.
+
+Es decir: el **transporte** dejó de ser una hipótesis y pasó a ser un hecho medido, así que la
+pregunta de las físicas simultáneas por *workers* ya no se estrella contra «nadie ha cruzado un byte
+entre dos Malbolge». Lo que falta ahora es lo que G3 deliberadamente no hizo: **≥2 aristas
+simultáneas** y **que viaje estado en vez de un bit**. Un dataflow completo dentro de Malbolge no
+cabe —kernel MBIR 57 511/59 049 y techo de despacho ~26 rutas— y dejar la física en Python sería
+`HOST_COMPUTED`; la vía realista es orquestación por proceso con aristas como la de G3, y eso exige
+primero un **canal de más de un bit por disparo**.
+
+Para el cálculo en sí quedan dos rutas disjuntas y ambas declarables:
 
 1. **Kernel con igualdad real** — `CMP_EQ` reflexivo sobre 0..3, o `CMP_LT`/`CMP_GT` multiplexados.
    Es trabajo de `MALBOLGE-MB-DATABASE`, y el margen es de **1 538 celdas**: no es gratis ni
@@ -205,5 +273,5 @@ precisión, así que el siguiente paso tiene dos rutas disjuntas y ambas declara
    programa que **lea** la codificación y calcule, en vez de despachar por tabla. Coste: autoría a
    mano + ensamblado; no requiere tocar upstream.
 
-Detalle en `evidence/pong_v0/2026-10-16T003512Z/verdict.md`, `docs/CLAIMS.md` (anexo) y
-`docs/LIMITATIONS.md` §16–27.
+Detalle en `evidence/pong_v0/2026-10-16T210612Z/verdict.md`, `evidence/pong_v0/2026-10-16T003512Z/verdict.md`,
+`docs/CLAIMS.md` (anexos) y `docs/LIMITATIONS.md` §16–38.

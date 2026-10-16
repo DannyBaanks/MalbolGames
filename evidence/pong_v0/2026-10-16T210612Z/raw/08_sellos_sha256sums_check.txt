@@ -1,0 +1,26 @@
+comando: sha256sum -c SHA256SUMS.txt   (rc real = 0, 24/24 'La suma coincide', 0 fallos)
+los 24 sellos vigentes ANTES de esta corrida; los artefactos sellados de G2 no se reescribieron ni se regeneraron.
+docs/CLAIMS.md: La suma coincide
+docs/LIMITATIONS.md: La suma coincide
+docs/PONG_MIN_SPEC.md: La suma coincide
+docs/PROVENANCE.md: La suma coincide
+harness/compare_oracle.py: La suma coincide
+oracle/pong_reference.c: La suma coincide
+oracle/pong_reference.py: La suma coincide
+README.md: La suma coincide
+tests/fixtures/index.tsv: La suma coincide
+tests/fixtures/SHA256SUMS.txt: La suma coincide
+tests/test_oracle.py: La suma coincide
+vm/classic/pong_bounce_v0.hell: La suma coincide
+vm/classic/pong_bounce_v0.mb: La suma coincide
+vm/classic/pong_codegen.py: La suma coincide
+vm/classic/pong_contact_v0.hell: La suma coincide
+vm/classic/pong_contact_v0.mb: La suma coincide
+vm/classic/run_classic.py: La suma coincide
+vm/classic/trit_mask_probe.py: La suma coincide
+vm/nested/audit_alu_rel_isa.py: La suma coincide
+vm/nested/extracta_estructura_kernel.py: La suma coincide
+vm/nested/matriz_operadores.py: La suma coincide
+vm/nested/mbir_alu_rel_pass25.mb: La suma coincide
+vm/nested/pong_nested.py: La suma coincide
+vm/nested/replay_alu_rel.py: La suma coincide

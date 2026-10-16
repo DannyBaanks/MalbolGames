@@ -1,0 +1,2 @@
+check bounce: 8 puntos del dominio vs oraculo -> PASS
+rc=0

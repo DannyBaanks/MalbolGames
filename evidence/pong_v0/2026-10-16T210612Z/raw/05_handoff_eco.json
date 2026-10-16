@@ -1,0 +1,1390 @@
+{
+  "experimento": "G3 handoff modo eco — pong_bounce_v0.mb -> stdin -> pong_echo_v0.mb dentro de la VM Clasica (el byte del artefacto sellado viaja y B lo reimprime tal cual)",
+  "modo": "eco",
+  "predicado": "bounce",
+  "tablero": "8x4",
+  "condiciones_pactadas_antes_de_correr": [
+    "(pactadas ANTES de correr, inmoviles para esta corrida)",
+    "-------------------------------------------------------------------",
+    " C1  Cada x del dominio: salida de B por tuberia == la composicion derivada del oraculo.",
+    " C2  Las cuatro parejas de interpretes (A,B) en {E1,E2}^2 coinciden en salida Y en pasos.",
+    " C3  Los bytes que circularon por la tuberia (capturados con `tee`) == el stdout crudo de A",
+    "     ejecutado solo, y == el byte que se esperaba que A emitiera. Prueba de que el byte viajo.",
+    " C4  A solo: E1 == E2 == modelo C en salida y pasos (la via de tres que ya usa G2).",
+    " C5  B alimentado DIRECTAMENTE por el host con ese mismo byte == B por tuberia, en salida y en",
+    "     PASOS. Como el modo tuberia entrega ademas el 0x0A del runner y el directo no, la",
+    "     igualdad de pasos demuestra que ese byte de framing nunca entra en el computo de B.",
+    " C6  B con stdin VACIO (EOF) no emite ningun byte de programa: B no puede inventar el bit.",
+    " C7  Selectividad, por modo:",
+    "     nota — el mutante B-swap (misma A, misma tuberia) invierte los 8 casos.",
+    "     eco    — (a) la composicion toma los dos valores '0' y '1' (no es una constante),",
+    "              (b) B-ECO con 0x30 y con 0x31 da salidas distintas (es inyectivo en su stdin),",
+    "              (c) B-ECO con 0x01 emite 'P': la ruta de despacho existe y NO es la que corrio,",
+    "                  luego el edge paso por el fallback de eco."
+  ],
+  "artefactos": {
+    "A": {
+      "ruta": "/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb",
+      "sha256": "177e7fcea2b99c31f83f865ba915e53a9d4d70a4ac850c5e6e61aad970b99f06",
+      "bytes": 34105
+    },
+    "B": {
+      "ruta": "/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb",
+      "sha256": "cbd431b8245cd0d074ced42544742e6e84788f7a99bc850bc8515cf27df083b3",
+      "bytes": 27337
+    },
+    "B_mutante": null,
+    "celdas_clasico": 59049
+  },
+  "interpretes": {
+    "E1": "/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge",
+    "E2": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge",
+    "modelo_C": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/tools/oracle_classic.py"
+  },
+  "max_steps": 2000000,
+  "dominio_puntos": 8,
+  "expect_oraculo": {
+    "01": "1",
+    "02": "0",
+    "03": "0",
+    "04": "0",
+    "05": "0",
+    "06": "0",
+    "07": "0",
+    "08": "1"
+  },
+  "pass": 8,
+  "casos": [
+    {
+      "opcode": "01",
+      "decodificado": "by=0, vy=-1",
+      "esperado_oraculo": "1",
+      "byte_crudo_esperado": "31",
+      "tuberias": {
+        "E1E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/01_E1E1.in 2> /tmp/g3_fj4ddktv/01_E1E1.Aerr | tee /tmp/g3_fj4ddktv/01_E1E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/01_E1E1.Bout 2> /tmp/g3_fj4ddktv/01_E1E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "310a",
+          "A_pasos": 37395,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "310a",
+          "B_stdout_raw_hex": "310a",
+          "B_salida": "1",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E1E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/01_E1E2.in 2> /tmp/g3_fj4ddktv/01_E1E2.Aerr | tee /tmp/g3_fj4ddktv/01_E1E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/01_E1E2.Bout 2> /tmp/g3_fj4ddktv/01_E1E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "310a",
+          "A_pasos": 37395,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "310a",
+          "B_stdout_raw_hex": "310a",
+          "B_salida": "1",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/01_E2E1.in 2> /tmp/g3_fj4ddktv/01_E2E1.Aerr | tee /tmp/g3_fj4ddktv/01_E2E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/01_E2E1.Bout 2> /tmp/g3_fj4ddktv/01_E2E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "310a",
+          "A_pasos": 37395,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "310a",
+          "B_stdout_raw_hex": "310a",
+          "B_salida": "1",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/01_E2E2.in 2> /tmp/g3_fj4ddktv/01_E2E2.Aerr | tee /tmp/g3_fj4ddktv/01_E2E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/01_E2E2.Bout 2> /tmp/g3_fj4ddktv/01_E2E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "310a",
+          "A_pasos": 37395,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "310a",
+          "B_stdout_raw_hex": "310a",
+          "B_salida": "1",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        }
+      },
+      "A_solo": {
+        "E1": {
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 37395,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 37395 | status: HALTED"
+        },
+        "E2": {
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 37395,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 37395 | status: HALTED"
+        },
+        "C": {
+          "stdout_raw_hex": "31",
+          "salida": "1",
+          "pasos": 37395,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_solo_directo": {
+        "E1": {
+          "feed_hex": "31",
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "E2": {
+          "feed_hex": "31",
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "31",
+          "salida": "1",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_stdin_vacio": {
+        "feed_hex": "",
+        "stdout_raw_hex": "0a",
+        "salida": "",
+        "pasos": 26923,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "sondas_selectividad": {
+        "B_eco_otro_byte": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B_eco_sonda_0x01": {
+          "feed_hex": "01",
+          "stdout_raw_hex": "500a",
+          "salida": "P",
+          "pasos": 30405,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "condiciones": {
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "C5": true,
+        "C6": true,
+        "C7": true
+      },
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "02",
+      "decodificado": "by=0, vy=+1",
+      "esperado_oraculo": "0",
+      "byte_crudo_esperado": "30",
+      "tuberias": {
+        "E1E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/02_E1E1.in 2> /tmp/g3_fj4ddktv/02_E1E1.Aerr | tee /tmp/g3_fj4ddktv/02_E1E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/02_E1E1.Bout 2> /tmp/g3_fj4ddktv/02_E1E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 38187,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E1E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/02_E1E2.in 2> /tmp/g3_fj4ddktv/02_E1E2.Aerr | tee /tmp/g3_fj4ddktv/02_E1E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/02_E1E2.Bout 2> /tmp/g3_fj4ddktv/02_E1E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 38187,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/02_E2E1.in 2> /tmp/g3_fj4ddktv/02_E2E1.Aerr | tee /tmp/g3_fj4ddktv/02_E2E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/02_E2E1.Bout 2> /tmp/g3_fj4ddktv/02_E2E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 38187,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/02_E2E2.in 2> /tmp/g3_fj4ddktv/02_E2E2.Aerr | tee /tmp/g3_fj4ddktv/02_E2E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/02_E2E2.Bout 2> /tmp/g3_fj4ddktv/02_E2E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 38187,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        }
+      },
+      "A_solo": {
+        "E1": {
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 38187,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 38187 | status: HALTED"
+        },
+        "E2": {
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 38187,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 38187 | status: HALTED"
+        },
+        "C": {
+          "stdout_raw_hex": "30",
+          "salida": "0",
+          "pasos": 38187,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_solo_directo": {
+        "E1": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "E2": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "30",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_stdin_vacio": {
+        "feed_hex": "",
+        "stdout_raw_hex": "0a",
+        "salida": "",
+        "pasos": 26923,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "sondas_selectividad": {
+        "B_eco_otro_byte": {
+          "feed_hex": "31",
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B_eco_sonda_0x01": {
+          "feed_hex": "01",
+          "stdout_raw_hex": "500a",
+          "salida": "P",
+          "pasos": 30405,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "condiciones": {
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "C5": true,
+        "C6": true,
+        "C7": true
+      },
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "03",
+      "decodificado": "by=1, vy=-1",
+      "esperado_oraculo": "0",
+      "byte_crudo_esperado": "30",
+      "tuberias": {
+        "E1E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/03_E1E1.in 2> /tmp/g3_fj4ddktv/03_E1E1.Aerr | tee /tmp/g3_fj4ddktv/03_E1E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/03_E1E1.Bout 2> /tmp/g3_fj4ddktv/03_E1E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 38557,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E1E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/03_E1E2.in 2> /tmp/g3_fj4ddktv/03_E1E2.Aerr | tee /tmp/g3_fj4ddktv/03_E1E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/03_E1E2.Bout 2> /tmp/g3_fj4ddktv/03_E1E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 38557,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/03_E2E1.in 2> /tmp/g3_fj4ddktv/03_E2E1.Aerr | tee /tmp/g3_fj4ddktv/03_E2E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/03_E2E1.Bout 2> /tmp/g3_fj4ddktv/03_E2E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 38557,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/03_E2E2.in 2> /tmp/g3_fj4ddktv/03_E2E2.Aerr | tee /tmp/g3_fj4ddktv/03_E2E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/03_E2E2.Bout 2> /tmp/g3_fj4ddktv/03_E2E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 38557,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        }
+      },
+      "A_solo": {
+        "E1": {
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 38557,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 38557 | status: HALTED"
+        },
+        "E2": {
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 38557,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 38557 | status: HALTED"
+        },
+        "C": {
+          "stdout_raw_hex": "30",
+          "salida": "0",
+          "pasos": 38557,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_solo_directo": {
+        "E1": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "E2": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "30",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_stdin_vacio": {
+        "feed_hex": "",
+        "stdout_raw_hex": "0a",
+        "salida": "",
+        "pasos": 26923,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "sondas_selectividad": {
+        "B_eco_otro_byte": {
+          "feed_hex": "31",
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B_eco_sonda_0x01": {
+          "feed_hex": "01",
+          "stdout_raw_hex": "500a",
+          "salida": "P",
+          "pasos": 30405,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "condiciones": {
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "C5": true,
+        "C6": true,
+        "C7": true
+      },
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "04",
+      "decodificado": "by=1, vy=+1",
+      "esperado_oraculo": "0",
+      "byte_crudo_esperado": "30",
+      "tuberias": {
+        "E1E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/04_E1E1.in 2> /tmp/g3_fj4ddktv/04_E1E1.Aerr | tee /tmp/g3_fj4ddktv/04_E1E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/04_E1E1.Bout 2> /tmp/g3_fj4ddktv/04_E1E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 39052,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E1E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/04_E1E2.in 2> /tmp/g3_fj4ddktv/04_E1E2.Aerr | tee /tmp/g3_fj4ddktv/04_E1E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/04_E1E2.Bout 2> /tmp/g3_fj4ddktv/04_E1E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 39052,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/04_E2E1.in 2> /tmp/g3_fj4ddktv/04_E2E1.Aerr | tee /tmp/g3_fj4ddktv/04_E2E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/04_E2E1.Bout 2> /tmp/g3_fj4ddktv/04_E2E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 39052,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/04_E2E2.in 2> /tmp/g3_fj4ddktv/04_E2E2.Aerr | tee /tmp/g3_fj4ddktv/04_E2E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/04_E2E2.Bout 2> /tmp/g3_fj4ddktv/04_E2E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 39052,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        }
+      },
+      "A_solo": {
+        "E1": {
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 39052,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 39052 | status: HALTED"
+        },
+        "E2": {
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 39052,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 39052 | status: HALTED"
+        },
+        "C": {
+          "stdout_raw_hex": "30",
+          "salida": "0",
+          "pasos": 39052,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_solo_directo": {
+        "E1": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "E2": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "30",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_stdin_vacio": {
+        "feed_hex": "",
+        "stdout_raw_hex": "0a",
+        "salida": "",
+        "pasos": 26923,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "sondas_selectividad": {
+        "B_eco_otro_byte": {
+          "feed_hex": "31",
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B_eco_sonda_0x01": {
+          "feed_hex": "01",
+          "stdout_raw_hex": "500a",
+          "salida": "P",
+          "pasos": 30405,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "condiciones": {
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "C5": true,
+        "C6": true,
+        "C7": true
+      },
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "05",
+      "decodificado": "by=2, vy=-1",
+      "esperado_oraculo": "0",
+      "byte_crudo_esperado": "30",
+      "tuberias": {
+        "E1E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/05_E1E1.in 2> /tmp/g3_fj4ddktv/05_E1E1.Aerr | tee /tmp/g3_fj4ddktv/05_E1E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/05_E1E1.Bout 2> /tmp/g3_fj4ddktv/05_E1E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 39853,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E1E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/05_E1E2.in 2> /tmp/g3_fj4ddktv/05_E1E2.Aerr | tee /tmp/g3_fj4ddktv/05_E1E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/05_E1E2.Bout 2> /tmp/g3_fj4ddktv/05_E1E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 39853,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/05_E2E1.in 2> /tmp/g3_fj4ddktv/05_E2E1.Aerr | tee /tmp/g3_fj4ddktv/05_E2E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/05_E2E1.Bout 2> /tmp/g3_fj4ddktv/05_E2E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 39853,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/05_E2E2.in 2> /tmp/g3_fj4ddktv/05_E2E2.Aerr | tee /tmp/g3_fj4ddktv/05_E2E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/05_E2E2.Bout 2> /tmp/g3_fj4ddktv/05_E2E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 39853,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        }
+      },
+      "A_solo": {
+        "E1": {
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 39853,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 39853 | status: HALTED"
+        },
+        "E2": {
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 39853,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 39853 | status: HALTED"
+        },
+        "C": {
+          "stdout_raw_hex": "30",
+          "salida": "0",
+          "pasos": 39853,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_solo_directo": {
+        "E1": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "E2": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "30",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_stdin_vacio": {
+        "feed_hex": "",
+        "stdout_raw_hex": "0a",
+        "salida": "",
+        "pasos": 26923,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "sondas_selectividad": {
+        "B_eco_otro_byte": {
+          "feed_hex": "31",
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B_eco_sonda_0x01": {
+          "feed_hex": "01",
+          "stdout_raw_hex": "500a",
+          "salida": "P",
+          "pasos": 30405,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "condiciones": {
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "C5": true,
+        "C6": true,
+        "C7": true
+      },
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "06",
+      "decodificado": "by=2, vy=+1",
+      "esperado_oraculo": "0",
+      "byte_crudo_esperado": "30",
+      "tuberias": {
+        "E1E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/06_E1E1.in 2> /tmp/g3_fj4ddktv/06_E1E1.Aerr | tee /tmp/g3_fj4ddktv/06_E1E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/06_E1E1.Bout 2> /tmp/g3_fj4ddktv/06_E1E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 40232,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E1E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/06_E1E2.in 2> /tmp/g3_fj4ddktv/06_E1E2.Aerr | tee /tmp/g3_fj4ddktv/06_E1E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/06_E1E2.Bout 2> /tmp/g3_fj4ddktv/06_E1E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 40232,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/06_E2E1.in 2> /tmp/g3_fj4ddktv/06_E2E1.Aerr | tee /tmp/g3_fj4ddktv/06_E2E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/06_E2E1.Bout 2> /tmp/g3_fj4ddktv/06_E2E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 40232,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/06_E2E2.in 2> /tmp/g3_fj4ddktv/06_E2E2.Aerr | tee /tmp/g3_fj4ddktv/06_E2E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/06_E2E2.Bout 2> /tmp/g3_fj4ddktv/06_E2E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 40232,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        }
+      },
+      "A_solo": {
+        "E1": {
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 40232,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 40232 | status: HALTED"
+        },
+        "E2": {
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 40232,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 40232 | status: HALTED"
+        },
+        "C": {
+          "stdout_raw_hex": "30",
+          "salida": "0",
+          "pasos": 40232,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_solo_directo": {
+        "E1": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "E2": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "30",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_stdin_vacio": {
+        "feed_hex": "",
+        "stdout_raw_hex": "0a",
+        "salida": "",
+        "pasos": 26923,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "sondas_selectividad": {
+        "B_eco_otro_byte": {
+          "feed_hex": "31",
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B_eco_sonda_0x01": {
+          "feed_hex": "01",
+          "stdout_raw_hex": "500a",
+          "salida": "P",
+          "pasos": 30405,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "condiciones": {
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "C5": true,
+        "C6": true,
+        "C7": true
+      },
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "07",
+      "decodificado": "by=3, vy=-1",
+      "esperado_oraculo": "0",
+      "byte_crudo_esperado": "30",
+      "tuberias": {
+        "E1E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/07_E1E1.in 2> /tmp/g3_fj4ddktv/07_E1E1.Aerr | tee /tmp/g3_fj4ddktv/07_E1E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/07_E1E1.Bout 2> /tmp/g3_fj4ddktv/07_E1E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 40736,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E1E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/07_E1E2.in 2> /tmp/g3_fj4ddktv/07_E1E2.Aerr | tee /tmp/g3_fj4ddktv/07_E1E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/07_E1E2.Bout 2> /tmp/g3_fj4ddktv/07_E1E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 40736,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/07_E2E1.in 2> /tmp/g3_fj4ddktv/07_E2E1.Aerr | tee /tmp/g3_fj4ddktv/07_E2E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/07_E2E1.Bout 2> /tmp/g3_fj4ddktv/07_E2E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 40736,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/07_E2E2.in 2> /tmp/g3_fj4ddktv/07_E2E2.Aerr | tee /tmp/g3_fj4ddktv/07_E2E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/07_E2E2.Bout 2> /tmp/g3_fj4ddktv/07_E2E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "300a",
+          "A_pasos": 40736,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "300a",
+          "B_stdout_raw_hex": "300a",
+          "B_salida": "0",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        }
+      },
+      "A_solo": {
+        "E1": {
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 40736,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 40736 | status: HALTED"
+        },
+        "E2": {
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 40736,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 40736 | status: HALTED"
+        },
+        "C": {
+          "stdout_raw_hex": "30",
+          "salida": "0",
+          "pasos": 40736,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_solo_directo": {
+        "E1": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "E2": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "30",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_stdin_vacio": {
+        "feed_hex": "",
+        "stdout_raw_hex": "0a",
+        "salida": "",
+        "pasos": 26923,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "sondas_selectividad": {
+        "B_eco_otro_byte": {
+          "feed_hex": "31",
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B_eco_sonda_0x01": {
+          "feed_hex": "01",
+          "stdout_raw_hex": "500a",
+          "salida": "P",
+          "pasos": 30405,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "condiciones": {
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "C5": true,
+        "C6": true,
+        "C7": true
+      },
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "08",
+      "decodificado": "by=3, vy=+1",
+      "esperado_oraculo": "1",
+      "byte_crudo_esperado": "31",
+      "tuberias": {
+        "E1E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/08_E1E1.in 2> /tmp/g3_fj4ddktv/08_E1E1.Aerr | tee /tmp/g3_fj4ddktv/08_E1E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/08_E1E1.Bout 2> /tmp/g3_fj4ddktv/08_E1E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "310a",
+          "A_pasos": 41849,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "310a",
+          "B_stdout_raw_hex": "310a",
+          "B_salida": "1",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E1E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/08_E1E2.in 2> /tmp/g3_fj4ddktv/08_E1E2.Aerr | tee /tmp/g3_fj4ddktv/08_E1E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/08_E1E2.Bout 2> /tmp/g3_fj4ddktv/08_E1E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "310a",
+          "A_pasos": 41849,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "310a",
+          "B_stdout_raw_hex": "310a",
+          "B_salida": "1",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E1": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/08_E2E1.in 2> /tmp/g3_fj4ddktv/08_E2E1.Aerr | tee /tmp/g3_fj4ddktv/08_E2E1.Aout | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/08_E2E1.Bout 2> /tmp/g3_fj4ddktv/08_E2E1.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "310a",
+          "A_pasos": 41849,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "310a",
+          "B_stdout_raw_hex": "310a",
+          "B_salida": "1",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        },
+        "E2E2": {
+          "cmd": "set -o pipefail; '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb' 2000000 < /tmp/g3_fj4ddktv/08_E2E2.in 2> /tmp/g3_fj4ddktv/08_E2E2.Aerr | tee /tmp/g3_fj4ddktv/08_E2E2.Aout | '/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge' '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_echo_v0.mb' 2000000 > /tmp/g3_fj4ddktv/08_E2E2.Bout 2> /tmp/g3_fj4ddktv/08_E2E2.Berr",
+          "rc": 0,
+          "A_stdout_bytes_hex": "310a",
+          "A_pasos": 41849,
+          "A_status": "HALTED",
+          "flujo_tuberia_hex": "310a",
+          "B_stdout_raw_hex": "310a",
+          "B_salida": "1",
+          "B_pasos": 29477,
+          "B_status": "HALTED",
+          "B_stderr": "steps: 29477 | status: HALTED"
+        }
+      },
+      "A_solo": {
+        "E1": {
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 41849,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 41849 | status: HALTED"
+        },
+        "E2": {
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 41849,
+          "status": "HALTED",
+          "rc": 0,
+          "stderr": "steps: 41849 | status: HALTED"
+        },
+        "C": {
+          "stdout_raw_hex": "31",
+          "salida": "1",
+          "pasos": 41849,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_solo_directo": {
+        "E1": {
+          "feed_hex": "31",
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "E2": {
+          "feed_hex": "31",
+          "stdout_raw_hex": "310a",
+          "salida": "1",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "31",
+          "salida": "1",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "B_stdin_vacio": {
+        "feed_hex": "",
+        "stdout_raw_hex": "0a",
+        "salida": "",
+        "pasos": 26923,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "sondas_selectividad": {
+        "B_eco_otro_byte": {
+          "feed_hex": "30",
+          "stdout_raw_hex": "300a",
+          "salida": "0",
+          "pasos": 29477,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B_eco_sonda_0x01": {
+          "feed_hex": "01",
+          "stdout_raw_hex": "500a",
+          "salida": "P",
+          "pasos": 30405,
+          "status": "HALTED",
+          "rc": 0
+        }
+      },
+      "condiciones": {
+        "C1": true,
+        "C2": true,
+        "C3": true,
+        "C4": true,
+        "C5": true,
+        "C6": true,
+        "C7": true
+      },
+      "veredicto": "PASS"
+    }
+  ],
+  "todo_pass": true,
+  "sha256_crudos": {
+    "01_E1E1.Aerr": "4d1c2d253723112d6289041ae9c69f0b396f52b5213ee7ba8da6d65e661ab332",
+    "01_E1E1.Aout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "01_E1E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "01_E1E1.Bout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "01_E1E1.in": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a",
+    "01_E1E2.Aerr": "4d1c2d253723112d6289041ae9c69f0b396f52b5213ee7ba8da6d65e661ab332",
+    "01_E1E2.Aout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "01_E1E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "01_E1E2.Bout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "01_E1E2.in": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a",
+    "01_E2E1.Aerr": "4d1c2d253723112d6289041ae9c69f0b396f52b5213ee7ba8da6d65e661ab332",
+    "01_E2E1.Aout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "01_E2E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "01_E2E1.Bout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "01_E2E1.in": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a",
+    "01_E2E2.Aerr": "4d1c2d253723112d6289041ae9c69f0b396f52b5213ee7ba8da6d65e661ab332",
+    "01_E2E2.Aout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "01_E2E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "01_E2E2.Bout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "01_E2E2.in": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a",
+    "02_E1E1.Aerr": "82d9585f21d47660fde734bc9674fda4923396dd8dcdbef3c54479c6c05add04",
+    "02_E1E1.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "02_E1E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "02_E1E1.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "02_E1E1.in": "dbc1b4c900ffe48d575b5da5c638040125f65db0fe3e24494b76ea986457d986",
+    "02_E1E2.Aerr": "82d9585f21d47660fde734bc9674fda4923396dd8dcdbef3c54479c6c05add04",
+    "02_E1E2.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "02_E1E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "02_E1E2.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "02_E1E2.in": "dbc1b4c900ffe48d575b5da5c638040125f65db0fe3e24494b76ea986457d986",
+    "02_E2E1.Aerr": "82d9585f21d47660fde734bc9674fda4923396dd8dcdbef3c54479c6c05add04",
+    "02_E2E1.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "02_E2E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "02_E2E1.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "02_E2E1.in": "dbc1b4c900ffe48d575b5da5c638040125f65db0fe3e24494b76ea986457d986",
+    "02_E2E2.Aerr": "82d9585f21d47660fde734bc9674fda4923396dd8dcdbef3c54479c6c05add04",
+    "02_E2E2.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "02_E2E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "02_E2E2.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "02_E2E2.in": "dbc1b4c900ffe48d575b5da5c638040125f65db0fe3e24494b76ea986457d986",
+    "03_E1E1.Aerr": "06929c4a4054b9abdce34c69ae66258198ac6c16325dc5981c66e86d8eb0a73a",
+    "03_E1E1.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "03_E1E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "03_E1E1.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "03_E1E1.in": "084fed08b978af4d7d196a7446a86b58009e636b611db16211b65a9aadff29c5",
+    "03_E1E2.Aerr": "06929c4a4054b9abdce34c69ae66258198ac6c16325dc5981c66e86d8eb0a73a",
+    "03_E1E2.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "03_E1E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "03_E1E2.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "03_E1E2.in": "084fed08b978af4d7d196a7446a86b58009e636b611db16211b65a9aadff29c5",
+    "03_E2E1.Aerr": "06929c4a4054b9abdce34c69ae66258198ac6c16325dc5981c66e86d8eb0a73a",
+    "03_E2E1.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "03_E2E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "03_E2E1.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "03_E2E1.in": "084fed08b978af4d7d196a7446a86b58009e636b611db16211b65a9aadff29c5",
+    "03_E2E2.Aerr": "06929c4a4054b9abdce34c69ae66258198ac6c16325dc5981c66e86d8eb0a73a",
+    "03_E2E2.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "03_E2E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "03_E2E2.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "03_E2E2.in": "084fed08b978af4d7d196a7446a86b58009e636b611db16211b65a9aadff29c5",
+    "04_E1E1.Aerr": "d444754c21fc79cbc0b8075d2345857c6ff8f5b0ba451b3ada8ff5e735cdadfa",
+    "04_E1E1.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "04_E1E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "04_E1E1.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "04_E1E1.in": "e52d9c508c502347344d8c07ad91cbd6068afc75ff6292f062a09ca381c89e71",
+    "04_E1E2.Aerr": "d444754c21fc79cbc0b8075d2345857c6ff8f5b0ba451b3ada8ff5e735cdadfa",
+    "04_E1E2.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "04_E1E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "04_E1E2.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "04_E1E2.in": "e52d9c508c502347344d8c07ad91cbd6068afc75ff6292f062a09ca381c89e71",
+    "04_E2E1.Aerr": "d444754c21fc79cbc0b8075d2345857c6ff8f5b0ba451b3ada8ff5e735cdadfa",
+    "04_E2E1.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "04_E2E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "04_E2E1.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "04_E2E1.in": "e52d9c508c502347344d8c07ad91cbd6068afc75ff6292f062a09ca381c89e71",
+    "04_E2E2.Aerr": "d444754c21fc79cbc0b8075d2345857c6ff8f5b0ba451b3ada8ff5e735cdadfa",
+    "04_E2E2.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "04_E2E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "04_E2E2.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "04_E2E2.in": "e52d9c508c502347344d8c07ad91cbd6068afc75ff6292f062a09ca381c89e71",
+    "05_E1E1.Aerr": "993136ef9a899a8f196245ed33b828ad1c14cf569410a1fb187d3bbbc31665d0",
+    "05_E1E1.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "05_E1E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "05_E1E1.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "05_E1E1.in": "e77b9a9ae9e30b0dbdb6f510a264ef9de781501d7b6b92ae89eb059c5ab743db",
+    "05_E1E2.Aerr": "993136ef9a899a8f196245ed33b828ad1c14cf569410a1fb187d3bbbc31665d0",
+    "05_E1E2.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "05_E1E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "05_E1E2.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "05_E1E2.in": "e77b9a9ae9e30b0dbdb6f510a264ef9de781501d7b6b92ae89eb059c5ab743db",
+    "05_E2E1.Aerr": "993136ef9a899a8f196245ed33b828ad1c14cf569410a1fb187d3bbbc31665d0",
+    "05_E2E1.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "05_E2E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "05_E2E1.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "05_E2E1.in": "e77b9a9ae9e30b0dbdb6f510a264ef9de781501d7b6b92ae89eb059c5ab743db",
+    "05_E2E2.Aerr": "993136ef9a899a8f196245ed33b828ad1c14cf569410a1fb187d3bbbc31665d0",
+    "05_E2E2.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "05_E2E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "05_E2E2.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "05_E2E2.in": "e77b9a9ae9e30b0dbdb6f510a264ef9de781501d7b6b92ae89eb059c5ab743db",
+    "06_E1E1.Aerr": "c685a29b898a1fd67eb1d834937b963c3a8ac56a1787776e6136a1d6f2800538",
+    "06_E1E1.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "06_E1E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "06_E1E1.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "06_E1E1.in": "67586e98fad27da0b9968bc039a1ef34c939b9b8e523a8bef89d478608c5ecf6",
+    "06_E1E2.Aerr": "c685a29b898a1fd67eb1d834937b963c3a8ac56a1787776e6136a1d6f2800538",
+    "06_E1E2.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "06_E1E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "06_E1E2.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "06_E1E2.in": "67586e98fad27da0b9968bc039a1ef34c939b9b8e523a8bef89d478608c5ecf6",
+    "06_E2E1.Aerr": "c685a29b898a1fd67eb1d834937b963c3a8ac56a1787776e6136a1d6f2800538",
+    "06_E2E1.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "06_E2E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "06_E2E1.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "06_E2E1.in": "67586e98fad27da0b9968bc039a1ef34c939b9b8e523a8bef89d478608c5ecf6",
+    "06_E2E2.Aerr": "c685a29b898a1fd67eb1d834937b963c3a8ac56a1787776e6136a1d6f2800538",
+    "06_E2E2.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "06_E2E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "06_E2E2.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "06_E2E2.in": "67586e98fad27da0b9968bc039a1ef34c939b9b8e523a8bef89d478608c5ecf6",
+    "07_E1E1.Aerr": "e837fdf79a4431d3d1f52405943b455d1598e6112010db9e2a57f7c4a3621d48",
+    "07_E1E1.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "07_E1E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "07_E1E1.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "07_E1E1.in": "ca358758f6d27e6cf45272937977a748fd88391db679ceda7dc7bf1f005ee879",
+    "07_E1E2.Aerr": "e837fdf79a4431d3d1f52405943b455d1598e6112010db9e2a57f7c4a3621d48",
+    "07_E1E2.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "07_E1E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "07_E1E2.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "07_E1E2.in": "ca358758f6d27e6cf45272937977a748fd88391db679ceda7dc7bf1f005ee879",
+    "07_E2E1.Aerr": "e837fdf79a4431d3d1f52405943b455d1598e6112010db9e2a57f7c4a3621d48",
+    "07_E2E1.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "07_E2E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "07_E2E1.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "07_E2E1.in": "ca358758f6d27e6cf45272937977a748fd88391db679ceda7dc7bf1f005ee879",
+    "07_E2E2.Aerr": "e837fdf79a4431d3d1f52405943b455d1598e6112010db9e2a57f7c4a3621d48",
+    "07_E2E2.Aout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "07_E2E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "07_E2E2.Bout": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "07_E2E2.in": "ca358758f6d27e6cf45272937977a748fd88391db679ceda7dc7bf1f005ee879",
+    "08_E1E1.Aerr": "9459cd32ebe19a3fcac5f94929853c1d8babf6cc2f5f927862c73939ae1b46a5",
+    "08_E1E1.Aout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "08_E1E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "08_E1E1.Bout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "08_E1E1.in": "beead77994cf573341ec17b58bbf7eb34d2711c993c1d976b128b3188dc1829a",
+    "08_E1E2.Aerr": "9459cd32ebe19a3fcac5f94929853c1d8babf6cc2f5f927862c73939ae1b46a5",
+    "08_E1E2.Aout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "08_E1E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "08_E1E2.Bout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "08_E1E2.in": "beead77994cf573341ec17b58bbf7eb34d2711c993c1d976b128b3188dc1829a",
+    "08_E2E1.Aerr": "9459cd32ebe19a3fcac5f94929853c1d8babf6cc2f5f927862c73939ae1b46a5",
+    "08_E2E1.Aout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "08_E2E1.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "08_E2E1.Bout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "08_E2E1.in": "beead77994cf573341ec17b58bbf7eb34d2711c993c1d976b128b3188dc1829a",
+    "08_E2E2.Aerr": "9459cd32ebe19a3fcac5f94929853c1d8babf6cc2f5f927862c73939ae1b46a5",
+    "08_E2E2.Aout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "08_E2E2.Berr": "9d1ad94282460fdeef1cf99d1035e3c1c079a41154e54c524247e1251a6d9dae",
+    "08_E2E2.Bout": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "08_E2E2.in": "beead77994cf573341ec17b58bbf7eb34d2711c993c1d976b128b3188dc1829a"
+  }
+}

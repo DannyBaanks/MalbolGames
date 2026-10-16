@@ -94,3 +94,42 @@ información de presupuesto para el siguiente paso.
 `NOT_DEMONSTRADO`. A la lista se suma, como bloque explícito: **cualquier predicado que necesite
 igualdad reflexiva sobre un valor ≠ 2**, y **encadenar más de dos operaciones aritméticas
 conservando el valor** con el kernel actual.
+
+## Anexo — corrida G3 `2026-10-16T210612Z` (append, no reescribe lo de arriba)
+
+**Esta corrida añade el primer positivo de transporte y sigue sin tocar ninguna fila anterior.**
+G0–G2 hablaban de *una* VM que calcula. G3 pregunta algo distinto y no cubierto: si el byte que
+una VM Clásico **imprime** puede ser el byte que otra VM Clásico **lee** y sobre el que calcula,
+sin que el host vuelva a codificar en medio. Ese hueco era el motivo de que MALDOOM registrara
+`CLASSIC_CROSS_READ_STATE_NOT_DEMONSTRATED`, y de que el `found:false` de `TICK_INC` fuera vacío
+(`evaluations: 0`).
+
+| claim nuevo | estado | quién calcula | qué lo sostiene | qué NO afirma |
+|---|---|---|---|---|
+| `HANDOFF_SINGLE_EDGE_CLASSIC_VM` | **DEMOSTRADO** | la VM receptora, sobre el byte que le llegó | 8/8 en modo `nota` (ruta de despacho + NOT) y 8/8 en modo `eco` (artefacto **sellado** de G2 + fallback); siete condiciones pactadas antes de correr, todas verdes; 4 parejas {E1,E2}² idénticas en salida **y** pasos; `tee` prueba que el byte viajó (`010a`/`020a`, `310a`/`300a`); el mutante B-swap invierte los 8 casos con el mismo A; B con stdin vacío no emite nada | Que exista un dataflow, una red, concurrencia, framing de paquete, reloj o estado compartido. **Una arista, un bit, un disparo, dos procesos.** |
+| `EDGE_FRAMING_INERT` | **DEMOSTRADO** | — (propiedad del canal) | el runner añade un `0x0A` que **sí** viaja por la tubería; B por tubería y B alimentado directo con solo el byte dan **los mismos pasos** (30 142 / 30 934 / 29 477). El byte de framing no entra en el cómputo, y eso es una medida, no una suposición del envoltorio | Que el receptor ignore cualquier byte extra: solo se probó este LF del runner |
+| `CANAL_ALPHABET_BOUNDED_BY_DISPATCH` | **DEMOSTRADO** (por medida) | — | un canal ASCII `'0'/'1'` exigiría ≥49 rutas; con 24 rutas quedan 2 688 celdas de margen y con 32 el ensamblador ya falla (`rc=1`); el ajuste ≈ 25 091 + 1 303·rutas da ≈26 rutas, es decir valor discriminable máximo 25. Sondé `ROT (1 << 1)` → `0x01`, `ROT (2 << 1)`/`ROT (0t2 << 1)` → `0x02`, y `0x00` es HALT ⇒ **alfabeto `{0x01,0x02}`** | Que `{0x01,0x02}` sea el único alfabeto posible en Malbolge: es el que cabe por debajo del techo **de este** generador |
+
+### El modo `eco` es un negativo disfrazado y por eso se declara
+
+En `eco` el receptor no reconoce el símbolo: `MARKERS` no se parchó, así que el byte entra por el
+**fallback de eco** del generador y B lo reimprime. La sonda lo comprueba — B-ECO con `0x01` emite
+`'P'` (30 405 pasos): la ruta de despacho existe y **no** es la que corrió. Se conserva igual porque
+es la vía más barata y porque prueba que el transporte **no depende** de los programas nuevos de
+esta corrida. `NOTA` es el modo fuerte: ahí B discrimina `0x01` contra `0x02` y calcula NOT.
+
+### Efecto sobre la pregunta de origen
+
+La pregunta era tratar físicas simultáneas como *workers* de dataflow. Esta corrida no la
+responde: la acota. Un dataflow **dentro** de Malbolge no cabe (kernel MBIR 57 511/59 049 y techo
+de despacho medido) y dejar la física en Python es `HOST_COMPUTED`. Lo único que se podía
+afirmar era si una arista es posible, y ahora se sabe que sí. `MULTI_EDGE_NETWORK_CLASSIC_VM`,
+`STATEFUL_CROSS_TICK_HANDOFF` y «físicas simultáneas sin colisión» quedan `NOT_DEMONSTRADO`.
+
+### Nomenclatura añadida
+
+`HANDOFF_SINGLE_EDGE_CLASSIC_VM` exige decir cuatro cosas o el enunciado no es utilizable:
+(a) el programa productor con su sha, (b) el mecanismo de transporte (tubería del SO, no archivo
+intermedio ni re-codificación), (c) cómo se probó que el byte viajó — captura con `tee` **y** el
+control de pasos contra alimentación directa — y (d) qué selectividad invierte el resultado.
+Un handoff sin (c) es indistinguible de que el host haya vuelto a escribir el byte.

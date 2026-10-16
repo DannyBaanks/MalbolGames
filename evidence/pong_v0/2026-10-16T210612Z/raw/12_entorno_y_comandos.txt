@@ -1,0 +1,82 @@
+=== G3 handoff — entorno, comandos exactos y crudos (2026-10-16T210612Z) ===
+
+HOST
+$ uname -a
+Linux DannyISyCo 7.0.0-38-generic #38~24.04.4-Ubuntu SMP PREEMPT_DYNAMIC Mon Sep 14 16:37:11 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+
+$ python3 -V
+Python 3.12.3
+
+$ ldd --version | head -1
+ldd (Ubuntu GLIBC 2.39-0ubuntu8.9) 2.39
+
+WORKSPACE
+/home/danny/Development/ISyCo Git/MALGAMES   (repo git, rama master)
+
+HERRAMIENTAS COMPARTIDAS — SOLO LECTURA
+$ git -C "../MALBOLGE-MB-DATABASE" rev-parse --short HEAD
+d479473
+$ git -C "../MALBOLGE-MB-DATABASE" status --porcelain | wc -l
+0
+$ sha256sum "../MALBOLGE-MB-DATABASE/vm_malbolge/tools/mbir_dispatch_gen.py" \
+           "../MALBOLGE-MB-DATABASE/tools/oracle_classic.py" \
+           "../MALBOLGE-MB-DATABASE/third_party/lmao/lmao" \
+           "../Malbolge-Engine/malbolge" \
+           "../MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge"
+c756fac6f8b55e852618c755e9f5b4e66b737d007d217457e62efd7f2e4285b4  mbir_dispatch_gen.py
+5dae8f31eaa296fdc5bb1a65b9bab93e94b3f230de5d1929d5d5d904dd4778cf  oracle_classic.py
+5a6039efd995af1cf57b9bf4d6ec70da3a5303efe0ec6a1fe0fad3abc03f3f44  lmao
+3257f1ae98bcd3e86a1b93d1b53a4b3d3512d8265cb7052f2bcb56b1e95ea231  Malbolge-Engine/malbolge
+3257f1ae98bcd3e86a1b93d1b53a4b3d3512d8265cb7052f2bcb56b1e95ea231  runners/malbolge-original/malbolge
+(NOTA: E1 y E2 son el MISMO ELF por construcción. Las 4 parejas de C2 dan 3 ejecuciones
+ sobre 2 implementaciones distintas — no se afirma una cuarta implementación. El modelo C
+ de oracle_classic.py es la única vía genuinamente independiente del binario.)
+
+EMISIÓN (re-verifica el sha del generador upstream en cada llamada; aborta si cambió)
+$ python3 vm/classic/handoff_codegen.py emit-a-raw --kind bounce -o vm/classic/pong_bounce_raw_v0
+$ python3 vm/classic/handoff_codegen.py emit-b --variant nota -o vm/classic/pong_not_v0
+$ python3 vm/classic/handoff_codegen.py emit-b --variant swap -o vm/classic/pong_not_v0_MUTANT_swap
+$ python3 vm/classic/handoff_codegen.py emit-b --variant eco  -o vm/classic/pong_echo_v0
+$ python3 vm/classic/handoff_codegen.py expect --kind bounce --negate   -> raw expectation
+$ python3 vm/classic/pong_codegen.py check --kind bounce                -> raw/11 (rc=0)
+
+SONDAS QUE DECIDEN EL ALFABETO DEL CANAL
+$ python3 vm/classic/probe_hell_bytes.py markers   -> raw/03 (qué forma de constante HeLL emite un byte crudo)
+$ python3 vm/classic/probe_hell_bytes.py receivers -> sondas de ruta/fallback
+$ python3 vm/classic/probe_hell_bytes.py ascii     -> raw/02 (stdout crudo del A sellado de G2, 8 rutas)
+
+CORRIDAS DE LA ARISTA
+$ python3 vm/classic/run_handoff.py --mode nota \
+    --keep-raw evidence/pong_v0/2026-10-16T210612Z/raw/06_crudos_tuberia_nota \
+    -o       evidence/pong_v0/2026-10-16T210612Z/raw/04_handoff_nota.json
+  -> pass 8/8 | todo_pass=True | C1..C7 true | pasos B 30142 (flujo 010a) / 30934 (flujo 020a)
+
+$ python3 vm/classic/run_handoff.py --mode eco \
+    --keep-raw evidence/pong_v0/2026-10-16T210612Z/raw/07_crudos_tuberia_eco \
+    -o       evidence/pong_v0/2026-10-16T210612Z/raw/05_handoff_eco.json
+  -> pass 8/8 | todo_pass=True | C1..C7 true | pasos B 29477 | pasos A coinciden con el sello G2
+
+TUBERÍA REAL EJECUTADA (una sola llamada a bash por caso; ej. 01 del modo nota)
+set -o pipefail; \
+  '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' \
+      '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_raw_v0.mb' 2000000 \
+      < 01_E1E1.in 2> 01_E1E1.Aerr \
+  | tee 01_E1E1.Aout \
+  | '/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge' \
+      '/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_not_v0.mb' 2000000 \
+      > 01_E1E1.Bout 2> 01_E1E1.Berr
+
+INTEGRIDAD DE LA CADENA PREVIA
+$ sha256sum -c SHA256SUMS.txt        -> rc=0, 24/24 OK  (ver raw/08)
+Los .mb sellados de G2 no se tocaron: pong_bounce_v0.mb 177e7fce…, pong_contact_v0.mb 21486b5c…
+
+SALIDA DEL PROGRAMA: stdout contractual = el byte del programa. `steps: N | status: S` va a
+stderr y NO es salida contractual. El 0x0A que añade el runner se registra y se acota en C5.
+
+TAMAÑOS
+pong_bounce_raw_v0.mb          34111 B   margen 24938 celdas
+pong_not_v0.mb                 27243 B   margen 31806 celdas
+pong_not_v0_MUTANT_swap.mb     27243 B   (mismo tamaño que B: solo cambian dos constantes)
+pong_echo_v0.mb                27337 B   margen 31712 celdas
+pong_bounce_v0.mb (SELLADO)    34105 B   margen 24944 celdas
+celdas_clasico = 59049

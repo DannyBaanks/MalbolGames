@@ -154,3 +154,33 @@ Lo que **no** cambió con la publicación: ningún claim de `docs/CLAIMS.md` sub
 fixture se retocó, y MALDOOM / `MALBOLGE-MB-DATABASE` / el monorepo ISyCo siguen sin empujar
 (`ISyCo` no tiene remote). El punto 14 de `docs/LIMITATIONS.md` queda superado por el punto 29 del
 mismo fichero, que registra la corrección sin borrar el texto original.
+
+## Procedencia del código de la corrida G3 (`2026-10-16T210612Z`)
+
+Los tres scripts nuevos de `vm/classic/` los escribí yo en este encargo; ninguno copia código ajeno:
+
+| archivo | qué hace | de dónde sale lo que ejecuta |
+|---|---|---|
+| `handoff_codegen.py` | codegen de la arista: A emite `0x01`/`0x02` crudos, B calcula NOT / swap / eco, y `expect` deriva la composición del oráculo | **importa en memoria** `MALBOLGE-MB-DATABASE/vm_malbolge/tools/mbir_dispatch_gen.py` (solo lectura) y llama a su `generate()`; re-verifica su sha `c756fac6…` en cada emisión y **aborta** si cambió. La sustitución de `MARKERS` ocurre en memoria; con `--variant eco` **no** se sustituye nada, se usa el generador intacto |
+| `run_handoff.py` | levanta la **tubería real** `E1 A.mb < in \| tee Aout \| E2 B.mb` y evalúa C1..C7 | ejecuta los dos ELF Clásicos y consulta el modelo C **solo** para la expectativa; el oráculo nunca está en la tubería |
+| `probe_hell_bytes.py` | sondas `markers` / `receivers` / `ascii`: qué forma de constante HeLL imprime un byte crudo | usa la CLI upstream para generar un despacho de 3 rutas y sustituye únicamente la línea `ROT` de `dispatch_01`; `ascii` delega en `run_classic.py` para no duplicar el protocolo de salida |
+
+Los cuatro pares `.hell`/`.mb` (`pong_bounce_raw_v0`, `pong_not_v0`, `pong_not_v0_MUTANT_swap`,
+`pong_echo_v0`) son salida ensamblada por LMAO de esos `.hell`; ninguno reemplaza a un artefacto
+sellado. `pong_bounce_v0.mb` se usó como productor del modo `eco` **sin modificarlo**: sha
+`177e7fce…` idéntico antes y después, y `sha256sum -c SHA256SUMS.txt` rc=0 en la raíz (24 entradas
+entonces) como control previo y posterior.
+
+Baseline de esta corrida: `MALBOLGE-MB-DATABASE` en HEAD `d479473` con `git status --porcelain` =
+0 líneas; `mbir_dispatch_gen.py` `c756fac6…`, `oracle_classic.py` `5dae8f31…`, `lmao` `5a6039ef…`
+(idénticos a los registrados en G2). Los ELF Clásicos comparten sha `3257f1ae98bc…`, así que las
+cuatro parejas {E1,E2}² son **tres ejecuciones sobre dos implementaciones**, no cuatro vías.
+
+## Enmienda fechada al punto «dianas de esa exclusión» (2026-10-16, tras G3)
+
+El recuento de **8** archivos versionados que citan el Compose se midió en el commit inicial
+`dec39d9`. Tras sellar G3 son **9**: se suma
+`evidence/pong_v0/2026-10-16T210612Z/run.json`. No se reescribió la fila de arriba porque describe
+el estado bajo el que se publicó; se deja y se añade esta enmienda. Consecuencia práctica sin
+cambio: en el repo público esas citas apuntan a `composes/…`, ruta excluida por `.gitignore`, y el
+encargo se audita contra su sha `b1f170b8e8e53617bfb5b4f730827a4731581bb10a3f240826cd8d46ed3f430a`.

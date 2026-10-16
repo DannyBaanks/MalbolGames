@@ -1,0 +1,236 @@
+{
+  "sonda": "markers",
+  "pregunta": "que emite OUT para cada forma de constante HeLL",
+  "entrada": "0x01 (ruta dispatch_01 del despacho de 3 rutas)",
+  "casos": [
+    {
+      "expresion": "('1' << 1)",
+      "ensamble": "OK",
+      "mb_bytes": 27055,
+      "E1": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "310a",
+        "pasos": 30292,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "E2": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "310a",
+        "pasos": 30292,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "coinciden": true
+    },
+    {
+      "expresion": "(1 << 1)",
+      "ensamble": "OK",
+      "mb_bytes": 27055,
+      "E1": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "010a",
+        "pasos": 30242,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "E2": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "010a",
+        "pasos": 30242,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "coinciden": true
+    },
+    {
+      "expresion": "1",
+      "ensamble": "OK",
+      "mb_bytes": 27055,
+      "E1": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "e30a",
+        "pasos": 30252,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "E2": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "e30a",
+        "pasos": 30252,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "coinciden": true
+    },
+    {
+      "expresion": "(1 >> 1)",
+      "ensamble": "OK",
+      "mb_bytes": 27243,
+      "E1": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "a10a",
+        "pasos": 30350,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "E2": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "a10a",
+        "pasos": 30350,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "coinciden": true
+    },
+    {
+      "expresion": "C1",
+      "ensamble": "OK",
+      "mb_bytes": 27127,
+      "E1": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "540a",
+        "pasos": 30235,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "E2": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "540a",
+        "pasos": 30235,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "coinciden": true
+    },
+    {
+      "expresion": "C2",
+      "ensamble": "OK",
+      "mb_bytes": 27055,
+      "E1": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "a80a",
+        "pasos": 30252,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "E2": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "a80a",
+        "pasos": 30252,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "coinciden": true
+    },
+    {
+      "expresion": "(0t1 << 1)",
+      "ensamble": "OK",
+      "mb_bytes": 27055,
+      "E1": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "010a",
+        "pasos": 30242,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "E2": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "010a",
+        "pasos": 30242,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "coinciden": true
+    },
+    {
+      "expresion": "(0t2 << 1)",
+      "ensamble": "OK",
+      "mb_bytes": 27243,
+      "E1": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "020a",
+        "pasos": 30244,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "E2": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "020a",
+        "pasos": 30244,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "coinciden": true
+    },
+    {
+      "expresion": "(0t11 << 1)",
+      "ensamble": "OK",
+      "mb_bytes": 27055,
+      "E1": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "040a",
+        "pasos": 30269,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "E2": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "040a",
+        "pasos": 30269,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "coinciden": true
+    },
+    {
+      "expresion": "(C2!1)",
+      "ensamble": "OK",
+      "mb_bytes": 27055,
+      "E1": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "c60a",
+        "pasos": 30268,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "E2": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "c60a",
+        "pasos": 30268,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "coinciden": true
+    },
+    {
+      "expresion": "(1!C2)",
+      "ensamble": "OK",
+      "mb_bytes": 27055,
+      "E1": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "a80a",
+        "pasos": 30252,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "E2": {
+        "feed_hex": "01",
+        "stdout_raw_hex": "a80a",
+        "pasos": 30252,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "coinciden": true
+    }
+  ],
+  "herramientas": {
+    "lmao": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/third_party/lmao/lmao",
+    "generador_upstream": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/vm_malbolge/tools/mbir_dispatch_gen.py",
+    "upstream_sha256": "c756fac6f8b55e852618c755e9f5b4e66b737d007d217457e62efd7f2e4285b4"
+  },
+  "interpretes": {
+    "E1": "/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge",
+    "E2": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge"
+  }
+}

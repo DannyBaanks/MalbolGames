@@ -123,3 +123,35 @@
     `.gitignore`. Sigue en disco sin tocar y su sha `b1f170b8…` sigue citado arriba; o sea: el repo
     público **no** es autocontenido para auditar el encargo, hay que citar el sha contra el original
     local.
+
+## Límites añadidos por la corrida G3 `2026-10-16T210612Z`
+
+31. **G3 es UNA arista con UN bit en UN disparo.** A emite un byte y HALT. No hay bucle, no hay
+    reloj, no hay colas, no hay N nodos, no hay concurrencia medida. Nada de esta corrida autoriza
+    a decir «dataflow en Malbolge», «red de workers» ni «físicas simultáneas»; esos claims quedan
+    `NOT_DEMONSTRADO` y la pregunta de origen sigue abierta.
+32. **`tee` prueba los bytes que salieron de A, no los que B consumió.** Lo que se afirma es que
+    el flujo capturado == el stdout crudo de A ejecutado solo == el byte esperado, y que B por
+    tubería se comporta **idénticamente en pasos** a B alimentado directo por el host con ese byte
+    (C3+C5). La identificación del byte que entra por el stdin de B es una inferencia fuerte sobre
+    esa concordancia, no una observación directa: no instrumentamos el syscall de lectura de B.
+33. **El modo `eco` no reconoce el símbolo.** No se parchó `MARKERS`, así que el byte cae al
+    fallback de eco del generador y B lo reimprime. Sonda C7c: B-ECO con `0x01` emite `'P'`, o sea
+    la ruta de despacho existe y no es la que corrió. El modo fuerte es `nota` (B discrimina
+    `0x01`/`0x02` por ruta y calcula NOT).
+34. **En `eco`, los pasos de B son idénticos en los 8 casos (29 477) porque B no ramifica.** Su
+    salida es el byte leído. Por tanto C2 no aporta independencia de ruta en ese modo: la fuerza
+    del modo eco está en C3, C5, C6 y la inyectividad sobre `0x30`/`0x31`, no en la discriminación.
+35. **La arista no tiene formato de mensaje.** Sin framing de paquete, sin longitud, sin secuencia
+    y sin codificación de estado: el enlace entre «el estado `pong1`» y «el byte en el stdin de A»
+    lo sigue poniendo el host (hereda el negativo `N3` de G2). `STATEFUL_CROSS_TICK_HANDOFF` — que
+    viajen los 11 campos y la segunda VM continúe el tick — sigue sin demostrarse.
+36. **El alfabeto `{0x01,0x02}` es un techo de ESTE generador, no una ley de Malbolge.** Sale del
+    despacho por valor de `mbir_dispatch_gen.py` y de su margen medido (~26 rutas). Otro codegen
+    con otro esquema de dispatch podría tener otro techo; aquí no se probó eso.
+37. **E1 y E2 vuelven a ser el mismo ELF** (`3257f1ae98bc…`), igual que en el punto 25. Las cuatro
+    parejas {E1,E2}² son tres ejecuciones sobre dos implementaciones, y la única vía independiente
+    del binario es el modelo C.
+38. **`max_steps = 2 000 000` es un presupuesto, no una medida del coste de encadenar.** Como cada
+    programa hace un disparo, no sabemos cuántos pasos costaría una tubería de longitud variable;
+    cualquier extrapolación a «k ticks en cadena» está sin medir.

@@ -1,0 +1,12 @@
+=== MALBOLGE-MB-DATABASE: solo lectura, verificado ===
+git -C ../MALBOLGE-MB-DATABASE status --porcelain | lineas = 0  (0 = no se escribio nada en el repo compartido)
+HEAD upstream = d479473  (igual al registrado en el sellado de G2)
+
+sha256 de las herramientas compartidas usadas (idénticos a los valores de G2/run.json):
+c756fac6f8b55e852618c755e9f5b4e66b737d007d217457e62efd7f2e4285b4  ../MALBOLGE-MB-DATABASE/vm_malbolge/tools/mbir_dispatch_gen.py
+5dae8f31eaa296fdc5bb1a65b9bab93e94b3f230de5d1929d5d5d904dd4778cf  ../MALBOLGE-MB-DATABASE/tools/oracle_classic.py
+5a6039efd995af1cf57b9bf4d6ec70da3a5303efe0ec6a1fe0fad3abc03f3f44  ../MALBOLGE-MB-DATABASE/third_party/lmao/lmao
+
+mbir_dispatch_gen.py : c756fac6f8b55e852618c755e9f5b4e66b737d007d217457e62efd7f2e4285b4 (esperado, registrado en G2)
+oracle_classic.py    : 5dae8f31eaa296fdc5bb1a65b9bab93e94b3f230de5d1929d5d5d904dd4778cf (esperado)
+lmao                 : 5a6039efd995af1cf57b9bf4d6ec70da3a5303efe0ec6a1fe0fad3abc03f3f44 (NOTA: G2 registro la ruta bin/lmao.exe; aqui se uso el ELF nativo third_party/lmao/lmao, mismo sha declarado en G2)

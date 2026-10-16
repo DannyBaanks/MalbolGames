@@ -1,0 +1,264 @@
+{
+  "experiment": "MALGAMES PONG_V0 — G3: UNA arista dataflow A(.mb) -> byte -> B(.mb) entre dos procesos Malbolge Clásico, con el byte leído por B sin recodificación del host entre ellos",
+  "run_id": "2026-10-16T210612Z",
+  "compose": "composes/COMPOSE_MALGAMES_PONG_V0.md (sha256 b1f170b8e8e53617bfb5b4f730827a4731581bb10a3f240826cd8d46ed3f430a)",
+  "encargo_punto": "G3 — TRANSPORTE entre dos VMs: una sola arista, un solo disparo. Ni codificación de G2 ni alcance de G2: es una puerta nueva.",
+  "solicitado_por_usuario": "«vale intentemos tu enfoque», después de «busca en siyco como usamos el dataflow … lo que no se es si debamos escribir un sistema dataflow en malbolge para no hacer trampa o usar el de python»",
+  "workspace": "/home/danny/Development/ISyCo Git/MALGAMES",
+  "workspace_es_repo_git": true,
+
+  "pregunta_y_enfoque": {
+    "pregunta": "¿Puede un byte calculado dentro de una VM Malbolge Clásico ser el byte que otra VM Malbolge Clásico lee y sobre el que calcula, sin que el host vuelva a codificar nada en medio?",
+    "por_que_no_un_dataflow_en_malbolge": "No hay sitio ni aritmética. El kernel MBIR del tick ocupa 57 511 de 59 049 celdas (corrida G2_PRECHECK V5) y un despacho de 32 rutas ya no ensambla; el clasificador que sí cabe no suma enteros de dominio variable. Un planificador de dataflow dentro de la VM sería un segundo kernel y no cabe.",
+    "por_que_no_dejar_la_fisica_en_python": "Si Python calcula la transición, el resultado es HOST_COMPUTED y anula la afirmación: no habría nada que atribuir a la VM.",
+    "reduccion_honesta": "El grafo se usa solo como orquestación (N subprocesses, como en ISyCo: tools/graph_engine/dataflow.py no transporta datos por las aristas). Se pone a prueba EXACTAMENTE UNA arista del tipo A -> byte -> B. Esto no es un sistema de dataflow en Malbolge ni un tick paralelo; es el prerequisito que ninguna corrida anterior había medido.",
+    "donde_estaba_el_hueco": "MALDOOM registra CLASSIC_CROSS_READ_STATE_NOT_DEMONSTRATED y en TICK_INC `found:false` con `evaluations: 0` es vacío. Es decir: nunca se había demostrado que un programa Malbolge LEYERA el byte que otro programa Malbolge imprimió."
+  },
+
+  "entorno": {
+    "host": "Linux x86_64 Ubuntu 24.04 (7.0.0-38-generic)",
+    "python": "Python 3.12.3",
+    "coreutils": "9.4",
+    "glibc": "2.39",
+    "ensamblador": "LMAO v0.6.0 (Matthias Lutter), ELF nativo third_party/lmao/lmao",
+    "variantes_de_vm": "Malbolge CLÁSICO 3^10 = 59049 celdas. Ningún intérprete de esta corrida es Unshackled/Extrovertido."
+  },
+
+  "herramientas_externas_usadas_solo_lectura": {
+    "repo": "MALBOLGE-MB-DATABASE",
+    "head": "d479473",
+    "git_status_porcelain_lineas": 0,
+    "mbir_dispatch_gen.py_sha256": "c756fac6f8b55e852618c755e9f5b4e66b737d007d217457e62efd7f2e4285b4",
+    "lmao_sha256": "5a6039efd995af1cf57b9bf4d6ec70da3a5303efe0ec6a1fe0fad3abc03f3f44",
+    "oracle_classic.py_sha256": "5dae8f31eaa296fdc5bb1a65b9bab93e94b3f230de5d1929d5d5d904dd4778cf",
+    "nota": "Ningún archivo se escribió dentro de MALBOLGE-MB-DATABASE. handoff_codegen.py importa el generador upstream y re-verifica su SHA-256 en cada emisión; aborta si cambió. La sustitución de MARKERS ocurre en memoria, como extensión autorizada del uso, igual que en G2. Ver raw/09."
+  },
+
+  "interpretes_clasicos_independientes": {
+    "E1": "/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge (ELF nativo)",
+    "E2": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge (ELF nativo; mismo ELF que E1 por construcción — sha256 3257f1ae… — así que las 4 parejas dan 3 ejecuciones sobre 2 implementaciones distintas)",
+    "modelo_C": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/tools/oracle_classic.py (modelo Python independiente; MEM_SIZE == 3**10 comprobado en runtime)",
+    "lectura": "C2 compara las cuatro parejas de tubería E1/E2; C4 compara A solo con el modelo C. El oráculo NUNCA está en la tubería: solo deriva la expectativa."
+  },
+
+  "diseno_de_la_arista": {
+    "canal": "tubería real del SO dentro de UNA sola llamada a bash: `set -o pipefail; E1 A.mb 2000000 < in.bin 2> Aerr | tee Aout | E2 B.mb 2000000 > Bout 2> Berr`. No hay escritura de archivo intermediario ni re-codificación entre A y B; el host no toca el byte que viaja.",
+    "captura_del_viaje": "`tee` registra exactamente los bytes que circularon por la tubería (clave `flujo_tuberia_hex`). Es lo que se puede probar; no se afirma qué bytes recibió B directamente.",
+    "framing_medido": "ambos ELF imprimen el byte del programa seguido de UN 0x0A y dejan `steps: N | status: S` en stderr. El 0x0A viaja por la tubería hacia B; la condición C5 existe precisamente para medir que no entra en el cómputo.",
+    "max_steps": 2000000,
+    "dominio_puntos": 8,
+    "predicado": "bounce_vertical(by,vy) sobre tablero 8×4 (el mismo que G2), compuesto con una segunda VM que calcula NOT / eco."
+  },
+
+  "alfabeto_del_canal_medido_no_supuesto": {
+    "obstaculo": "MARKERS del generador solo permite emitir caracteres imprimibles; la gramática HeLL (`chr [!-&(-\\[\\]-~ ]`) cubre 0x20..0x7E, así que ningún byte de control se escribe como literal 'c'. Además 0x00 es HALT y no puede portar dato.",
+    "descarte_ascii": "ASCII '0'/'1' = 48/49 exigirían ≥49 rutas de despacho. Medido: 24 rutas ensamblan con 2 688 celdas de margen; 32 rutas fallan con rc=1 `Error: Free space exceeded` / `Cannot generate initialization code for cell 58854`. El ajuste ~25 091 + 1 303·rutas da ~26 rutas, es decir valor máximo discriminable 25. Con ASCII el canal está MUERTO POR MEDIDA (49 > 32, que ya falla). Ver raw/10.",
+    "solucion_por_sonda": "se midió qué expresión HeLL produce un byte crudo en OUT sobre el dispatch_01 del despacho de 3 rutas: `ROT (1 << 1)` -> 0x01, `ROT (2 << 1)` y `ROT (0t2 << 1)` -> 0x02. NO funcionan: `1` -> 0xe3, `(1 >> 1)` -> 0xa1, `C1` -> 0x54, `C2` -> 0xa8, `(0t11 << 1)` -> 0x04, `(C2!1)` -> 0xc6, `(1!C2)` -> 0xa8. (`>>`/`<<` en HeLL son ROTACIÓN ternaria, no shift de bits.) Ver raw/03.",
+    "alfabeto_concluido": "{0x01, 0x02} — un solo bit de canal, no por economía sino porque es lo que cabe por debajo del techo medido de despacho."
+  },
+
+  "condiciones_pactadas_antes_de_correr": [
+    "C1 — Para cada x del dominio, la salida de B por tubería == la composición derivada del oráculo (NOT(bounce) en modo nota, bounce en modo eco). La expectativa se calcula con oracle/pong_reference.py step(), nunca desde la VM.",
+    "C2 — Las cuatro parejas de intérpretes {E1,E2}² coinciden en salida Y en pasos.",
+    "C3 — Los bytes que circularon por la tubería (tee) == el stdout crudo de A ejecutado solo == el byte que se esperaba que A emitiera. Prueba de que el byte viajó.",
+    "C4 — A solo: E1 == E2 == modelo C en salida y pasos (la vía de tres que ya usa G2).",
+    "C5 — B alimentado DIRECTAMENTE por el host con ese mismo byte == B por tubería, en salida y en PASOS. Como la tubería entrega además el 0x0A del runner y el modo directo no, la igualdad de pasos demuestra que ese byte de framing nunca entra en el cómputo de B.",
+    "C6 — B con stdin VACÍO (EOF) no emite ningún byte de programa: B no puede inventar el bit.",
+    "C7 — Selectividad por modo. nota: el mutante B-swap (misma A, misma tubería) invierte los 8 casos. eco: (a) la composición toma los dos valores '0' y '1' (no es una constante), (b) B-ECO con 0x30 y con 0x31 da salidas distintas (inyectivo en su stdin), (c) B-ECO con 0x01 emite 'P': la ruta de despacho existe y NO es la que corrió, luego la arista pasó por el fallback de eco."
+  ],
+
+  "modos": {
+    "nota": {
+      "que_es": "A-raw emite 0x01/0x02 y B-NOTA lee ese byte y calcula NOT dentro de la VM. Programa productor NUEVO, hecho a propósito para tener una ruta de despacho real por la que viaje el bit.",
+      "A": { "ruta": "vm/classic/pong_bounce_raw_v0.mb", "sha256": "541c0cd6eb87c2b8e0865855534c2b18c1e500ddacd51cbc6f9522e1573bdc8f", "bytes": 34111, "margen_celdas_clasico": 24938 },
+      "B": { "ruta": "vm/classic/pong_not_v0.mb", "sha256": "ed437e331ba924e83ae0cbf3f0d0360137a82db0ce745ab38d876b702e1d6fc3", "bytes": 27243, "margen_celdas_clasico": 31806 },
+      "B_mutante": { "ruta": "vm/classic/pong_not_v0_MUTANT_swap.mb", "sha256": "97e2118a8c387dd06a4063914c408048528945f35e262543c25d243e3a865af2", "bytes": 27243, "diferencia_con_B": "solo las dos constantes del despacho: 0x01->'1', 0x02->'0' (swap)" },
+      "expect_oraculo": { "01": "0", "02": "1", "03": "1", "04": "1", "05": "1", "06": "1", "07": "1", "08": "0" },
+      "resultado": "8/8 PASS, todo_pass=true, C1..C7 todas true",
+      "pasos_A_por_opcode": { "01": 37318, "02": 38110, "03": 38480, "04": 38975, "05": 39776, "06": 40155, "07": 40659, "08": 41772 },
+      "pasos_B_por_flujo": { "010a": 30142, "020a": 30934 },
+      "flujo_tuberia": "010a (bit 0) / 020a (bit 1) — idéntico en las 4 parejas",
+      "mutante_swap": "0x01: normal '0' -> mutante '1'; 0x02..0x07: normal '1' -> mutante '0'; 0x08: normal '0' -> mutante '1'. 8/8 invertidos, mismo A y mismo flujo.",
+      "raw": "raw/04_handoff_nota.json, raw/06_crudos_tuberia_nota/ (200 archivos .in/.Aout/.Bout/.Aerr/.Berr)"
+    },
+    "eco": {
+      "que_es": "A es el artefacto SELLADO de G2 (pong_bounce_v0.mb, sin modificar, emite ASCII '0'/'1') y B-ECO lo recibe con el fallback de eco del generador intacto: no se parchó MARKERS, así que B reimprime el byte que leyó. La arista no depende de ningún programa nuevo.",
+      "A": { "ruta": "vm/classic/pong_bounce_v0.mb", "sha256": "177e7fcea2b99c31f83f865ba915e53a9d4d70a4ac850c5e6e61aad970b99f06", "bytes": 34105, "estado": "SELLADO en G2; re-verificado antes y después de esta corrida; SHA256SUMS.txt rc=0 con 24/24 OK" },
+      "B": { "ruta": "vm/classic/pong_echo_v0.mb", "sha256": "cbd431b8245cd0d074ced42544742e6e84788f7a99bc850bc8515cf27df083b3", "bytes": 27337, "margen_celdas_clasico": 31712 },
+      "expect_oraculo": { "01": "1", "02": "0", "03": "0", "04": "0", "05": "0", "06": "0", "07": "0", "08": "1" },
+      "resultado": "8/8 PASS, todo_pass=true, C1..C7 todas true",
+      "pasos_A_por_opcode": { "01": 37395, "02": 38187, "03": 38557, "04": 39052, "05": 39853, "06": 40232, "07": 40736, "08": 41849 },
+      "pasos_A_coinciden_con_sello_G2": true,
+      "pasos_B": "29477 en los 8 casos (B no ramifica: su salida es el byte leído)",
+      "flujo_tuberia": "310a (bit 1) / 300a (bit 0) — el byte ASCII del artefacto sellado viaja tal cual",
+      "sonda_c7c": "B-ECO alimentado con 0x01 emite 0x50 = 'P' (30 405 pasos): la ruta de despacho existe y NO es la que se ejecutó con el byte de A; la arista la cargó el fallback de eco.",
+      "raw": "raw/05_handoff_eco.json, raw/07_crudos_tuberia_eco/"
+    }
+  },
+
+  "controles": [
+    {
+      "id": "H1",
+      "que_se_prueba": "la arista no es el host re-codificando: B recibe lo que A imprimió",
+      "metodo": "C3: `flujo_tuberia_hex` capturado con tee == stdout crudo de A solo == byte esperado; y C5: B directo con ese byte reproduce la salida de B por tubería con los MISMOS pasos",
+      "resultado": "nota: 010a/020a, pasos B 30142/30934 idénticos por tubería y directo. eco: 310a/300a, pasos B 29477 idénticos.",
+      "veredicto": "PASS"
+    },
+    {
+      "id": "H2",
+      "que_se_prueba": "el 0x0A que el runner añade no entra en el cómputo de B",
+      "metodo": "C5 — la tubería entrega byte+LF; el modo directo entrega solo el byte. Si B procesara el LF, los pasos diferirían.",
+      "resultado": "pasos idénticos en los 8 casos de ambos modos (30142/30934 y 29477)",
+      "veredicto": "PASS — framing inerte, medido y no supuesto"
+    },
+    {
+      "id": "H3",
+      "que_se_prueba": "B no puede fabricar el bit sin entrada",
+      "metodo": "C6 — B con stdin vacío",
+      "resultado": "nota: stdout 0a, salida vacía, 26 660 pasos, HALTED. eco: stdout 0a, salida vacía, 26 923 pasos, HALTED.",
+      "veredicto": "PASS — sin byte leído no hay byte emitido"
+    },
+    {
+      "id": "H4",
+      "que_se_prueba": "la salida de B depende del byte de A y no de una constante horneada",
+      "metodo": "C7 — mutante B-swap en modo nota; inyectividad + sonda de ruta en modo eco",
+      "resultado": "nota: 8/8 casos invertidos. eco: B-ECO con 0x30 -> '0' y con 0x31 -> '1' (dos salidas distintas); con 0x01 -> 'P', prueba de que el camino usado fue el fallback.",
+      "veredicto": "PASS"
+    },
+    {
+      "id": "H5",
+      "que_se_prueba": "acuerdo entre intérpretes independientes en la arista completa",
+      "metodo": "C2 sobre las 4 parejas {E1,E2}²; C4 sobre A con el modelo C",
+      "resultado": "salidas y pasos idénticos en las 4 parejas para los 8 casos de ambos modos",
+      "veredicto": "PASS"
+    },
+    {
+      "id": "H6",
+      "que_se_prueba": "la cadena de evidencia previa no se rompió",
+      "metodo": "sha256sum -c SHA256SUMS.txt del repo antes y después",
+      "resultado": "rc=0, 24/24 OK; los .mb sellados de G2 (bounce, contact) byte-idénticos",
+      "veredicto": "PASS",
+      "raw": "raw/08_sellos_sha256sums_check.txt"
+    },
+    {
+      "id": "H7",
+      "que_se_prueba": "la expectativa no se copió de la VM",
+      "metodo": "handoff_codegen.py `expect` deriva la composición de oracle/pong_reference.py step(); `check` re-valida el predicado de base contra el oráculo",
+      "resultado": "check bounce: 8 puntos del dominio vs oráculo -> PASS (rc=0)",
+      "veredicto": "PASS",
+      "raw": "raw/11_check_codegen_vs_oraculo.txt"
+    },
+    {
+      "id": "H8",
+      "que_se_prueba": "la herramienta compartida no se mutó",
+      "resultado": "MALBOLGE-MB-DATABASE HEAD d479473 con `git status --porcelain` = 0 líneas; shas de mbir_dispatch_gen.py / oracle_classic.py / lmao idénticos a los registrados en G2",
+      "veredicto": "PASS",
+      "raw": "raw/09_upstream_solo_lectura.txt"
+    }
+  ],
+
+  "medidas_de_capacidad_de_esta_corrida": {
+    "A_raw_bytes": 34111,
+    "B_nota_bytes": 27243,
+    "B_eco_bytes": 27337,
+    "celdas_clasico": 59049,
+    "lectura": "una arista de 1 bit cuesta dos programas de ~27–34 KB con margen amplio; el coste no está en la arista sino en el despacho N-way, cuyo techo medido es ~24–26 rutas (32 ya falla). Por eso el canal es {0x01,0x02} y no un byte de estado completo."
+  },
+
+  "resultados_negativos": [
+    {
+      "id": "GN1",
+      "hecho": "el canal ASCII '0'/'1' dentro de un despacho de valor es inviable en Clásico",
+      "evidencia": "49 rutas necesarias; 32 rutas ya devuelven rc=1 con el stderr exacto del ensamblador; ajuste medido ~25 091 + 1 303·rutas",
+      "estado": "NEGATIVA MEDIDA (no NOT_DEMONSTRADO)"
+    },
+    {
+      "id": "GN2",
+      "hecho": "en modo nota la arista solo puede llevar UN bit por disparo: A emite un byte y HALT",
+      "consecuencia": "no hay framing de paquete, ni longitud, ni secuencia, ni reloj compartido"
+    },
+    {
+      "id": "GN3",
+      "hecho": "en modo eco la arista no atraviesa una ruta de despacho: la carga el fallback de eco del generador (sondeado y declarado en C7c)",
+      "por_que_importa": "el byte no pasa por una rama selector del programa B; B lo reimprime porque ningún case lo reclama. Sigue siendo un cálculo en VM (la detección de EOF y la escritura están en la VM), pero la afirmación «B reconoce el símbolo» es FALSE y se declara como tal.",
+      "contrapartida": "por eso el modo nota existe: ahí B sí discrimina 0x01 vs 0x02 por ruta de despacho y calcula NOT."
+    },
+    {
+      "id": "GN4",
+      "hecho": "la codificación byte->bit del modo eco sigue hecha por el formato del artefacto de G2, no por una convención de protocolo",
+      "consecuencia": "no se definió un formato de mensaje; se midió que un byte sobrevive el viaje"
+    }
+  ],
+
+  "tabla_de_claims": [
+    {
+      "claim": "HANDOFF_SINGLE_EDGE_CLASSIC_VM — un byte producido por la salida de un intérprete Malbolge Clásico es consumido por la entrada de estándar de OTRO intérprete Malbolge Clásico a través de una tubería del SO, sin re-codificación del host, y la salida del segundo depende de ese byte",
+      "estado": "DEMOSTRADO",
+      "sostén": "dos modos independientes, 8/8 en cada uno: nota (ruta de despacho + NOT, mutante invierte 8/8) y eco (artefacto sellado de G2 + fallback). C1..C7 verdes; 4 parejas de intérpretes con pasos idénticos; crudos con sha256 en raw/06 y raw/07"
+    },
+    {
+      "claim": "el byte de framing 0x0A del runner no entra en el cómputo del receptor",
+      "estado": "DEMOSTRADO",
+      "sostén": "C5/H2: pasos idénticos entre tubería (byte+LF) y alimentación directa (solo byte) en los 16 casos"
+    },
+    {
+      "claim": "el receptor no puede emitir el bit sin leerlo",
+      "estado": "DEMOSTRADO",
+      "sostén": "C6/H3: stdin vacío -> ninguna salida de programa en ambos modos"
+    },
+    {
+      "claim": "el alfabeto mínimo de una arista por despacho de valor en Clásico es un subconjunto de 0x01..0x19 y esta corrida usó {0x01,0x02}",
+      "estado": "DEMOSTRADO (por medida del techo de despacho + sondas de constante HeLL)",
+      "sostén": "raw/03, raw/10; techo ~26 rutas por ajuste y rc=1 medido en 32"
+    },
+    {
+      "claim": "esto es un sistema de dataflow en Malbolge",
+      "estado": "FALSO Y NO AFIRMADO",
+      "sostén": "es UNA arista, sin planificador, sin reloj, sin colas, sin N nodos encadenados"
+    },
+    {
+      "claim": "MULTI_EDGE_NETWORK_CLASSIC_VM — red de ≥2 aristas simultáneas entre ≥3 VMs",
+      "estado": "NOT_DEMONSTRATED",
+      "sostén": "esta corrida ejecuta A y B en serie dentro de una tubería; no hay red ni concurrencia medida"
+    },
+    {
+      "claim": "STATEFUL_CROSS_TICK_HANDOFF — el estado `pong1` completo viaja de una VM a otra y la segunda lo continua",
+      "estado": "NOT_DEMONSTRATED",
+      "sostén": "viaja 1 bit por disparo; los 11 campos del estado se recodifican fuera de la VM"
+    },
+    {
+      "claim": "ONE_TICK_NO_COLLISION_VM / STATEFUL_MIN_PONG_VM / VM_RENDER_8x4 / FULL_FRAME_VM",
+      "estado": "NOT_DEMONSTRATED",
+      "sostén": "sin cambio en esta corrida: sigue vigente el techo del kernel MBIR (57 511/59 049)"
+    },
+    {
+      "claim": "fisicas simultaneas sin colision por workers de dataflow en Malbolge",
+      "estado": "NOT_DEMONSTRATED",
+      "sostén": "la pregunta de origen de esta línea de trabajo queda abierta; lo único cerrado aquí es que un byte puede cruzar entre dos VMs y ser leído"
+    }
+  ],
+
+  "alcance_explícito": "Una arista, un bit, un disparo, dos procesos. No se afirma paralelismo, ni red, ni tick, ni frame, ni juego. Ninguna corrida usó Malbolge Unshackled/Extrovertido. Los 8 puntos son el dominio completo de bounce sobre 8×4, no un muestreo.",
+
+  "scripts_y_comandos": {
+    "emision": "python3 vm/classic/handoff_codegen.py emit-a-raw --kind bounce -o vm/classic/pong_bounce_raw_v0 ; python3 vm/classic/handoff_codegen.py emit-b --variant nota|swap|eco -o vm/classic/pong_not_v0|…; python3 vm/classic/handoff_codegen.py expect --kind bounce --negate",
+    "ensamblado": "LMAO -o <x>.mb <x>.hell  (via run_classic.py, que re-verifica el sha del generador)",
+    "corrida": "python3 vm/classic/run_handoff.py --mode nota --keep-raw raw/06_crudos_tuberia_nota -o raw/04_handoff_nota.json ; python3 vm/classic/run_handoff.py --mode eco --keep-raw raw/07_crudos_tuberia_eco -o raw/05_handoff_eco.json",
+    "sondas": "python3 vm/classic/probe_hell_bytes.py markers|receivers|ascii",
+    "ver_env_y_comandos": "raw/12_entorno_y_comandos.txt"
+  },
+
+  "artefactos_nuevos": [
+    "vm/classic/handoff_codegen.py",
+    "vm/classic/run_handoff.py",
+    "vm/classic/probe_hell_bytes.py",
+    "vm/classic/pong_bounce_raw_v0.hell",
+    "vm/classic/pong_bounce_raw_v0.mb",
+    "vm/classic/pong_not_v0.hell",
+    "vm/classic/pong_not_v0.mb",
+    "vm/classic/pong_not_v0_MUTANT_swap.hell",
+    "vm/classic/pong_not_v0_MUTANT_swap.mb",
+    "vm/classic/pong_echo_v0.hell",
+    "vm/classic/pong_echo_v0.mb"
+  ]
+}

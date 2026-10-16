@@ -1,0 +1,91 @@
+{
+  "sonda": "ascii",
+  "pregunta": "que bytes imprime el A sellado de G2",
+  "rc_informe": 0,
+  "todo_pass": true,
+  "artefacto": "/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_bounce_v0.mb",
+  "artefacto_sha256": "177e7fcea2b99c31f83f865ba915e53a9d4d70a4ac850c5e6e61aad970b99f06",
+  "stdout_crudo_por_caso": {
+    "01": {
+      "esperado_host": "1",
+      "E1_hex": "310a",
+      "E1_salida_latin1_hex": "31",
+      "E2_hex": "310a",
+      "modelo_C_hex": "31",
+      "pasos": 37395,
+      "veredicto": "PASS"
+    },
+    "02": {
+      "esperado_host": "0",
+      "E1_hex": "300a",
+      "E1_salida_latin1_hex": "30",
+      "E2_hex": "300a",
+      "modelo_C_hex": "30",
+      "pasos": 38187,
+      "veredicto": "PASS"
+    },
+    "03": {
+      "esperado_host": "0",
+      "E1_hex": "300a",
+      "E1_salida_latin1_hex": "30",
+      "E2_hex": "300a",
+      "modelo_C_hex": "30",
+      "pasos": 38557,
+      "veredicto": "PASS"
+    },
+    "04": {
+      "esperado_host": "0",
+      "E1_hex": "300a",
+      "E1_salida_latin1_hex": "30",
+      "E2_hex": "300a",
+      "modelo_C_hex": "30",
+      "pasos": 39052,
+      "veredicto": "PASS"
+    },
+    "05": {
+      "esperado_host": "0",
+      "E1_hex": "300a",
+      "E1_salida_latin1_hex": "30",
+      "E2_hex": "300a",
+      "modelo_C_hex": "30",
+      "pasos": 39853,
+      "veredicto": "PASS"
+    },
+    "06": {
+      "esperado_host": "0",
+      "E1_hex": "300a",
+      "E1_salida_latin1_hex": "30",
+      "E2_hex": "300a",
+      "modelo_C_hex": "30",
+      "pasos": 40232,
+      "veredicto": "PASS"
+    },
+    "07": {
+      "esperado_host": "0",
+      "E1_hex": "300a",
+      "E1_salida_latin1_hex": "30",
+      "E2_hex": "300a",
+      "modelo_C_hex": "30",
+      "pasos": 40736,
+      "veredicto": "PASS"
+    },
+    "08": {
+      "esperado_host": "1",
+      "E1_hex": "310a",
+      "E1_salida_latin1_hex": "31",
+      "E2_hex": "310a",
+      "modelo_C_hex": "31",
+      "pasos": 41849,
+      "veredicto": "PASS"
+    }
+  },
+  "herramientas": {
+    "lmao": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/third_party/lmao/lmao",
+    "generador_upstream": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/vm_malbolge/tools/mbir_dispatch_gen.py",
+    "upstream_sha256": "c756fac6f8b55e852618c755e9f5b4e66b737d007d217457e62efd7f2e4285b4"
+  },
+  "interpretes": {
+    "E1": "/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge",
+    "E2": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge"
+  }
+}

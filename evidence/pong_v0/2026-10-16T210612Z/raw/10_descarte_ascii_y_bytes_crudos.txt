@@ -1,0 +1,67 @@
+# raw/10 — por que el alfabeto de handoff NO puede ser el ASCII del artefacto sellado
+
+Dos hechos medidos, no asumidos.
+
+## 1. La cadena de despacho solo discrimina valores CONTIGUOS 0..M-1
+
+Fuente upstream `MALBOLGE-MB-DATABASE/vm_malbolge/tools/mbir_dispatch_gen.py`, lazo que
+construye la cadena (abierto solo en lectura, sha256 c756fac6... verificado en raw/09):
+
+    for k in range(2, n_sites + 1):
+        t = k - 2  # opcode value under test
+
+Cada sitio decrementa el valor recibido una vez y mira el desbordamiento, asi que el k-esimo
+sitio prueba exactamente `B == k-2`. No hay forma de probar B == 48 sin antes probar
+0,1,2,...,47. Por tanto el mayor valor discriminable es (rutas - 1).
+
+## 2. El tope de rutas esta puesto por las 59049 celdas del Clasico
+
+Anclajes ensambados y sellados en G2 (raw/08 del sello 2026-10-15T203244Z):
+
+    handlers (excluido 0x00)   tamano .mb   estado
+    2                          27337        rc=0 OK
+    24                         56361        rc=0 OK   (margen 2688 celdas)
+    32                         --           rc=1 FALLO "Free space exceeded" / cell 58854
+
+El ASCII '0' y '1' son 48 y 49. Discriminar 49 exige >= 49 handlers, es decir muy por encima
+del muro MEDIDO en 32. La extrapolacion lineal de la tabla (25091 + 1303*(handlers+1)) daria
+~90 000 B, pero no hace falta confiar en la extrapolacion: 49 > 32 y 32 ya no entra.
+
+    => un receptor que lea el byte del artefacto sellado por VALOR es imposible en Clasico.
+
+## 3. Y los bytes crudos SI se pueden emitir (sonda raw/03)
+
+El lexer de HeLL (`third_party/lmao/src/lmao.l`, patron `chr`) acepta como literal de caracter
+solo `[!-&(-\[\]-~ ]` mas las escapes `\' \n \r \t \\`, o sea 0x20..0x7E: ningun byte de
+control es escribible como `'c'`. Pero la constante NUMERICA si esta en la gramatica
+(`decimal = 0*{digit}{1,5}`, `trinary = 0t{tritail}`) y `<<` es ROTATE_L ternario
+(`src/lmao.y`: DATACELL_OPERATOR_ROTATE_L), no un shift de bits.
+
+Medido sobre el despacho de 3 rutas, alimentando la ruta dispatch_01 con 0x01:
+
+    expresion        stdout E1   stdout E2   pasos    coincidencia
+    ('1' << 1)       310a        310a        30292    si
+    (1 << 1)         010a        010a        30242    si   <- byte CRUDO 0x01
+    (0t2 << 1)       020a        020a        30244    si   <- byte CRUDO 0x02
+    (0t11 << 1)      040a        040a        30269    si   <- 0t11 = 4
+    1                e30a        e30a        30252    si   (sin rotar: 0xe3, no sirve)
+    (1 >> 1)         a10a        a10a        30350    si   (ROTATE_R: 0xa1, no sirve)
+    C1               540a        540a        30235    si   (trit suelto: 'T')
+    C2               a80a        a80a        30252    si
+    (C2!1)           c60a        c60a        30268    si   (crazy: 0xc6, el mismo que pierde
+                                                             el valor en 3 ops encadenadas)
+    (1!C2)           a80a        a80a        30252    si
+
+## 4. Restriccion adicional: 0x00 esta ocupado
+
+En cualquier despacho generado por upstream la ruta `dispatch_00` es `HALT` sin salida
+(sonda raw/03: recibir 0x00 produce `0a`, es decir cero bytes de programa). Un byte 0 en el
+stdin del receptor es una orden de parada, no un dato. El unico alfabeto util de 2 simbolos
+para 8 rutas es entonces {0x01, 0x02}, y es el que usa A-raw.
+
+## 5. Consecuencia para el reclamo
+
+El modo `nota` de G3 necesita un productor NUEVO (A-raw) porque el A sellado emite 48/49 y
+esos valores son inalcanzables para un receptor por valor. Por eso el modo `eco` existe como
+contraste: con el A sellado INTACTO el transporte tambien ocurre, pero por la ruta de fallback
+(eco verbatim), que no puede negar el bit. Ambos modos quedan sellados en raw/04 y raw/05.
