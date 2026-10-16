@@ -1,0 +1,861 @@
+{
+  "ruta": "NESTED_VM (MBIR sobre Malbolge Clasico)",
+  "kernel": {
+    "archivo": "/home/danny/Development/ISyCo Git/MALGAMES/vm/nested/mbir_alu_rel_pass25.mb",
+    "sha256": "3b6c011bf3f8f1c7bb610b99812956d7268719557b81ec7e85d481edf240f977",
+    "bytes": 57511,
+    "margen_celdas": 1538,
+    "origen": "copia verbatim de MALBOLGE-MB-DATABASE/vm_malbolge/evidence/artifacts/alu_rel_pass25.mb",
+    "estado_upstream": "solo lectura; SHA-256 verificado antes de correr"
+  },
+  "dominio_declarado": {
+    "by": [
+      1,
+      2
+    ],
+    "e": [
+      0,
+      1
+    ],
+    "pl": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "motivo": "en borde (by=0,vy=-1 y by=h-1,vy=+1) la reflexion invierte el signo y exige bifurcacion condicional, que este kernel no tiene; se reduce ALCANCE, no encoding (Anexo A.5)",
+    "puntos_cadena": 16
+  },
+  "interpretes": {
+    "A": "/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge",
+    "B": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge",
+    "C": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/tools/oracle_classic.py"
+  },
+  "max_steps": 500000,
+  "controles": {
+    "total": 3,
+    "pass": 3
+  },
+  "derivacion_ny": {
+    "total": 4,
+    "pass": 0
+  },
+  "cadena_gate": {
+    "total": 16,
+    "pass": 12,
+    "coincide_con_tabla_sellada": 16
+  },
+  "total_pass": 15,
+  "total_puntos": 23,
+  "tres_vias_iguales": 23,
+  "todo_pass": false,
+  "casos": {
+    "controles": [
+      {
+        "id": "control_add_2_3",
+        "kind": "control",
+        "nota": "ADD 2+3=5 (vector 4 de ALU_REL)",
+        "esperado": 5,
+        "stream_hex": "01 02 01 03 02 10 00",
+        "longitud_stream_bytes": 7,
+        "A": {
+          "stdout_raw_hex": "050a",
+          "salida_hex": "05",
+          "pasos": 73681,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "050a",
+          "salida_hex": "05",
+          "pasos": 73681,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "05",
+          "salida_hex": "05",
+          "pasos": 73681,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "control_chain_true",
+        "kind": "control",
+        "nota": "(1+1)==2 -> 1 (vector 19 de ALU_REL: la forma algebraica que imitamos)",
+        "esperado": 1,
+        "stream_hex": "01 01 01 01 02 01 02 04 10 00",
+        "longitud_stream_bytes": 10,
+        "A": {
+          "stdout_raw_hex": "010a",
+          "salida_hex": "01",
+          "pasos": 82569,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "010a",
+          "salida_hex": "01",
+          "pasos": 82569,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "01",
+          "salida_hex": "01",
+          "pasos": 82569,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "control_chain_false",
+        "kind": "control",
+        "nota": "(2+0)==1 -> 0 (vector 22 de ALU_REL)",
+        "esperado": 0,
+        "stream_hex": "01 02 01 00 02 01 01 04 10 00",
+        "longitud_stream_bytes": 10,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 80589,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 80589,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 80589,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      }
+    ],
+    "derivacion_ny": [
+      {
+        "id": "ny_by1_e0",
+        "kind": "ny",
+        "nota": "by=1, vy=-1 -> fila post-vertical derivada",
+        "by": 1,
+        "e": 0,
+        "esperado": 0,
+        "stream_hex": "01 01 01 01 03 01 00 02 01 00 02 10 00",
+        "longitud_stream_bytes": 13,
+        "A": {
+          "stdout_raw_hex": "c60a",
+          "salida_hex": "c6",
+          "pasos": 87749,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "c60a",
+          "salida_hex": "c6",
+          "pasos": 87749,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "c6",
+          "salida_hex": "c6",
+          "pasos": 87749,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "DESCUADRE"
+      },
+      {
+        "id": "ny_by1_e1",
+        "kind": "ny",
+        "nota": "by=1, vy=+1 -> fila post-vertical derivada",
+        "by": 1,
+        "e": 1,
+        "esperado": 2,
+        "stream_hex": "01 01 01 01 03 01 01 02 01 01 02 10 00",
+        "longitud_stream_bytes": 13,
+        "A": {
+          "stdout_raw_hex": "c60a",
+          "salida_hex": "c6",
+          "pasos": 88631,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "c60a",
+          "salida_hex": "c6",
+          "pasos": 88631,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "c6",
+          "salida_hex": "c6",
+          "pasos": 88631,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "DESCUADRE"
+      },
+      {
+        "id": "ny_by2_e0",
+        "kind": "ny",
+        "nota": "by=2, vy=-1 -> fila post-vertical derivada",
+        "by": 2,
+        "e": 0,
+        "esperado": 1,
+        "stream_hex": "01 02 01 01 03 01 00 02 01 00 02 10 00",
+        "longitud_stream_bytes": 13,
+        "A": {
+          "stdout_raw_hex": "c60a",
+          "salida_hex": "c6",
+          "pasos": 87749,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "c60a",
+          "salida_hex": "c6",
+          "pasos": 87749,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "c6",
+          "salida_hex": "c6",
+          "pasos": 87749,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "DESCUADRE"
+      },
+      {
+        "id": "ny_by2_e1",
+        "kind": "ny",
+        "nota": "by=2, vy=+1 -> fila post-vertical derivada",
+        "by": 2,
+        "e": 1,
+        "esperado": 3,
+        "stream_hex": "01 02 01 01 03 01 01 02 01 01 02 10 00",
+        "longitud_stream_bytes": 13,
+        "A": {
+          "stdout_raw_hex": "c60a",
+          "salida_hex": "c6",
+          "pasos": 88631,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "c60a",
+          "salida_hex": "c6",
+          "pasos": 88631,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "c6",
+          "salida_hex": "c6",
+          "pasos": 88631,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "DESCUADRE"
+      }
+    ],
+    "cadena_gate": [
+      {
+        "id": "gate_by1_e0_pl0",
+        "kind": "gate",
+        "by": 1,
+        "e": 0,
+        "pl": 0,
+        "ny_oraculo": 0,
+        "nota": "ny derivado=0; puerta oraculo=1; puerta tabla sellada=1",
+        "esperado": 1,
+        "coincide_con_sello": true,
+        "stream_hex": "01 01 01 01 03 01 00 02 01 00 02 01 00 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 96357,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 96357,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 96357,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "DESCUADRE"
+      },
+      {
+        "id": "gate_by1_e0_pl1",
+        "kind": "gate",
+        "by": 1,
+        "e": 0,
+        "pl": 1,
+        "ny_oraculo": 0,
+        "nota": "ny derivado=0; puerta oraculo=0; puerta tabla sellada=0",
+        "esperado": 0,
+        "coincide_con_sello": true,
+        "stream_hex": "01 01 01 01 03 01 00 02 01 00 02 01 01 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 96803,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 96803,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 96803,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "gate_by1_e0_pl2",
+        "kind": "gate",
+        "by": 1,
+        "e": 0,
+        "pl": 2,
+        "ny_oraculo": 0,
+        "nota": "ny derivado=0; puerta oraculo=0; puerta tabla sellada=0",
+        "esperado": 0,
+        "coincide_con_sello": true,
+        "stream_hex": "01 01 01 01 03 01 00 02 01 00 02 01 02 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 98343,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 98343,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 98343,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "gate_by1_e0_pl3",
+        "kind": "gate",
+        "by": 1,
+        "e": 0,
+        "pl": 3,
+        "ny_oraculo": 0,
+        "nota": "ny derivado=0; puerta oraculo=0; puerta tabla sellada=0",
+        "esperado": 0,
+        "coincide_con_sello": true,
+        "stream_hex": "01 01 01 01 03 01 00 02 01 00 02 01 03 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 98494,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 98494,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 98494,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "gate_by1_e1_pl0",
+        "kind": "gate",
+        "by": 1,
+        "e": 1,
+        "pl": 0,
+        "ny_oraculo": 2,
+        "nota": "ny derivado=2; puerta oraculo=0; puerta tabla sellada=0",
+        "esperado": 0,
+        "coincide_con_sello": true,
+        "stream_hex": "01 01 01 01 03 01 01 02 01 01 02 01 00 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 97239,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 97239,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 97239,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "gate_by1_e1_pl1",
+        "kind": "gate",
+        "by": 1,
+        "e": 1,
+        "pl": 1,
+        "ny_oraculo": 2,
+        "nota": "ny derivado=2; puerta oraculo=0; puerta tabla sellada=0",
+        "esperado": 0,
+        "coincide_con_sello": true,
+        "stream_hex": "01 01 01 01 03 01 01 02 01 01 02 01 01 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 97685,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 97685,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 97685,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "gate_by1_e1_pl2",
+        "kind": "gate",
+        "by": 1,
+        "e": 1,
+        "pl": 2,
+        "ny_oraculo": 2,
+        "nota": "ny derivado=2; puerta oraculo=1; puerta tabla sellada=1",
+        "esperado": 1,
+        "coincide_con_sello": true,
+        "stream_hex": "01 01 01 01 03 01 01 02 01 01 02 01 02 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 99225,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 99225,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 99225,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "DESCUADRE"
+      },
+      {
+        "id": "gate_by1_e1_pl3",
+        "kind": "gate",
+        "by": 1,
+        "e": 1,
+        "pl": 3,
+        "ny_oraculo": 2,
+        "nota": "ny derivado=2; puerta oraculo=0; puerta tabla sellada=0",
+        "esperado": 0,
+        "coincide_con_sello": true,
+        "stream_hex": "01 01 01 01 03 01 01 02 01 01 02 01 03 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 99376,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 99376,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 99376,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "gate_by2_e0_pl0",
+        "kind": "gate",
+        "by": 2,
+        "e": 0,
+        "pl": 0,
+        "ny_oraculo": 1,
+        "nota": "ny derivado=1; puerta oraculo=0; puerta tabla sellada=0",
+        "esperado": 0,
+        "coincide_con_sello": true,
+        "stream_hex": "01 02 01 01 03 01 00 02 01 00 02 01 00 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 96357,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 96357,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 96357,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "gate_by2_e0_pl1",
+        "kind": "gate",
+        "by": 2,
+        "e": 0,
+        "pl": 1,
+        "ny_oraculo": 1,
+        "nota": "ny derivado=1; puerta oraculo=1; puerta tabla sellada=1",
+        "esperado": 1,
+        "coincide_con_sello": true,
+        "stream_hex": "01 02 01 01 03 01 00 02 01 00 02 01 01 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 96803,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 96803,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 96803,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "DESCUADRE"
+      },
+      {
+        "id": "gate_by2_e0_pl2",
+        "kind": "gate",
+        "by": 2,
+        "e": 0,
+        "pl": 2,
+        "ny_oraculo": 1,
+        "nota": "ny derivado=1; puerta oraculo=0; puerta tabla sellada=0",
+        "esperado": 0,
+        "coincide_con_sello": true,
+        "stream_hex": "01 02 01 01 03 01 00 02 01 00 02 01 02 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 98343,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 98343,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 98343,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "gate_by2_e0_pl3",
+        "kind": "gate",
+        "by": 2,
+        "e": 0,
+        "pl": 3,
+        "ny_oraculo": 1,
+        "nota": "ny derivado=1; puerta oraculo=0; puerta tabla sellada=0",
+        "esperado": 0,
+        "coincide_con_sello": true,
+        "stream_hex": "01 02 01 01 03 01 00 02 01 00 02 01 03 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 98494,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 98494,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 98494,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "gate_by2_e1_pl0",
+        "kind": "gate",
+        "by": 2,
+        "e": 1,
+        "pl": 0,
+        "ny_oraculo": 3,
+        "nota": "ny derivado=3; puerta oraculo=0; puerta tabla sellada=0",
+        "esperado": 0,
+        "coincide_con_sello": true,
+        "stream_hex": "01 02 01 01 03 01 01 02 01 01 02 01 00 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 97239,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 97239,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 97239,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "gate_by2_e1_pl1",
+        "kind": "gate",
+        "by": 2,
+        "e": 1,
+        "pl": 1,
+        "ny_oraculo": 3,
+        "nota": "ny derivado=3; puerta oraculo=0; puerta tabla sellada=0",
+        "esperado": 0,
+        "coincide_con_sello": true,
+        "stream_hex": "01 02 01 01 03 01 01 02 01 01 02 01 01 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 97685,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 97685,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 97685,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "gate_by2_e1_pl2",
+        "kind": "gate",
+        "by": 2,
+        "e": 1,
+        "pl": 2,
+        "ny_oraculo": 3,
+        "nota": "ny derivado=3; puerta oraculo=0; puerta tabla sellada=0",
+        "esperado": 0,
+        "coincide_con_sello": true,
+        "stream_hex": "01 02 01 01 03 01 01 02 01 01 02 01 02 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 99225,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 99225,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 99225,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "PASS"
+      },
+      {
+        "id": "gate_by2_e1_pl3",
+        "kind": "gate",
+        "by": 2,
+        "e": 1,
+        "pl": 3,
+        "ny_oraculo": 3,
+        "nota": "ny derivado=3; puerta oraculo=1; puerta tabla sellada=1",
+        "esperado": 1,
+        "coincide_con_sello": true,
+        "stream_hex": "01 02 01 01 03 01 01 02 01 01 02 01 03 04 10 00",
+        "longitud_stream_bytes": 16,
+        "A": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 99376,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "B": {
+          "stdout_raw_hex": "000a",
+          "salida_hex": "00",
+          "pasos": 99376,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "C": {
+          "stdout_raw_hex": "00",
+          "salida_hex": "00",
+          "pasos": 99376,
+          "status": "HALTED",
+          "rc": 0
+        },
+        "tres_vias_iguales": true,
+        "veredicto": "DESCUADRE"
+      }
+    ]
+  }
+}

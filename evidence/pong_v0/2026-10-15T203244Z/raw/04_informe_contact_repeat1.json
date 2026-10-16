@@ -1,0 +1,501 @@
+{
+  "predicado": "contact",
+  "tablero": "8x4",
+  "artefacto": "/home/danny/Development/ISyCo Git/MALGAMES/vm/classic/pong_contact_v0.mb",
+  "artefacto_sha256": "21486b5c5c74974af4580e55d18fe4a4f89a8f41daf409ec4ce750a7b79fd7ec",
+  "artefacto_bytes": 45109,
+  "celdas_clasico": 59049,
+  "margen_celdas": 13940,
+  "interpretes": {
+    "A": "/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge",
+    "B": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge",
+    "C": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/tools/oracle_classic.py"
+  },
+  "max_steps": 2000000,
+  "dominio_puntos": 16,
+  "pass": 16,
+  "tres_vias_iguales": 16,
+  "casos": [
+    {
+      "opcode": "01",
+      "decodificado": "pl=0, by=0",
+      "esperado_host": "1",
+      "A": {
+        "stdout_raw_hex": "310a",
+        "salida": "1",
+        "pasos": 48267,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 48267 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "310a",
+        "salida": "1",
+        "pasos": 48267,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 48267 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "31",
+        "salida": "1",
+        "pasos": 48267,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "02",
+      "decodificado": "pl=0, by=1",
+      "esperado_host": "0",
+      "A": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 49059,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 49059 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 49059,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 49059 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "30",
+        "salida": "0",
+        "pasos": 49059,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "03",
+      "decodificado": "pl=0, by=2",
+      "esperado_host": "0",
+      "A": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 49429,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 49429 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 49429,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 49429 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "30",
+        "salida": "0",
+        "pasos": 49429,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "04",
+      "decodificado": "pl=0, by=3",
+      "esperado_host": "0",
+      "A": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 49924,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 49924 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 49924,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 49924 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "30",
+        "salida": "0",
+        "pasos": 49924,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "05",
+      "decodificado": "pl=1, by=0",
+      "esperado_host": "0",
+      "A": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 50725,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 50725 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 50725,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 50725 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "30",
+        "salida": "0",
+        "pasos": 50725,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "06",
+      "decodificado": "pl=1, by=1",
+      "esperado_host": "1",
+      "A": {
+        "stdout_raw_hex": "310a",
+        "salida": "1",
+        "pasos": 51104,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 51104 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "310a",
+        "salida": "1",
+        "pasos": 51104,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 51104 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "31",
+        "salida": "1",
+        "pasos": 51104,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "07",
+      "decodificado": "pl=1, by=2",
+      "esperado_host": "0",
+      "A": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 51608,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 51608 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 51608,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 51608 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "30",
+        "salida": "0",
+        "pasos": 51608,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "08",
+      "decodificado": "pl=1, by=3",
+      "esperado_host": "0",
+      "A": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 52721,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 52721 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 52721,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 52721 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "30",
+        "salida": "0",
+        "pasos": 52721,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "09",
+      "decodificado": "pl=2, by=0",
+      "esperado_host": "0",
+      "A": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 52987,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 52987 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 52987,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 52987 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "30",
+        "salida": "0",
+        "pasos": 52987,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "0a",
+      "decodificado": "pl=2, by=1",
+      "esperado_host": "0",
+      "A": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 53500,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 53500 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 53500,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 53500 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "30",
+        "salida": "0",
+        "pasos": 53500,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "0b",
+      "decodificado": "pl=2, by=2",
+      "esperado_host": "1",
+      "A": {
+        "stdout_raw_hex": "310a",
+        "salida": "1",
+        "pasos": 54319,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 54319 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "310a",
+        "salida": "1",
+        "pasos": 54319,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 54319 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "31",
+        "salida": "1",
+        "pasos": 54319,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "0c",
+      "decodificado": "pl=2, by=3",
+      "esperado_host": "0",
+      "A": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 54716,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 54716 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 54716,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 54716 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "30",
+        "salida": "0",
+        "pasos": 54716,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "0d",
+      "decodificado": "pl=3, by=0",
+      "esperado_host": "0",
+      "A": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 55238,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 55238 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 55238,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 55238 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "30",
+        "salida": "0",
+        "pasos": 55238,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "0e",
+      "decodificado": "pl=3, by=1",
+      "esperado_host": "0",
+      "A": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 56066,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 56066 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 56066,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 56066 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "30",
+        "salida": "0",
+        "pasos": 56066,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "0f",
+      "decodificado": "pl=3, by=2",
+      "esperado_host": "0",
+      "A": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 56472,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 56472 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "300a",
+        "salida": "0",
+        "pasos": 56472,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 56472 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "30",
+        "salida": "0",
+        "pasos": 56472,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    },
+    {
+      "opcode": "10",
+      "decodificado": "pl=3, by=3",
+      "esperado_host": "1",
+      "A": {
+        "stdout_raw_hex": "310a",
+        "salida": "1",
+        "pasos": 57003,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 57003 | status: HALTED"
+      },
+      "B": {
+        "stdout_raw_hex": "310a",
+        "salida": "1",
+        "pasos": 57003,
+        "status": "HALTED",
+        "rc": 0,
+        "stderr": "steps: 57003 | status: HALTED"
+      },
+      "C": {
+        "stdout_raw_hex": "31",
+        "salida": "1",
+        "pasos": 57003,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "tres_vias_iguales": true,
+      "veredicto": "PASS"
+    }
+  ],
+  "todo_pass": true
+}

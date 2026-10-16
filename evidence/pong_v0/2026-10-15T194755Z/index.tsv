@@ -1,0 +1,9 @@
+archivo	sha256	bytes	proposito
+transitions.tsv	76447b14494e180e8997bad788d9e6b19272bddf4fa620d7c23c82d0b3e4bab9	1106	11 transiciones congeladas E1-E10: linea de trabajo -> estado esperado
+frames.tsv	5757b3cb953423a6d4307178ca6f6ec3c7e016e395a095f735b861185477b84e	352	3 frames 8x4 congelados, incluidos los dos casos de prioridad pelota sobre paleta
+rejects.txt	2414f24f621e89c674b3113b5efa198db2bcbca4dab7d910d8011dc5a9ba2197	359	12 lineas invalidas: prefijo, rango, conteo de campos, enteros no canonicos, movimientos
+chain_rejects.txt	2e85f76871c9645095be194c93a050dad45532b7b1a8c13128fe0c88a03a180c	161	3 cadenas invalidas: dos carry-forward divergentes y una cadena sin linea de trabajo
+chain_c1.in	84697894d99123b61e23486ee732482c82f7a9db56958bdb0101ce163de634c3	160	entrada exacta de 4 ticks (rebote en el tope y gol con reset)
+chain_c1.expected	f518acece6d06948e814b4a50e59064b844d55a10fdfe2561a5ad66dcc3e9a63	116	salida exacta de chain_c1, derivada a mano del contrato
+chain_c2.in	33dbd8ff2b9ca4fcde68410af9d33059cf30372cc026b13a291ad3fbf0cc2695	325	entrada exacta de 9 ticks (paleta previa al movimiento de pelota, clamp, rebotes en ambos bordes, gol con reset)
+chain_c2.expected	bd68cdb6d5ca7df0649f7a6c6321c464acb88fba9d1669dde0d2e2ce2db17d91	257	salida exacta de chain_c2, derivada a mano del contrato

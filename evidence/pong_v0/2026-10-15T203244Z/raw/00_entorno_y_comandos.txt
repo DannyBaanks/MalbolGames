@@ -1,0 +1,31 @@
+# raw/00 entorno y comandos exactos — corrida 2026-10-15T203244Z (G2 codegen extendido)
+fecha_utc=2026-10-15T20:38:24Z
+host=Linux 7.0.0-38-generic x86_64  user=danny
+python3=Python 3.12.3  gcc=13.3.0-6ubuntu2~24.04.1) 13.3.0
+coreutils=  glibc=2.39
+
+# workspace: /home/danny/Development/ISyCo Git/MALGAMES  (MALGAMES NO es repo git: no existe HEAD; la cadena es worktree==sello, 2 vias)
+# upstream leído en modo solo-lectura, HEAD d479473, git status --porcelain vacio (0 archivos)
+
+# comandos de esta corrida, en orden:
+  [gen intacto]  python3 .../vm_malbolge/tools/mbir_dispatch_gen.py --opcodes 000102030405060708 -o probe8.hell
+                 .../third_party/lmao/bin/lmao -o probe8.mb probe8.hell              -> 35515 B
+  [vm 8 rutas]   para i en 01..08: printf "\x$i" | .../Malbolge-Engine/malbolge probe8.mb 2000000
+  [escalado]     mbir_dispatch_gen.py --opcodes 00,01..0k | lmao -o x.mb              -> raw/08
+  [codegen]      python3 pong_codegen.py check --kind bounce|contact                  -> raw/09
+  [emit]         python3 pong_codegen.py emit --kind bounce  -o pong_bounce_v0.hell
+  [emit]         python3 pong_codegen.py emit --kind contact -o pong_contact_v0.hell
+  [ensamble]     lmao -o pong_bounce_v0.mb  pong_bounce_v0.hell   -> 34105 B
+                 lmao -o pong_contact_v0.mb pong_contact_v0.hell  -> 45109 B
+  [vm 3 vias]    python3 run_classic.py --kind bounce  --max-steps 2000000 -o raw/01  -> 8/8 PASS
+                 python3 run_classic.py --kind contact --max-steps 2000000 -o raw/02  -> 16/16 PASS
+                 python3 run_classic.py --kind bounce  -o raw/03  (repetición)
+                 python3 run_classic.py --kind contact -o raw/04  (repetición)
+  [controles]    Malbolge-Engine/malbolge con stdin 00 / 09 / EOF                       -> raw/05
+  [mutante]      codegen con tabla desplazada -> lmao -> mismo opcode, otra salida      -> raw/06
+  [diff]         generador intacto vs codegen extendado, comentarios aparte             -> raw/07
+
+# interpretes Clasicos usados (ninguno es Unshackled):
+  A /home/danny/Development/ISyCo Git/MALGAMES/../Malbolge-Engine/malbolge
+  B /home/danny/Development/ISyCo Git/MALGAMES/../MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge
+  C /home/danny/Development/ISyCo Git/MALGAMES/../MALBOLGE-MB-DATABASE/tools/oracle_classic.py  (MEM_SIZE=3**10 verificado en runtime)

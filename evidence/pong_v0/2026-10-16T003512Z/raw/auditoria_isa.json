@@ -1,0 +1,1620 @@
+{
+  "objetivo": "auditar que pares de operandos calcula BIEN el kernel alu_rel_pass25, mas alla del corpus sellado de 25 vectores",
+  "kernel": {
+    "archivo": "/home/danny/Development/ISyCo Git/MALGAMES/vm/nested/mbir_alu_rel_pass25.mb",
+    "sha256": "3b6c011bf3f8f1c7bb610b99812956d7268719557b81ec7e85d481edf240f977",
+    "bytes": 57511,
+    "margen_celdas": 1538
+  },
+  "rejilla": {
+    "op1": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "op2": [
+      0,
+      1,
+      2
+    ]
+  },
+  "interpretes": {
+    "A": "/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge",
+    "B": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge",
+    "C": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/tools/oracle_classic.py"
+  },
+  "max_steps": 300000,
+  "desacuerdos_entre_interpretes": 0,
+  "resumen_por_opcode": {
+    "ADD": {
+      "total": 15,
+      "correcto": 2,
+      "incorrecto": 13,
+      "fuera_de_dominio": 0,
+      "dentro_declarado_correctos": 2,
+      "dentro_declarado_total": 15,
+      "incorrecciones": [
+        "0,0 -> obs 02 exp 00",
+        "0,1 -> obs 02 exp 01",
+        "0,2 -> obs 07 exp 02",
+        "1,0 -> obs 02 exp 01",
+        "1,2 -> obs 07 exp 03",
+        "2,1 -> obs 02 exp 03",
+        "2,2 -> obs 05 exp 04",
+        "3,0 -> obs 02 exp 03",
+        "3,1 -> obs 02 exp 04",
+        "3,2 -> obs 07 exp 05",
+        "4,0 -> obs 02 exp 04",
+        "4,1 -> obs 02 exp 05",
+        "4,2 -> obs 07 exp 06"
+      ]
+    },
+    "SUB": {
+      "total": 15,
+      "correcto": 4,
+      "incorrecto": 11,
+      "fuera_de_dominio": 0,
+      "dentro_declarado_correctos": 4,
+      "dentro_declarado_total": 12,
+      "incorrecciones": [
+        "0,0 -> obs 02 exp 00",
+        "0,1 -> obs 01 exp e6a8",
+        "0,2 -> obs 02 exp e6a7",
+        "1,0 -> obs 02 exp 01",
+        "1,1 -> obs 01 exp 00",
+        "1,2 -> obs 02 exp e6a8",
+        "3,0 -> obs 02 exp 03",
+        "3,1 -> obs 01 exp 02",
+        "3,2 -> obs 02 exp 01",
+        "4,0 -> obs 02 exp 04",
+        "4,1 -> obs 01 exp 03"
+      ]
+    },
+    "CMPEQ": {
+      "total": 15,
+      "correcto": 13,
+      "incorrecto": 2,
+      "fuera_de_dominio": 0,
+      "dentro_declarado_correctos": 13,
+      "dentro_declarado_total": 15,
+      "incorrecciones": [
+        "0,0 -> obs 00 exp 01",
+        "1,1 -> obs 00 exp 01"
+      ]
+    }
+  },
+  "casos": [
+    {
+      "id": "ADD_0_0",
+      "op": "ADD",
+      "a": 0,
+      "b": 0,
+      "stream_hex": "01 00 01 00 02 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 71535,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_0_1",
+      "op": "ADD",
+      "a": 0,
+      "b": 1,
+      "stream_hex": "01 00 01 01 02 10 00",
+      "esperado": 1,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 71976,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_0_2",
+      "op": "ADD",
+      "a": 0,
+      "b": 2,
+      "stream_hex": "01 00 01 02 02 10 00",
+      "esperado": 2,
+      "en_dominio_declarado": true,
+      "observado_hex": "07",
+      "pasos": 73526,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "070a",
+        "salida_hex": "07",
+        "pasos": 73526,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "070a",
+        "salida_hex": "07",
+        "pasos": 73526,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "07",
+        "salida_hex": "07",
+        "pasos": 73526,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_1_0",
+      "op": "ADD",
+      "a": 1,
+      "b": 0,
+      "stream_hex": "01 01 01 00 02 10 00",
+      "esperado": 1,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 71535,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_1_1",
+      "op": "ADD",
+      "a": 1,
+      "b": 1,
+      "stream_hex": "01 01 01 01 02 10 00",
+      "esperado": 2,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 71976,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_1_2",
+      "op": "ADD",
+      "a": 1,
+      "b": 2,
+      "stream_hex": "01 01 01 02 02 10 00",
+      "esperado": 3,
+      "en_dominio_declarado": true,
+      "observado_hex": "07",
+      "pasos": 73526,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "070a",
+        "salida_hex": "07",
+        "pasos": 73526,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "070a",
+        "salida_hex": "07",
+        "pasos": 73526,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "07",
+        "salida_hex": "07",
+        "pasos": 73526,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_2_0",
+      "op": "ADD",
+      "a": 2,
+      "b": 0,
+      "stream_hex": "01 02 01 00 02 10 00",
+      "esperado": 2,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 71535,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_2_1",
+      "op": "ADD",
+      "a": 2,
+      "b": 1,
+      "stream_hex": "01 02 01 01 02 10 00",
+      "esperado": 3,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 71976,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_2_2",
+      "op": "ADD",
+      "a": 2,
+      "b": 2,
+      "stream_hex": "01 02 01 02 02 10 00",
+      "esperado": 4,
+      "en_dominio_declarado": true,
+      "observado_hex": "05",
+      "pasos": 73530,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "050a",
+        "salida_hex": "05",
+        "pasos": 73530,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "050a",
+        "salida_hex": "05",
+        "pasos": 73530,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "05",
+        "salida_hex": "05",
+        "pasos": 73530,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_3_0",
+      "op": "ADD",
+      "a": 3,
+      "b": 0,
+      "stream_hex": "01 03 01 00 02 10 00",
+      "esperado": 3,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 71535,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_3_1",
+      "op": "ADD",
+      "a": 3,
+      "b": 1,
+      "stream_hex": "01 03 01 01 02 10 00",
+      "esperado": 4,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 71976,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_3_2",
+      "op": "ADD",
+      "a": 3,
+      "b": 2,
+      "stream_hex": "01 03 01 02 02 10 00",
+      "esperado": 5,
+      "en_dominio_declarado": true,
+      "observado_hex": "07",
+      "pasos": 72320,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "070a",
+        "salida_hex": "07",
+        "pasos": 72320,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "070a",
+        "salida_hex": "07",
+        "pasos": 72320,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "07",
+        "salida_hex": "07",
+        "pasos": 72320,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_4_0",
+      "op": "ADD",
+      "a": 4,
+      "b": 0,
+      "stream_hex": "01 04 01 00 02 10 00",
+      "esperado": 4,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 71535,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_4_1",
+      "op": "ADD",
+      "a": 4,
+      "b": 1,
+      "stream_hex": "01 04 01 01 02 10 00",
+      "esperado": 5,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 71976,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "ADD_4_2",
+      "op": "ADD",
+      "a": 4,
+      "b": 2,
+      "stream_hex": "01 04 01 02 02 10 00",
+      "esperado": 6,
+      "en_dominio_declarado": true,
+      "observado_hex": "07",
+      "pasos": 72320,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "070a",
+        "salida_hex": "07",
+        "pasos": 72320,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "070a",
+        "salida_hex": "07",
+        "pasos": 72320,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "07",
+        "salida_hex": "07",
+        "pasos": 72320,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_0_0",
+      "op": "SUB",
+      "a": 0,
+      "b": 0,
+      "stream_hex": "01 00 01 00 03 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 72107,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_0_1",
+      "op": "SUB",
+      "a": 0,
+      "b": 1,
+      "stream_hex": "01 00 01 01 03 10 00",
+      "esperado": 59048,
+      "en_dominio_declarado": false,
+      "observado_hex": "01",
+      "pasos": 72553,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "01",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_0_2",
+      "op": "SUB",
+      "a": 0,
+      "b": 2,
+      "stream_hex": "01 00 01 02 03 10 00",
+      "esperado": 59047,
+      "en_dominio_declarado": false,
+      "observado_hex": "02",
+      "pasos": 74091,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 74091,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 74091,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 74091,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_1_0",
+      "op": "SUB",
+      "a": 1,
+      "b": 0,
+      "stream_hex": "01 01 01 00 03 10 00",
+      "esperado": 1,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 72107,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_1_1",
+      "op": "SUB",
+      "a": 1,
+      "b": 1,
+      "stream_hex": "01 01 01 01 03 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "01",
+      "pasos": 72553,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "01",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_1_2",
+      "op": "SUB",
+      "a": 1,
+      "b": 2,
+      "stream_hex": "01 01 01 02 03 10 00",
+      "esperado": 59048,
+      "en_dominio_declarado": false,
+      "observado_hex": "02",
+      "pasos": 74091,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 74091,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 74091,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 74091,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_2_0",
+      "op": "SUB",
+      "a": 2,
+      "b": 0,
+      "stream_hex": "01 02 01 00 03 10 00",
+      "esperado": 2,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 72107,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_2_1",
+      "op": "SUB",
+      "a": 2,
+      "b": 1,
+      "stream_hex": "01 02 01 01 03 10 00",
+      "esperado": 1,
+      "en_dominio_declarado": true,
+      "observado_hex": "01",
+      "pasos": 72553,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "01",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_2_2",
+      "op": "SUB",
+      "a": 2,
+      "b": 2,
+      "stream_hex": "01 02 01 02 03 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 74098,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 74098,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 74098,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 74098,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_3_0",
+      "op": "SUB",
+      "a": 3,
+      "b": 0,
+      "stream_hex": "01 03 01 00 03 10 00",
+      "esperado": 3,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 72107,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_3_1",
+      "op": "SUB",
+      "a": 3,
+      "b": 1,
+      "stream_hex": "01 03 01 01 03 10 00",
+      "esperado": 2,
+      "en_dominio_declarado": true,
+      "observado_hex": "01",
+      "pasos": 72553,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "01",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_3_2",
+      "op": "SUB",
+      "a": 3,
+      "b": 2,
+      "stream_hex": "01 03 01 02 03 10 00",
+      "esperado": 1,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 72885,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72885,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72885,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 72885,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_4_0",
+      "op": "SUB",
+      "a": 4,
+      "b": 0,
+      "stream_hex": "01 04 01 00 03 10 00",
+      "esperado": 4,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 72107,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_4_1",
+      "op": "SUB",
+      "a": 4,
+      "b": 1,
+      "stream_hex": "01 04 01 01 03 10 00",
+      "esperado": 3,
+      "en_dominio_declarado": true,
+      "observado_hex": "01",
+      "pasos": 72553,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "01",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "SUB_4_2",
+      "op": "SUB",
+      "a": 4,
+      "b": 2,
+      "stream_hex": "01 04 01 02 03 10 00",
+      "esperado": 2,
+      "en_dominio_declarado": true,
+      "observado_hex": "02",
+      "pasos": 72885,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72885,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72885,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 72885,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_0_0",
+      "op": "CMPEQ",
+      "a": 0,
+      "b": 0,
+      "stream_hex": "01 00 01 00 04 10 00",
+      "esperado": 1,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 72545,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_0_1",
+      "op": "CMPEQ",
+      "a": 0,
+      "b": 1,
+      "stream_hex": "01 00 01 01 04 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 72991,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_0_2",
+      "op": "CMPEQ",
+      "a": 0,
+      "b": 2,
+      "stream_hex": "01 00 01 02 04 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 74529,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 74529,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 74529,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 74529,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_1_0",
+      "op": "CMPEQ",
+      "a": 1,
+      "b": 0,
+      "stream_hex": "01 01 01 00 04 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 72545,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_1_1",
+      "op": "CMPEQ",
+      "a": 1,
+      "b": 1,
+      "stream_hex": "01 01 01 01 04 10 00",
+      "esperado": 1,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 72991,
+      "tres_vias_iguales": true,
+      "veredicto": "INCORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_1_2",
+      "op": "CMPEQ",
+      "a": 1,
+      "b": 2,
+      "stream_hex": "01 01 01 02 04 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 74529,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 74529,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 74529,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 74529,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_2_0",
+      "op": "CMPEQ",
+      "a": 2,
+      "b": 0,
+      "stream_hex": "01 02 01 00 04 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 72545,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_2_1",
+      "op": "CMPEQ",
+      "a": 2,
+      "b": 1,
+      "stream_hex": "01 02 01 01 04 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 72991,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_2_2",
+      "op": "CMPEQ",
+      "a": 2,
+      "b": 2,
+      "stream_hex": "01 02 01 02 04 10 00",
+      "esperado": 1,
+      "en_dominio_declarado": true,
+      "observado_hex": "01",
+      "pasos": 74530,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 74530,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 74530,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "01",
+        "salida_hex": "01",
+        "pasos": 74530,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_3_0",
+      "op": "CMPEQ",
+      "a": 3,
+      "b": 0,
+      "stream_hex": "01 03 01 00 04 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 72545,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_3_1",
+      "op": "CMPEQ",
+      "a": 3,
+      "b": 1,
+      "stream_hex": "01 03 01 01 04 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 72991,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_3_2",
+      "op": "CMPEQ",
+      "a": 3,
+      "b": 2,
+      "stream_hex": "01 03 01 02 04 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 73323,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 73323,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 73323,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 73323,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_4_0",
+      "op": "CMPEQ",
+      "a": 4,
+      "b": 0,
+      "stream_hex": "01 04 01 00 04 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 72545,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_4_1",
+      "op": "CMPEQ",
+      "a": 4,
+      "b": 1,
+      "stream_hex": "01 04 01 01 04 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 72991,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "id": "CMPEQ_4_2",
+      "op": "CMPEQ",
+      "a": 4,
+      "b": 2,
+      "stream_hex": "01 04 01 02 04 10 00",
+      "esperado": 0,
+      "en_dominio_declarado": true,
+      "observado_hex": "00",
+      "pasos": 73323,
+      "tres_vias_iguales": true,
+      "veredicto": "CORRECTO",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 73323,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 73323,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 73323,
+        "status": "HALTED",
+        "rc": 0
+      }
+    }
+  ]
+}

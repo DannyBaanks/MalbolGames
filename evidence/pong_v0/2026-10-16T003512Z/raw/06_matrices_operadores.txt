@@ -1,0 +1,38 @@
+informe: ../../evidence/pong_v0/2026-10-16T003512Z/raw/auditoria_isa_75.json
+rejilla: op1=[0, 1, 2, 3, 4] x op2=[0, 1, 2, 3, 4]   desacuerdos entre interpretes=0
+
+== ADD  correcto 5/25   vocabulario imprimible medido = ['02', '05', '07']
+     op2 ->     0      1      2      3      4
+  op1 0:    02*    02*    07*    07*    07*      esperado: 00  01  02  03  04
+  op1 1:    02*     02    07*    07*    07*      esperado: 01  02  03  04  05
+  op1 2:     02    02*    05*     05    05*      esperado: 02  03  04  05  06
+  op1 3:    02*    02*    07*    07*     07      esperado: 03  04  05  06  07
+  op1 4:    02*    02*    07*     07    07*      esperado: 04  05  06  07  08
+
+== SUB  correcto 4/25   vocabulario imprimible medido = ['00', '01', '02']
+     op2 ->     0      1      2      3      4
+  op1 0:    02*    01*    02*    02*    02*      esperado: 00  e6a8  e6a7  e6a6  e6a5
+  op1 1:    02*    01*    02*    02*    02*      esperado: 01  00  e6a8  e6a7  e6a6
+  op1 2:     02     01     00    00*    00*      esperado: 02  01  00  e6a8  e6a7
+  op1 3:    02*    01*    02*    02*    02*      esperado: 03  02  01  00  e6a8
+  op1 4:    02*    01*     02    02*    02*      esperado: 04  03  02  01  00
+
+== CMPEQ  correcto 19/25   vocabulario imprimible medido = ['00', '01']
+     op2 ->     0      1      2      3      4
+  op1 0:    00*     00     00     00     00      esperado: 01  00  00  00  00
+  op1 1:     00    00*     00     00     00      esperado: 00  01  00  00  00
+  op1 2:     00     00     01    01*    01*      esperado: 00  00  01  00  00
+  op1 3:     00     00     00    00*     00      esperado: 00  00  00  01  00
+  op1 4:     00     00     00     00    00*      esperado: 00  00  00  00  01
+
+== CMP_EQ en la diagonal a == a (lo que la puerta de gol necesita)
+   0 == 0: observado 00  esperado 01  -> INCORRECTO
+   1 == 1: observado 00  esperado 01  -> INCORRECTO
+   2 == 2: observado 01  esperado 01  -> CORRECTO
+   3 == 3: observado 00  esperado 01  -> INCORRECTO
+   4 == 4: observado 00  esperado 01  -> INCORRECTO
+   la diagonal acierta SOLO en op1 = [2]
+
+vocabulario TOTAL de bytes que el kernel imprime = ['00', '01', '02', '05', '07'] = enteros [0, 1, 2, 5, 7]
+valores del tick `pong1` (0..3) NO imprimibles: [3]
+=> si la lista no es vacia, el dominio del tablero 8x4 NO es expresable como resultado de este kernel, con independencia del stream que se le de.

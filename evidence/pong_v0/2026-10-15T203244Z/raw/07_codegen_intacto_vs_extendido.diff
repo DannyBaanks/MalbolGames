@@ -1,0 +1,39 @@
+# raw/07 la extension del codegen no cambia estructura: diff contra el generador upstream intacto
+# upstream: /home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/vm_malbolge/tools/mbir_dispatch_gen.py
+# upstream sha256: c756fac6f8b55e852618c755e9f5b4e66b737d007d217457e62efd7f2e4285b4
+# (re-medido al final de esta corrida; el codegen MALGAMES re-verifica el hash en cada emision)
+# diff (ignorando comentarios de cabecera), lineas 546 vs 546:
+333c333
+< 	ROT ('P' << 1) R_ROT
+---
+> 	ROT ('1' << 1) R_ROT
+338c338
+< 	ROT ('R' << 1) R_ROT
+---
+> 	ROT ('0' << 1) R_ROT
+343c343
+< 	ROT ('U' << 1) R_ROT
+---
+> 	ROT ('0' << 1) R_ROT
+348c348
+< 	ROT ('L' << 1) R_ROT
+---
+> 	ROT ('0' << 1) R_ROT
+353c353
+< 	ROT ('S' << 1) R_ROT
+---
+> 	ROT ('0' << 1) R_ROT
+358c358
+< 	ROT ('A' << 1) R_ROT
+---
+> 	ROT ('0' << 1) R_ROT
+363c363
+< 	ROT ('B' << 1) R_ROT
+---
+> 	ROT ('0' << 1) R_ROT
+368c368
+< 	ROT ('M' << 1) R_ROT
+---
+> 	ROT ('1' << 1) R_ROT
+# total lineas distintas: 16 = 8 rutas x 2 (solo la constante ROT ('c' << 1))
+# ninguna linea estructural (etiquetas, SUBROUTINE_FLAG, .DATA, subrutinas) cambio

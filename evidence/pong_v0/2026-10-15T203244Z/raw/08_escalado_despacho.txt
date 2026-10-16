@@ -1,0 +1,21 @@
+# raw/08 escalado del despacho ensamblado a Malbolge CLASICO (3^10 = 59049 celdas)
+# comando por fila: mbir_dispatch_gen.py --opcodes 00,01..0k  |  lmao -o x.mb x.hell
+handlers  hell_B     mb_B       margen_celdas   ensamblado
+2         7993       27337      31712           rc=0 OK
+4         8685       29499      29550           rc=0 OK
+8         10075      35515      23534           rc=0 OK
+16        12923      45949      13100           rc=0 OK
+20        14347      51683      7366            rc=0 OK
+24        15771      56361      2688            rc=0 OK
+32        18619      -          -               rc=1 FALLO
+
+# stderr exacto del fallo con 32 handlers (rc=1, no se emite .mb):
+Error: Free space exceeded (Add Malbolge command).
+Internal error: Cannot generate initialization code for cell 58854.
+Error: Free space exceeded (Add Malbolge command).
+Internal error: Cannot generate initialization code for cell 58854.
+Error: Memory usage conflict while generating initialization code.
+The program may be too large, or a .OFFSET directive may conflict.
+
+# interpretacion: el techo de rutas de UN despacho es ~24 handlers en Clasico puro; el techo que
+# bloquea un tick completo no es el despacho sino el kernel MBIR (57511/59049, G2_PRECHECK V5).

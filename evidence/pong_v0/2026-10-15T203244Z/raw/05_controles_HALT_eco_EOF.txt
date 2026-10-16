@@ -1,0 +1,12 @@
+# raw/05 controles de semantica del despacho — corrida 2026-10-15T203244Z
+# interprete: /home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge  programa: pong_bounce_v0.mb (sha 177e7fce...)
+## C1 stdin = 00 (ruta HALT, no debe imprimir nada del programa)
+ 0a
+stderr: steps: 36903 | status: HALTED
+## C2 stdin = 09 (opcode no listado -> fallback de eco del byte leido)
+ 09 0a
+stderr: steps: 40007 | status: HALTED
+## C3 stdin vacio (EOF -> got_eof -> HALT sin salida)
+ 0a
+stderr: steps: 33913 | status: HALTED
+# lectura: 0a es el framing del runner (unico \n final); en C2 aparece 09 antes del 0a => la VM reescribio el byte leido

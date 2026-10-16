@@ -1,0 +1,274 @@
+{
+  "experiment": "MALGAMES PONG_V0 — G2: extensión del codegen HeLL->Malbolge Clásico y cálculo de predicados del tick dentro de la VM",
+  "run_id": "2026-10-15T203244Z",
+  "compose": "composes/COMPOSE_MALGAMES_PONG_V0.md (sha256 b1f170b8e8e53617bfb5b4f730827a4731581bb10a3f240826cd8d46ed3f430a)",
+  "encargo_punto": "G2 — UNA transición calculada dentro de la VM",
+  "solicitado_por_usuario": "puedes extender el codegen para ver si logra funcionar",
+  "workspace": "/home/danny/Development/ISyCo Git/MALGAMES",
+  "workspace_es_repo_git": false,
+  "cadena_de_evidencia": "worktree == sello (2 vías). No hay HEAD: MALGAMES no es repositorio git, así que la cadena a tres vías usada en MALDOOM no es aplicable aquí y no se afirma.",
+  "entorno": {
+    "host": "Linux x86_64 Ubuntu 24.04 (7.0.0-38-generic)",
+    "python": "Python 3.12.3",
+    "coreutils": "9.4",
+    "glibc": "2.39",
+    "ensamblador": "LMAO v0.6.0 (Matthias Lutter), binario nativo",
+    "variantes_de_vm": "Malbolge CLÁSICO 3^10 = 59049 celdas. Ningún intérprete de esta corrida es Unshackled/Extrovertido."
+  },
+  "herramientas_externas_usadas_solo_lectura": {
+    "repo": "MALBOLGE-MB-DATABASE",
+    "head": "d479473",
+    "git_status_porcelain_lineas": 0,
+    "mbir_dispatch_gen.py_sha256": "c756fac6f8b55e852618c755e9f5b4e66b737d007d217457e62efd7f2e4285b4",
+    "lmao_sha256": "5a6039efd995af1cf57b9bf4d6ec70da3a5303efe0ec6a1fe0fad3abc03f3f44",
+    "oracle_classic.py_sha256": "5dae8f31eaa296fdc5bb1a65b9bab93e94b3f230de5d1929d5d5d904dd4778cf",
+    "nota": "El codegen nuevo re-verifica el SHA-256 del generador upstream en cada emisión y aborta si cambió. Ningún archivo se escribió dentro de MALBOLGE-MB-DATABASE en esta corrida."
+  },
+  "interpretes_clasicos_independientes": {
+    "A": "/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge (ELF nativo)",
+    "B": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge (ELF nativo, otro código)",
+    "C": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/tools/oracle_classic.py (modelo Python; su CLI no acepta stdin, se llama run() del módulo con stdin inyectado). MEM_SIZE == 3**10 comprobado en runtime antes de correr."
+  },
+  "marco_de_la_extension": {
+    "obstaculo_identificado": "mbir_dispatch_gen.py tiene MARKERS como dict fijo de módulo {0x01:'P',...,0x11:'I'} y no expone ninguna opción de CLI para cambiarlo. Un dispatch que emite letras no puede devolver un predicado.",
+    "que_hace_la_extension": "pong_codegen.py importa el módulo upstream en memoria, deriva la tabla opcode->'0'/'1' desde docs/PONG_MIN_SPEC.md par. 4, sustituye MARKERS y llama a generate() sin tocarlo. La codificación del dominio y la derivación del predicado viven en MALGAMES; la maquinaria HeLL sigue siendo la upstream.",
+    "prueba_de_minimalidad": "diff estructural (comentarios aparte) entre el .hell del generador intacto y el del codegen extendido para las mismas 8 rutas: 16 líneas distintas = 8 rutas × 2, todas de la forma ROT ('c' << 1). Ninguna etiqueta, SUBROUTINE_FLAG, célula .DATA ni subrutina cambió. Ver raw/07."
+  },
+  "predicados": {
+    "bounce": {
+      "formula_del_spec": "rebota IFF by+vy < 0 o by+vy > h-1, con h=4 (par. 4, eje vertical)",
+      "codificacion": "opcode = 1 + by*2 + (0 si vy==-1 else 1), by en 0..3, vy en {-1,+1}",
+      "dominio_puntos": 8,
+      "tabla_derivada": {
+        "01": "1",
+        "02": "0",
+        "03": "0",
+        "04": "0",
+        "05": "0",
+        "06": "0",
+        "07": "0",
+        "08": "1"
+      },
+      "sha256_tabla": "4141fe0e4dfb382f604713eaba11fa9465a3ca5797695783541ae312d543f733",
+      "hell_bytes": 10647,
+      "mb_bytes": 34105,
+      "mb_sha256": "177e7fcea2b99c31f83f865ba915e53a9d4d70a4ac850c5e6e61aad970b99f06",
+      "margen_celdas_clasico": 24944,
+      "pasos_por_caso": [
+        37395,
+        38187,
+        38557,
+        39052,
+        39853,
+        40232,
+        40736,
+        41849
+      ],
+      "resultado_vm": "8/8 PASS; A==B==C en salida Y en pasos en los 8 casos",
+      "check_vs_oraculo": "8/8 PASS vía oracle/pong_reference.py step()"
+    },
+    "contact": {
+      "formula_del_spec": "el Gol se convierte en Golpe IFF paleta_izquierda_clampeada == fila_de_la_pelota_despues_del_eje_vertical (par. 4)",
+      "codificacion": "opcode = 1 + pl*4 + by, pl y by en 0..3",
+      "dominio_puntos": 16,
+      "tabla_derivada": {
+        "01": "1",
+        "02": "0",
+        "03": "0",
+        "04": "0",
+        "05": "0",
+        "06": "1",
+        "07": "0",
+        "08": "0",
+        "09": "0",
+        "0a": "0",
+        "0b": "1",
+        "0c": "0",
+        "0d": "0",
+        "0e": "0",
+        "0f": "0",
+        "10": "1"
+      },
+      "sha256_tabla": "01e5a4ab5ac97c6c2b780a3b6831139345a5e5ecaf9016e812863e484546069c",
+      "hell_bytes": 13721,
+      "mb_bytes": 45109,
+      "mb_sha256": "21486b5c5c74974af4580e55d18fe4a4f89a8f41daf409ec4ce750a7b79fd7ec",
+      "margen_celdas_clasico": 13940,
+      "pasos_min": 48267,
+      "pasos_max": 57003,
+      "resultado_vm": "16/16 PASS; A==B==C en salida Y en pasos en los 16 casos",
+      "check_vs_oraculo": "16/16 PASS por doble vía (interior para leer la fila post-vertical, pared para observar Gol/Golpe)"
+    }
+  },
+  "controles": [
+    {
+      "id": "K1",
+      "que_se_prueba": "la salida depende del byte LEÍDO en stdin, no de una constante fija",
+      "metodo": "mutante con la misma forma y solo una constante desplazada (0x01->'0', 0x07->'1'); mismo byte, dos programas",
+      "resultado": "opcode 0x01: sellado '1' vs mutante '0'; opcode 0x07: sellado '0' vs mutante '1'; 0x02 y 0x08 iguales. .mb mutante pesa idénticos 34105 B.",
+      "veredicto": "SELECTIVIDAD DE RUTA DEMOSTRADA",
+      "raw": "raw/06_control_selectividad_ruta.txt"
+    },
+    {
+      "id": "K2",
+      "que_se_prueba": "ruta 0x00 = HALT sin salida del programa",
+      "resultado": "stdout = 0a (solo framing), steps 36903, status HALTED",
+      "veredicto": "CONFORME CON LA SEMÁNTICA DEL GENERADOR",
+      "raw": "raw/05_controles_HALT_eco_EOF.txt"
+    },
+    {
+      "id": "K3",
+      "que_se_prueba": "opcode no listado cae al fallback de eco",
+      "resultado": "stdin 09 -> stdout 09 0a (reescribió el byte leído), steps 40007, HALTED",
+      "veredicto": "FALLBACK ACTIVO",
+      "raw": "raw/05_controles_HALT_eco_EOF.txt"
+    },
+    {
+      "id": "K4",
+      "que_se_prueba": "EOF se detecta dentro de la VM y detiene sin salida",
+      "resultado": "stdin vacío -> stdout 0a, steps 33913, HALTED",
+      "veredicto": "TEST DE EOF EN VM ACTIVO",
+      "raw": "raw/05_controles_HALT_eco_EOF.txt"
+    },
+    {
+      "id": "K5",
+      "que_se_prueba": "determinismo entre procesos",
+      "resultado": "repeticiones completas de ambas corridas producen informes JSON byte-idénticos: bounce sha256 2a3745e4…, contact sha256 36a2ac47…",
+      "veredicto": "DETERMINISTA EN 2/2 EJECUCIONES",
+      "raw": "raw/03_informe_bounce_repeat1.json, raw/04_informe_contact_repeat1.json"
+    },
+    {
+      "id": "K6",
+      "que_se_prueba": "el framing del runner no se confunde con salida del programa",
+      "resultado": "medido: ambos ELF imprimen el byte del programa y UN 0x0A, y dejan 'steps: N | status: S' en stderr. deframe() recorta exactamente uno. buildrun.py:run_runner() (líneas 66-70) hace el mismo recorte.",
+      "veredicto": "ENMARQUE DOCUMENTADO Y RECORTADO",
+      "raw": "raw/00_entorno_y_comandos.txt"
+    },
+    {
+      "id": "K7",
+      "que_se_prueba": "el despacho ya funcionaba ANTES de la extension: el defecto era unicamente la tabla MARKERS fija",
+      "metodo": "generador upstream intacto con las mismas 8 rutas (0x00,0x01..0x08) ensamblado y ejecutado",
+      "resultado": "emite P,R,U,L,S,A,B,M a 38450-42904 pasos; artefacto probe8_intacto.mb 35515 B sha e7bae0b5..., upstream sha c756fac6... (HEAD d479473, 0 archivos modificados)",
+      "veredicto": "BASE DE REFERENCIA REGISTRADA",
+      "raw": "raw/10_linea_base_generador_intacto.txt"
+    },
+    {
+      "id": "K8",
+      "que_se_prueba": "si reensamblar desde el mismo .hell produce el mismo binario y, si no, si eso importa",
+      "metodo": "mismo .hell ensamblado 3 veces + el .mb sellado, comparados byte a byte y ejecutados en los 3 interpretes sobre las 8 rutas",
+      "resultado": "tamaño fijo 34105 B; prefijo comun 34010 B (99,72 %); cola de 94-95 B con 70-72 bytes distintos; 3 sha distintos. PERO salidas y pasos de A, B y C coinciden exactamente con el informe sellado en los 8 casos de los 4 binarios. Para contact: prefijo comun 44882 B (99,50 %), cola 226-227 B.",
+      "veredicto": "LMAO v0.6.0 NO ES BYTE-DETERMINISTA EN LA COLA DEL .mb; LA COLA ES CONDUCTUALMENTE INERTE",
+      "raw": "raw/11_no_determinismo_lmao.txt"
+    }
+  ],
+  "medida_de_capacidad": {
+    "commands": "mbir_dispatch_gen.py --opcodes 00,01..0k | lmao -o x.mb x.hell",
+    "tabla": {
+      "2": 27337,
+      "4": 29499,
+      "8": 35515,
+      "16": 45949,
+      "20": 51683,
+      "24": 56361
+    },
+    "techo_de_dispatch_clasico": "24 handlers ensambla con 2688 celdas de margen; 32 handlers NO ensambla — lmao sale con rc=1 y 'Free space exceeded (Add Malbolge command)' / 'Memory usage conflict while generating initialization code', sin emitir .mb",
+    "incremento_por_ruta_aproximado": 1180,
+    "lectura": "el bloqueo de G2 no era falta de VM ni de dispatch: un despacho de hasta ~24 rutas cabe en Clásico. El techo que impide un tick completo sigue siendo el kernel MBIR (57511/59049, ver corrida G2_PRECHECK V5)."
+  },
+  "resultados_negativos": [
+    {
+      "id": "N1",
+      "hecho": "una primera versión del check de `contact` indexó la tabla por la fila de ENTRADA de la pelota y falló 8 de 16 puntos",
+      "causa": "par. 4 ordena tick -> paletas -> vertical -> horizontal, así que la puerta compara con la fila post-vertical",
+      "segundo_efecto": "al leer la fila post-vertical desde un estado de pared, los casos de Gol devolvían by=2 siempre porque la rama de Gol reescribe by a h//2; hubo que derivar esa fila por una vía interior (bx=4, vx=+1)",
+      "accion": "se corrigió el check, no el oráculo ni el spec. Queda registrado; no se borró."
+    },
+    {
+      "id": "N2",
+      "hecho": "el codegen extendido no produce aritmética general en VM",
+      "detalle": "cada ruta emite una CONSTANT horneada en tiempo de codegen. La clasificación del byte sí se calcula en VM (incremento/decremento ternario con acarreo, test de EOF, discriminación por desbordamiento), pero la fórmula del predicado no se evalúa: su tabla de verdad se compila a las constantes de las rutas.",
+      "consecuencia": "esto es una función sobre dominio finito evaluada en VM, no un evaluador aritmético en VM."
+    },
+    {
+      "id": "N3",
+      "hecho": "la codificación (by,vy)->opcode y (pl,by)->opcode la hace el host antes de escribir stdin",
+      "consecuencia": "ningún predicado de esta corrida se alimenta del estado `pong1` real; el enlace estado->byte es externo a la VM."
+    }
+  ],
+  "tabla_de_claims": [
+    {
+      "claim": "ONE_PREDICATE_FINITE_DOMAIN_CLASSIC_VM — la función bounce_vertical(by,vy) sobre el tablero 8×4 se evalúa dentro de un intérprete Malbolge Clásico 3^10 y su byte de salida depende del byte leído",
+      "estado": "DEMOSTRADO",
+      "sostén": "8/8 casos PASS × 3 intérpretes independientes con pasos idénticos; control K1 de selectividad de ruta; raw/01, raw/06"
+    },
+    {
+      "claim": "ONE_PREDICATE_FINITE_DOMAIN_CLASSIC_VM — la función contact_gate(pl,by_post_vertical) sobre el tablero 8×4, 16 puntos",
+      "estado": "DEMOSTRADO",
+      "sostén": "16/16 casos PASS × 3 intérpretes con pasos idénticos; raw/02"
+    },
+    {
+      "claim": "la tabla de marcadores es la que dicta docs/PONG_MIN_SPEC.md, no una transcripción a mano",
+      "estado": "DEMOSTRADO",
+      "sostén": "pong_codegen.py la deriva del spec y `check` la contrasta contra oracle/pong_reference.py: 8/8 y 16/16 PASS; raw/09"
+    },
+    {
+      "claim": "la extensión del codegen es mínima y no muta la herramienta compartida",
+      "estado": "DEMOSTRADO",
+      "sostén": "diff estructural = solo 8 constantes (raw/07); MALBOLGE-MB-DATABASE en HEAD d479473 con 0 archivos modificados; re-hash del upstream dentro del codegen en cada emisión"
+    },
+    {
+      "claim": "un despacho N-way cabe en Malbolge Clásico hasta ~24 rutas y falla al ensamblar con 32",
+      "estado": "DEMOSTRADO",
+      "sostén": "tabla de capacidad medida, rc=1 y stderr exacto del ensamblador; raw/08"
+    },
+    {
+      "claim": "la aritmética del tick (suma de posiciones, clamp, envoltura del marcador) se calcula en VM",
+      "estado": "NOT_DEMONSTRATED",
+      "sostén": "no hay suma de enteros de dominio variable en estos programas; solo clasificación por valor"
+    },
+    {
+      "claim": "ONE_TICK_NO_COLLISION_VM",
+      "estado": "NOT_DEMONSTRATED",
+      "sostén": "una transición completa exige actualizar bx,by,vy,pl,pr y el marcador; aquí se calculan DOS predicados sueltos, sin estado y sin entrada de 11 campos"
+    },
+    {
+      "claim": "STATEFUL_MIN_PONG_VM / VM_RENDER_8x4 / FULL_FRAME_VM",
+      "estado": "NOT_DEMONSTRATED",
+      "sostén": "los programas son one-shot: leen un byte, emiten un byte, HALT. No encadenan estado ni producen frame."
+    },
+    {
+      "claim": "predicado calculado a partir del estado `pong1` real sin traducción por el host",
+      "estado": "NOT_DEMONSTRATED",
+      "sostén": "N3: la codificación estado->byte es externa a la VM"
+    }
+  ],
+  "alcance_de_G2": "El encargo pedía 'UNA transición calculada dentro de la VM'. Se entregan DOS predicados de la transición, cada uno sobre un dominio finito, dentro de la VM Clásica. La transición COMPLETA sigue sin calcularse en VM y la causa medida sigue siendo la capacidad del kernel MBIR, no la disponibilidad de intérpretes.",
+  "no_se_toco": "MALDOOM intacto. Ningún fixture congelado de G0/G1 modificado. Ninguna release, rama remota ni publicación.",
+  "not_demonstrated": [
+    "Un tick completo de `pong1` dentro de la VM.",
+    "Render de un frame 8×4 dentro de la VM.",
+    "Cualquier cosa en Malbolge Unshackled/Extrovertido en esta corrida.",
+    "Comparación con el motor Unshackled: no aplicable, aquí solo hubo Clásico 3^10."
+  ],
+  "artefactos": {
+    "codigo_nuevo": [
+      "vm/classic/pong_codegen.py",
+      "vm/classic/run_classic.py"
+    ],
+    "fuentes_hell": [
+      "vm/classic/pong_bounce_v0.hell",
+      "vm/classic/pong_contact_v0.hell"
+    ],
+    "binarios_mb": [
+      "vm/classic/pong_bounce_v0.mb",
+      "vm/classic/pong_contact_v0.mb"
+    ],
+    "copias_selladas": "tools/, artifacts/ (incluye probe8_intacto.* y bounce_MUTANT_route_shift.*)"
+  },
+  "nota_apagon": "La maquina se apago a mitad de esta corrida. Se re-verifico el sello de 20 entradas antes de continuar y todo coincidia; los unicos archivos tocados despues fueron raw/10 y los dos artefactos probe8_intacto* movidos desde vm/classic.",
+  "repro_esfera": {
+    "canon": "El artefacto canonico es el .mb byte a byte, sellado en artifacts/. Su sha NO es re-derivable desde el .hell.",
+    "regresion_valida": "sha del .hell + igualdad de comportamiento (salidas y pasos). Nunca sha(lmao(.hell)) == sha sellado: daria falso negativo.",
+    "afectacion_a_claims": "Ningun claim de esta corrida depende del determinismo del ensamblador: raw/01 y raw/02 se midieron sobre el binario sellado y raw/03/raw/04 repitieron ese mismo binario."
+  }
+}

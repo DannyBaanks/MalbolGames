@@ -1,0 +1,12 @@
+# raw/06 control de selectividad de ruta — mismo byte de entrada, dos programas que difieren solo en la constante de una ruta
+# sellado : pong_bounce_v0.mb            tabla derivada del spec: 0x01->'1' 0x07->'0' 0x08->'1'
+# mutante : artifacts/bounce_MUTANT_route_shift.mb  tabla desplazada:  0x01->'0' 0x07->'1' 0x08->'1'
+opcode  sellado  mutante
+0x01      1       0
+0x02      0       0
+0x07      0       1
+0x08      1       1
+# conclusion: la salida depende del byte LEIDO y de la RUTA tomada, no de una constante fija del programa.
+# tamanos mutantes de .mb (mismos bytes, solo cambian las constantes):
+  pong_bounce_v0.mb 34105 B
+  /home/danny/Development/ISyCo Git/MALGAMES/evidence/pong_v0/2026-10-15T203244Z/artifacts/bounce_MUTANT_route_shift.mb 34105 B

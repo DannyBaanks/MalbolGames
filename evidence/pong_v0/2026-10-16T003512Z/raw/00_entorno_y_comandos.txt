@@ -1,0 +1,35 @@
+### entorno y comandos de la campana de controles (utc)
+2026-10-16T00:52:25Z
+Linux DannyISyCo 7.0.0-38-generic #38~24.04.4-Ubuntu SMP PREEMPT_DYNAMIC Mon Sep 14 16:37:11 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+Python 3.12.3
+
+### versiones de las herramientas (solo lectura)
+3257f1ae98bcd3e86a1b93d1b53a4b3d3512d8265cb7052f2bcb56b1e95ea231  Malbolge-Engine/malbolge
+3257f1ae98bcd3e86a1b93d1b53a4b3d3512d8265cb7052f2bcb56b1e95ea231  MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge
+5dae8f31eaa296fdc5bb1a65b9bab93e94b3f230de5d1929d5d5d904dd4778cf  MALBOLGE-MB-DATABASE/tools/oracle_classic.py
+5a6039efd995af1cf57b9bf4d6ec70da3a5303efe0ec6a1fe0fad3abc03f3f44  MALBOLGE-MB-DATABASE/third_party/lmao/lmao
+c756fac6f8b55e852618c755e9f5b4e66b737d007d217457e62efd7f2e4285b4  MALBOLGE-MB-DATABASE/vm_malbolge/tools/mbir_dispatch_gen.py
+8c1d0fdb4cc07e29c04126dcf49be83b5127f9997dded864470188342337b5ff  MALBOLGE-MB-DATABASE/vm_malbolge/tools/mbir_alu_rel_gen.py
+ef9a98a2b820d0427e618c96c95f90f4ac9f30327ba205ef3ced2611a2195f62  MALBOLGE-MB-DATABASE/vm_malbolge/ALU_REL_STATUS.md
+3b6c011bf3f8f1c7bb610b99812956d7268719557b81ec7e85d481edf240f977  MALGAMES/vm/nested/mbir_alu_rel_pass25.mb
+733776f90b30d78433f6ed38e395126a71cde32ff41e71d7c182d8f683dffa87  MALGAMES/vm/classic/pong_codegen.py
+
+### upstream intacto
+0
+d479473
+2
+
+### comandos exactos de esta campana (cwd MALGAMES/vm/nested)
+python3 replay_alu_rel.py run --max-steps 300000 -o ../../evidence/pong_v0/2026-10-16T003512Z/raw/replay_alu_rel.json
+python3 audit_alu_rel_isa.py run --max-steps 300000 -o ../../evidence/pong_v0/2026-10-16T003512Z/raw/auditoria_isa_75.json
+python3 pong_nested.py run --max-steps 300000 -o ../../evidence/pong_v0/2026-10-16T003512Z/raw/informe_cadena.json
+python3 audit_alu_rel_isa.py run --max-steps 300000 -o ../../evidence/pong_v0/2026-10-16T003512Z/raw/auditoria_isa.json   (primera pasada, op2=0..2)
+
+### estado de los repos abiertos en solo lectura, explicado
+- MALBOLGE-MB-DATABASE: `git status --porcelain` = 0 lineas (HEAD d479473). Cero escritura en toda la campana.
+- Malbolge-Engine: 2 lineas `??` = `malbolge` y `malbolge-ipc`, binarios NO rastreados que YA estaban
+  (el interprete A que usa `run_classic.py` sellado es `Malbolge-Engine/malbolge`). Esta campana no creo ni
+  modifico ningun archivo ahi; se registran solo para que el estado sucio no se lea como efecto nuestro.
+- El interprete A y el B son el MISMO ELF (sha 3257f1ae... identico). Son "independientes" como codigos fuente
+  distintos en el sellado original; aqui coinciden en binario, y la tercera via (modelo Python) si es
+  independiente. Se reporta como esta, sin inflar la cuenta de vias.

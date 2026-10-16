@@ -1,0 +1,18 @@
+{
+  "schema": "malgames_pong_v0_run/1",
+  "kind": "addendum",
+  "appende el": "2026-10-15",
+  "motivo": "tras sellar el run 2026-10-15T195127Z se midio el wall time que el run.json no pedia; la disciplina del repo es anexar, no reescribir evidencia sellada",
+  "no_modifica": ["run.json", "verdict.md", "raw/00..11"],
+  "verificacion_anadida": {
+    "id": "V9",
+    "raw": "raw/12_wall_time.txt",
+    "hallazgos": {
+      "lt_pass12": "81977 pasos en 2.84 a 3.01 s de pared en 4 ejecuciones; el conteo de pasos se repuso identico las 4 veces y stdout 010a",
+      "throughput_estimado": "~27k-29k pasos por segundo en Malbolge-Engine/malbolge sobre este host (derivado de los numeros medidos, no medido como metrica propia)",
+      "hello_y_truth_machine": "0.00 s reportados por /usr/bin/time (por debajo de la resolucion)",
+      "entrada_nul": "la linea de entrada de lt_pass12 contiene un byte 0x00: la primera version de este raw lo trunco via sustitucion de orden y dio 0.00 s falsos; corregido escribiendo la entrada a fichero con printf"
+    },
+    "consecuencia_para_g2": "con ~28k pasos/s, un tick de Pong que costase 10^5 pasos tomaria ~4 s por tick dentro de la VM. El muro sigue siendo de capacidad de imagen (59049 celdas), no de tiempo."
+  }
+}

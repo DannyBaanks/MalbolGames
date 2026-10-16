@@ -1,0 +1,12 @@
+id	nombre	estado_en	movimientos	estado_esperado
+E1	horizontal sin colision	pong1;8,4,4,2,1,-1,0,0,0,0,0	0,0	pong1;8,4,5,1,1,-1,0,0,0,0,1
+E2	vertical -1->+1 en tope	pong1;8,4,4,0,1,-1,0,0,0,0,0	0,0	pong1;8,4,5,1,1,1,0,0,0,0,1
+E3	rebote en suelo	pong1;8,4,4,3,1,1,0,0,0,0,0	0,0	pong1;8,4,5,2,1,-1,0,0,0,0,1
+E4	golpe de paleta izquierda	pong1;8,4,0,2,-1,1,3,0,0,0,0	0,0	pong1;8,4,0,3,1,1,3,0,0,0,1
+E5	gol lado izquierdo + reset	pong1;8,4,0,1,-1,1,3,0,0,0,0	0,0	pong1;8,4,4,2,1,-1,3,0,0,1,1
+E4b	golpe de paleta derecha	pong1;8,4,7,1,1,1,0,2,0,0,0	0,0	pong1;8,4,7,2,-1,1,0,2,0,0,1
+E5b	gol lado derecho + reset	pong1;8,4,7,1,1,1,0,0,0,0,0	0,0	pong1;8,4,4,2,-1,-1,0,0,1,0,1
+E8a	marcador 99 saturado	pong1;8,4,7,3,1,1,0,0,99,0,0	0,0	pong1;8,4,4,2,-1,-1,0,0,99,0,1
+E0	la paleta se mueve antes que la pelota y convierte un gol en golpe	pong1;8,4,0,1,-1,-1,1,0,0,0,0	-1,0	pong1;8,4,0,0,1,-1,0,0,0,0,1
+E9	paleta fuera de rango se clampa	pong1;8,4,4,2,1,-1,0,3,0,0,0	-1,1	pong1;8,4,5,1,1,-1,0,3,0,0,1
+E10	rebote vertical y golpe de paleta en el mismo tick	pong1;8,4,0,0,-1,-1,2,0,0,0,0	-1,0	pong1;8,4,0,1,1,1,1,0,0,0,1

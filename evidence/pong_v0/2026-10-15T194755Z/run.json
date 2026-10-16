@@ -1,0 +1,126 @@
+{
+  "schema": "malgames_pong_v0_run/1",
+  "run_id": "2026-10-15T194755Z",
+  "gate": "G1",
+  "objective": "oraculo doble y fixtures congelados para el contrato pong1; ninguna transicion se calcula dentro de una VM de Malbolge en este run",
+  "timestamp_utc": "2026-10-15T19:47:55Z",
+  "workspace": "/home/danny/Development/ISyCo Git/MALGAMES",
+  "git": {
+    "is_repository": false,
+    "note": "MALGAMES no es un repositorio git; la persistencia es filesystem + SHA-256. MALDOOM (hermano) no fue tocado por este run."
+  },
+  "environment": {
+    "kernel": "Linux 7.0.0-38-generic x86_64 (Ubuntu 24.04)",
+    "compiler": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "stdlib": "glibc 2.39",
+    "python": "Python 3.12.3",
+    "coreutils": "sha256sum (GNU coreutils) 9.4",
+    "raw": "raw/00_environment.txt"
+  },
+  "commands": [
+    "gcc -O2 -std=c11 -Wall -Wextra -o build/pong_reference oracle/pong_reference.c   -> raw/01_gcc_build.txt (exit 0, cero warnings)",
+    "python3 oracle/pong_reference.py selftest                                        -> raw/02_selftest_py.out (exit 0, stderr vacio)",
+    "./build/pong_reference selftest                                                  -> raw/03_selftest_c.out (exit 0, stderr 553 B: 12 diagnosticos de sus propios sondeos de rechazo)",
+    "python3 harness/compare_oracle.py --root .                                       -> raw/04_compare_oracle.json (exit 0)",
+    "python3 tests/test_oracle.py --root .                                            -> raw/05_test_oracle.out (exit 0)"
+  ],
+  "artifacts": {
+    "oracle/pong_reference.py": "080725a5e250a6d9869dcd63753b6a0780dcf6dd7b9e2eb0ce50041b00208ad8",
+    "oracle/pong_reference.c": "65cd97c75cbbe869f3f75d02f6182035b5dc51037f1a72c8908b615c11112755",
+    "harness/compare_oracle.py": "0d16c3afdc3cfb38c84bf69a1c24059a1aa51a7e062d3b39f4ac09b447b895cc",
+    "tests/test_oracle.py": "abb252fef709f4e48fbcc4bcff0f8d9ce6672ec8eb10b866df57591a515fa489",
+    "tests/fixtures/transitions.tsv": "76447b14494e180e8997bad788d9e6b19272bddf4fa620d7c23c82d0b3e4bab9",
+    "tests/fixtures/frames.tsv": "5757b3cb953423a6d4307178ca6f6ec3c7e016e395a095f735b861185477b84e",
+    "tests/fixtures/rejects.txt": "2414f24f621e89c674b3113b5efa198db2bcbca4dab7d910d8011dc5a9ba2197",
+    "tests/fixtures/chain_rejects.txt": "2e85f76871c9645095be194c93a050dad45532b7b1a8c13128fe0c88a03a180c",
+    "tests/fixtures/chain_c1.in": "84697894d99123b61e23486ee732482c82f7a9db56958bdb0101ce163de634c3",
+    "tests/fixtures/chain_c1.expected": "f518acece6d06948e814b4a50e59064b844d55a10fdfe2561a5ad66dcc3e9a63",
+    "tests/fixtures/chain_c2.in": "33dbd8ff2b9ca4fcde68410af9d33059cf30372cc026b13a291ad3fbf0cc2695",
+    "tests/fixtures/chain_c2.expected": "bd68cdb6d5ca7df0649f7a6c6321c464acb88fba9d1669dde0d2e2ce2db17d91"
+  },
+  "results": {
+    "compare_oracle": {
+      "checks_total": 31,
+      "checks_passed": 31,
+      "failures": 0,
+      "verdict": "PASS",
+      "byte_equal_cross_oracle": true,
+      "breakdown": {
+        "transition": 11,
+        "render": 3,
+        "chain": 2,
+        "reject": 12,
+        "chain_reject": 3
+      }
+    },
+    "test_oracle": {
+      "groups": ["T1 determinismo", "T2 higiene de bytes", "T3 fallo cerrado", "T4 composicion", "T5 saturacion y clamp", "T6 tick maximo"],
+      "oracles_tested": 2,
+      "failures": 0,
+      "verdict": "PASS"
+    },
+    "selftest": {
+      "python": "11 transiciones, 2 renders, 12 rechazos -> PASS",
+      "c": "11 transiciones, 12 rechazos, 2 renders -> PASS"
+    }
+  },
+  "controls": [
+    "los bytes esperados de transitions.tsv, frames.tsv, chain_c1 y chain_c2 se derivaron a mano del contrato de docs/PONG_MIN_SPEC.md antes de ejecutar cualquier oraculo; chain_c2 (9 ticks) es la derivacion manual mas larga y coincide byte a byte con las dos implementaciones",
+    "los dos oraculos estan escritos de forma independiente (Python y C11 estricto, sin codigo compartido) y sin leer el fixture del otro en tiempo de ejecucion",
+    "rechazo verificado con stdout de cero bytes y exit != 0 en las 15 lineas de rechazo (12 step + 3 chain)",
+    "higiene de bytes: la salida no contiene 0x0d ni 0xef 0xbb 0xbf y termina en LF (T2), defecto aprendido de MALDOOM E7/E8/E9",
+    "el modo chain exige que cada linea de trabajo carry-forwards el estado actual; una linea valida pero divergente se rechaza (probado con dos variantes: tick y paleta)"
+  ],
+  "negative_results": [
+    "la primera version del harness devolvio 16 fallos porque no pasaba el modo (step|chain|render) como argumento al subprocess: ambos oraculos respondieron 'modo desconocido' con rc=2. Corregido en tools/compare_oracle.py (sha 0d16c3af...).",
+    "el primer frames.tsv se escribio con espacios y saltos mal colocados (F1 tenia '|....... ' y F3 partido en dos filas); descartado y reescrito antes de congelar. No forma parte de la evidencia.",
+    "los dos oraculos difieren en el MENSAJO de stderr para la misma linea rechazada (pong1;...;0 con 12 campos: C dice 'se esperaban 11 campos', Python dice 'se esperaban 2 movimientos'). El veredicto contractual (rc!=0, stdout vacio) coincide; stderr no es contractual.",
+    "no existe todavia ninguna ejecucion dentro de una VM de Malbolge: G2 no se ha intentado en este run."
+  ],
+  "claims": [
+    {
+      "claim": "ORACLE_ONLY",
+      "status": "DEMONSTRATED",
+      "scope": "dos implementaciones independientes (Python 3.12 y C11/gcc 13.3) calculan de forma byte-identica la transicion pong1 y el render sobre 11 transiciones, 2 cadenas (4 y 9 ticks), 3 frames y 15 rechazos, segun fixtures congelados y derivados a mano del contrato",
+      "who_computes": "host CPU, ejecutando los oraculos; no Malbolge"
+    },
+    {
+      "claim": "ONE_TICK_NO_COLLISION_VM",
+      "status": "NOT_DEMONSTRATED",
+      "scope": "ninguna transicion se calculo dentro de una VM de Malbolge"
+    },
+    {
+      "claim": "STATEFUL_MIN_PONG_VM",
+      "status": "NOT_DEMONSTRATED",
+      "scope": "sin VM, sin estado persistido entre ejecuciones"
+    },
+    {
+      "claim": "VM_RENDER_8x4",
+      "status": "NOT_DEMONSTRATED",
+      "scope": "el render solo existe en los oraculos del host"
+    },
+    {
+      "claim": "FULL_FRAME_VM",
+      "status": "NOT_DEMONSTRATED",
+      "scope": "no se ha producido ningun frame calculado por la VM"
+    },
+    {
+      "claim": "JUEGO_FUNCIONANDO",
+      "status": "NOT_DEMONSTRATED",
+      "scope": "prohibido por el Compose hasta que la transicion se calcule dentro de la VM"
+    }
+  ],
+  "not_demonstrated": [
+    "que Malbolge Clasico o Unshackled calcule cualquier campo del estado pong1",
+    "que un programa de Malbolge lea la serializacion pong1 desde stdin y la valide",
+    "que un frame de 8x4 pueda emitirse desde dentro de la VM con el presupuesto de celdas medido",
+    "rendimiento: pasos por tick, bytes por frame, frames por segundo de cualquier via en Malbolge",
+    "equivalencia entre los dos oraculos y un tercer motor (no existe todavia)"
+  ],
+  "scope_statement": "Esta evidencia cubre G0 y G1 del Compose COMPOSE_MALGAMES_PONG_V0.md: contrato congelado, oraculo doble y fixtures verificables. No cubre G2 (transicion calculada por la VM) y no afirma nada sobre Malbolge.",
+  "baseline_pointer": {
+    "maldoom_head_at_start": "32a7392",
+    "maldoom_touched_by_this_run": false,
+    "maldoom_seal_chain": "53 manifiestos, 445 entradas, 436 alineadas a tres vias, 9 irreversibles, 0 ausentes"
+  }
+}

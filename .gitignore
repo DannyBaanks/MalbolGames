@@ -1,0 +1,10 @@
+# Superficie no contractual: se regenera con las recetas del README
+build/
+__pycache__/
+*.pyc
+.DS_Store
+
+# El encargo verbatim no se publica (precedente: MALDOOM tiene 602 ficheros
+# versionados y cero del Compose). Su sha256 sigue citado en docs/PROVENANCE.md,
+# y el fichero sigue en disco: solo queda fuera del repo publicado.
+composes/

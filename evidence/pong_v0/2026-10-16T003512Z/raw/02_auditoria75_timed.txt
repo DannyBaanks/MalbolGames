@@ -1,0 +1,5 @@
+
+real	6m3,006s
+user	6m2,111s
+sys	0m0,354s
+rc_auditoria75=0

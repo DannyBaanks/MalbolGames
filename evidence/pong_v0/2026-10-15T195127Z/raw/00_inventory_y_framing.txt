@@ -1,0 +1,17 @@
+# pre-chequeo G2: inventario y verificacion en vivo de maquinas Malbolge Clasico (Linux, sin builds, sin escrituras fuera de MALGAMES)
+# fecha UTC: 2026-10-15T19:51:27Z
+
+## V1 binarios
+-rwxrwxr-x 1 danny danny 17336 oct 7 15:27 /home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge
+-rwxrwxr-x 1 danny danny 16536 oct 14 17:50 /home/danny/Development/ISyCo/workspace/assembly/malbolge/reference_interpreter_classic
+ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=6f2014e943fc792594275bd20163dfde13e486af, for GNU/Linux 3.2.0, not stripped
+ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=d04e394cf59b31927523cd459464905ed074d87e, for GNU/Linux 3.2.0, not stripped
+
+## V2 hello.mal en los dos interpretes (framing medido)
+$ printf "" | malbolge hello.mal 100000
+Hello World!
+engine rc=0 stderr: steps: 40 | status: HALTED
+$ reference_interpreter_classic hello.mal
+reference rc=0 stdout_bytes=12 (sin newline de framing)
+$ engine stdout bytes:
+13

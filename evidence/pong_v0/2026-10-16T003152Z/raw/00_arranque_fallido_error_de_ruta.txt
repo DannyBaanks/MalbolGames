@@ -1,0 +1,5 @@
+no existe la copia del kernel: /home/danny/Development/ISyCo Git/MALGAMES/vm/nested/pong_nested.py/mbir_alu_rel_pass25.mb
+
+real	0m0,032s
+user	0m0,025s
+sys	0m0,007s

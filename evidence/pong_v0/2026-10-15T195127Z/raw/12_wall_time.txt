@@ -1,0 +1,19 @@
+## V9 wall time medido (complemento appended; reemplaza el intento defectuoso anterior)
+# /usr/bin/time -f '%e s' ; stdin desde archivo, salida descartada, stderr capturado
+-- hello (max_steps=100000):
+   wall_time_s=steps: 40 | status: HALTED
+0.00
+-- truth_machine input '0' (max_steps=200):
+   wall_time_s=steps: 136 | status: HALTED
+0.00
+-- lt_pass12 (max_steps=600000):
+   wall_time_s=steps: 81977 | status: HALTED
+3.01  stdout_hex=010a
+-- control de repeticion de lt_pass12 (3x):
+   run1 wall_time_s=steps: 81977 | status: HALTED
+2.98
+   run2 wall_time_s=steps: 81977 | status: HALTED
+2.87
+   run3 wall_time_s=steps: 81977 | status: HALTED
+2.84
+# nota: la entrada de lt_pass12 contiene un byte 0x00; se escribio con printf a fichero, no por sustitucion de orden (la primera version de este raw lo trunco y dio 0.00 s falsos).

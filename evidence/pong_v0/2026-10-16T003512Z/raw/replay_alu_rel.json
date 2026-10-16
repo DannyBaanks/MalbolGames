@@ -1,0 +1,971 @@
+{
+  "objetivo": "control de que el harness de MALGAMES reproduce los 25 vectores sellados de ALU_REL_STATUS.md en salida Y en pasos",
+  "fuente_de_los_vectores": "MALBOLGE-MB-DATABASE/vm_malbolge/ALU_REL_STATUS.md (transcripcion literal, sin retonques)",
+  "kernel": {
+    "archivo": "/home/danny/Development/ISyCo Git/MALGAMES/vm/nested/mbir_alu_rel_pass25.mb",
+    "sha256": "3b6c011bf3f8f1c7bb610b99812956d7268719557b81ec7e85d481edf240f977",
+    "bytes": 57511,
+    "margen_celdas": 1538
+  },
+  "interpretes": {
+    "A": "/home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge",
+    "B": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge",
+    "C": "/home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/tools/oracle_classic.py"
+  },
+  "max_steps": 300000,
+  "vectores": 25,
+  "fieles": 25,
+  "todo_fiel": true,
+  "casos": [
+    {
+      "indice": 1,
+      "significado": "Baseline 1: PUSH 'A', OUT, HALT",
+      "stream_hex": "01 41 10 00",
+      "esperado_hex": "41",
+      "pasos_documentados": 63937,
+      "salida_observada_hex": "41",
+      "pasos": [
+        63937,
+        63937,
+        63937
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "410a",
+        "salida_hex": "41",
+        "pasos": 63937,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "410a",
+        "salida_hex": "41",
+        "pasos": 63937,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "41",
+        "salida_hex": "41",
+        "pasos": 63937,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 2,
+      "significado": "Baseline 2: PUSH 'A', PUSH 'B', OUT, OUT, HALT",
+      "stream_hex": "01 41 01 42 10 10 00",
+      "esperado_hex": "4241",
+      "pasos_documentados": 69179,
+      "salida_observada_hex": "4241",
+      "pasos": [
+        69179,
+        69179,
+        69179
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "42410a",
+        "salida_hex": "4241",
+        "pasos": 69179,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "42410a",
+        "salida_hex": "4241",
+        "pasos": 69179,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "4241",
+        "salida_hex": "4241",
+        "pasos": 69179,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 3,
+      "significado": "Baseline 3: HALT inmediato",
+      "stream_hex": "00",
+      "esperado_hex": "(vacio)",
+      "pasos_documentados": 58689,
+      "salida_observada_hex": "(vacio)",
+      "pasos": [
+        58689,
+        58689,
+        58689
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "0a",
+        "salida_hex": "",
+        "pasos": 58689,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "0a",
+        "salida_hex": "",
+        "pasos": 58689,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "",
+        "salida_hex": "",
+        "pasos": 58689,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 4,
+      "significado": "ADD 2 + 3 = 5",
+      "stream_hex": "01 02 01 03 02 10 00",
+      "esperado_hex": "05",
+      "pasos_documentados": 73681,
+      "salida_observada_hex": "05",
+      "pasos": [
+        73681,
+        73681,
+        73681
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "050a",
+        "salida_hex": "05",
+        "pasos": 73681,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "050a",
+        "salida_hex": "05",
+        "pasos": 73681,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "05",
+        "salida_hex": "05",
+        "pasos": 73681,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 5,
+      "significado": "ADD 4 + 3 = 7",
+      "stream_hex": "01 04 01 03 02 10 00",
+      "esperado_hex": "07",
+      "pasos_documentados": 72471,
+      "salida_observada_hex": "07",
+      "pasos": [
+        72471,
+        72471,
+        72471
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "070a",
+        "salida_hex": "07",
+        "pasos": 72471,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "070a",
+        "salida_hex": "07",
+        "pasos": 72471,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "07",
+        "salida_hex": "07",
+        "pasos": 72471,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 6,
+      "significado": "ADD 1 + 1 = 2",
+      "stream_hex": "01 01 01 01 02 10 00",
+      "esperado_hex": "02",
+      "pasos_documentados": 71976,
+      "salida_observada_hex": "02",
+      "pasos": [
+        71976,
+        71976,
+        71976
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 71976,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 7,
+      "significado": "ADD 2 + 0 = 2",
+      "stream_hex": "01 02 01 00 02 10 00",
+      "esperado_hex": "02",
+      "pasos_documentados": 71535,
+      "salida_observada_hex": "02",
+      "pasos": [
+        71535,
+        71535,
+        71535
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 71535,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 8,
+      "significado": "SUB 4 - 2 = 2",
+      "stream_hex": "01 04 01 02 03 10 00",
+      "esperado_hex": "02",
+      "pasos_documentados": 72885,
+      "salida_observada_hex": "02",
+      "pasos": [
+        72885,
+        72885,
+        72885
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72885,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72885,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 72885,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 9,
+      "significado": "SUB 2 - 2 = 0",
+      "stream_hex": "01 02 01 02 03 10 00",
+      "esperado_hex": "00",
+      "pasos_documentados": 74098,
+      "salida_observada_hex": "00",
+      "pasos": [
+        74098,
+        74098,
+        74098
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 74098,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 74098,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 74098,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 10,
+      "significado": "SUB 2 - 1 = 1",
+      "stream_hex": "01 02 01 01 03 10 00",
+      "esperado_hex": "01",
+      "pasos_documentados": 72553,
+      "salida_observada_hex": "01",
+      "pasos": [
+        72553,
+        72553,
+        72553
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "01",
+        "salida_hex": "01",
+        "pasos": 72553,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 11,
+      "significado": "SUB 2 - 0 = 2",
+      "stream_hex": "01 02 01 00 03 10 00",
+      "esperado_hex": "02",
+      "pasos_documentados": 72107,
+      "salida_observada_hex": "02",
+      "pasos": [
+        72107,
+        72107,
+        72107
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 72107,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 12,
+      "significado": "Chained Arith 1: (1+1)-1 = 1",
+      "stream_hex": "01 01 01 01 02 01 01 03 10 00",
+      "esperado_hex": "01",
+      "pasos_documentados": 80592,
+      "salida_observada_hex": "01",
+      "pasos": [
+        80592,
+        80592,
+        80592
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 80592,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 80592,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "01",
+        "salida_hex": "01",
+        "pasos": 80592,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 13,
+      "significado": "Chained Arith 2: (1+1)-2 = 0",
+      "stream_hex": "01 01 01 01 02 01 02 03 10 00",
+      "esperado_hex": "00",
+      "pasos_documentados": 82137,
+      "salida_observada_hex": "00",
+      "pasos": [
+        82137,
+        82137,
+        82137
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 82137,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 82137,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 82137,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 14,
+      "significado": "Chained Arith 3: (2-1)+1 = 2",
+      "stream_hex": "01 02 01 01 03 01 01 02 10 00",
+      "esperado_hex": "02",
+      "pasos_documentados": 80592,
+      "salida_observada_hex": "02",
+      "pasos": [
+        80592,
+        80592,
+        80592
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 80592,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "020a",
+        "salida_hex": "02",
+        "pasos": 80592,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "02",
+        "salida_hex": "02",
+        "pasos": 80592,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 15,
+      "significado": "CMP_EQ 2 == 2 (true)",
+      "stream_hex": "01 02 01 02 04 10 00",
+      "esperado_hex": "01",
+      "pasos_documentados": 74530,
+      "salida_observada_hex": "01",
+      "pasos": [
+        74530,
+        74530,
+        74530
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 74530,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 74530,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "01",
+        "salida_hex": "01",
+        "pasos": 74530,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 16,
+      "significado": "CMP_EQ 2 == 1 (false)",
+      "stream_hex": "01 02 01 01 04 10 00",
+      "esperado_hex": "00",
+      "pasos_documentados": 72991,
+      "salida_observada_hex": "00",
+      "pasos": [
+        72991,
+        72991,
+        72991
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 72991,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 17,
+      "significado": "CMP_EQ 2 == 0 (false)",
+      "stream_hex": "01 02 01 00 04 10 00",
+      "esperado_hex": "00",
+      "pasos_documentados": 72545,
+      "salida_observada_hex": "00",
+      "pasos": [
+        72545,
+        72545,
+        72545
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 72545,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 18,
+      "significado": "CMP_EQ 4 == 2 (false)",
+      "stream_hex": "01 04 01 02 04 10 00",
+      "esperado_hex": "00",
+      "pasos_documentados": 73323,
+      "salida_observada_hex": "00",
+      "pasos": [
+        73323,
+        73323,
+        73323
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 73323,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 73323,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 73323,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 19,
+      "significado": "Chained Rel 1: (1+1)==2 -> 1",
+      "stream_hex": "01 01 01 01 02 01 02 04 10 00",
+      "esperado_hex": "01",
+      "pasos_documentados": 82569,
+      "salida_observada_hex": "01",
+      "pasos": [
+        82569,
+        82569,
+        82569
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 82569,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 82569,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "01",
+        "salida_hex": "01",
+        "pasos": 82569,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 20,
+      "significado": "Chained Rel 2: (1+1)==1 -> 0",
+      "stream_hex": "01 01 01 01 02 01 01 04 10 00",
+      "esperado_hex": "00",
+      "pasos_documentados": 81030,
+      "salida_observada_hex": "00",
+      "pasos": [
+        81030,
+        81030,
+        81030
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 81030,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 81030,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 81030,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 21,
+      "significado": "Chained Rel 3: (4-2)==2 -> 1",
+      "stream_hex": "01 04 01 02 03 01 02 04 10 00",
+      "esperado_hex": "01",
+      "pasos_documentados": 83478,
+      "salida_observada_hex": "01",
+      "pasos": [
+        83478,
+        83478,
+        83478
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 83478,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 83478,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "01",
+        "salida_hex": "01",
+        "pasos": 83478,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 22,
+      "significado": "Chained Rel 4: (4-2)==1 -> 0",
+      "stream_hex": "01 04 01 02 03 01 01 04 10 00",
+      "esperado_hex": "00",
+      "pasos_documentados": 81939,
+      "salida_observada_hex": "00",
+      "pasos": [
+        81939,
+        81939,
+        81939
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 81939,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 81939,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 81939,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 23,
+      "significado": "Chained Rel 5: (4-2)==0 -> 0",
+      "stream_hex": "01 04 01 02 03 01 00 04 10 00",
+      "esperado_hex": "00",
+      "pasos_documentados": 81493,
+      "salida_observada_hex": "00",
+      "pasos": [
+        81493,
+        81493,
+        81493
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 81493,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 81493,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 81493,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 24,
+      "significado": "Chained Rel 6: (2+0)==2 -> 1",
+      "stream_hex": "01 02 01 00 02 01 02 04 10 00",
+      "esperado_hex": "01",
+      "pasos_documentados": 82128,
+      "salida_observada_hex": "01",
+      "pasos": [
+        82128,
+        82128,
+        82128
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 82128,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "010a",
+        "salida_hex": "01",
+        "pasos": 82128,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "01",
+        "salida_hex": "01",
+        "pasos": 82128,
+        "status": "HALTED",
+        "rc": 0
+      }
+    },
+    {
+      "indice": 25,
+      "significado": "Chained Rel 7: (2+0)==1 -> 0",
+      "stream_hex": "01 02 01 00 02 01 01 04 10 00",
+      "esperado_hex": "00",
+      "pasos_documentados": 80589,
+      "salida_observada_hex": "00",
+      "pasos": [
+        80589,
+        80589,
+        80589
+      ],
+      "salida_fiel": true,
+      "pasos_fieles": true,
+      "tres_vias_iguales": true,
+      "veredicto": "FIEL_A_EVIDENCIA_SELLADA",
+      "A": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 80589,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "B": {
+        "stdout_raw_hex": "000a",
+        "salida_hex": "00",
+        "pasos": 80589,
+        "status": "HALTED",
+        "rc": 0
+      },
+      "C": {
+        "stdout_raw_hex": "00",
+        "salida_hex": "00",
+        "pasos": 80589,
+        "status": "HALTED",
+        "rc": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+date -u: 2026-10-15T19:47:55Z
+uname -a: Linux DannyISyCo 7.0.0-38-generic #38~24.04.4-Ubuntu SMP PREEMPT_DYNAMIC Mon Sep 14 16:37:11 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+gcc: gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+python: Python 3.12.3
+libc/ldd: ldd (Ubuntu GLIBC 2.39-0ubuntu8.9) 2.39
+sha256sum: sha256sum (GNU coreutils) 9.4
+cwd: /home/danny/Development/ISyCo Git/MALGAMES

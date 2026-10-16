@@ -1,0 +1,22 @@
+## V3 rama sobre stdin dentro de la VM Clasica (truth_machine.mal, 255 B)
+$ printf 0 | malbolge truth_machine.mal 200
+input=0 rc=0 stdout_hex=300a stderr=steps: 136 | status: HALTED
+input=1 rc=0 stdout_hex=31313131313131313131310a stderr=steps: 200 | status: TIMEOUT
+
+## V4 reproduccion del claim Clasico mas fuerte (lt_pass12.mb, cmp_lt)
+$ printf 01 00 01 01 02 10 00 | runners/malbolge-original/malbolge lt_pass12.mb 600000
+-rw-rw-r-- 1 danny danny 57511 oct 14 20:17 /home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/vm_malbolge/evidence/artifacts/lt_pass12.mb
+79160ecf906ce3a44a90aed9320954890e04b9444a3da30ad9c88e7cbecb61d2  vm_malbolge/evidence/artifacts/lt_pass12.mb
+rc=0 stdout_hex=010a stderr=steps: 81977 | status: HALTED
+
+## V5 presupuesto de celdas medido
+57511 bytes  vm_malbolge/src/mbir_alu_rel.mb
+57512 bytes  vm_malbolge/src/mbir_cmp_lt.mb
+57511 bytes  vm_malbolge/evidence/artifacts/lt_pass12.mb
+capacidad Clasica = 59049 celulas; una imagen de un solo kernel ocupa 57511 -> margen 1538
+
+## V6 meow_vm_malbolge: la imagen no carga en ningun interprete
+-rw-r--r-- 1 danny danny 8220 ago 27 02:02 /home/danny/Development/ISyCo/meow_vm_malbolge/vm/meow_vm.mal
+NUL bytes = 8158
+error: invalid character 0x00 in program
+invalid character in source file

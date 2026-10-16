@@ -1,0 +1,5 @@
+
+real	2m10,740s
+user	2m10,465s
+sys	0m0,123s
+rc_replay=0

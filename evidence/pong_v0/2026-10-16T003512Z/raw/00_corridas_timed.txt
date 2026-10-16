@@ -1,0 +1,12 @@
+### auditoria ISA (45 casos x 3 interpretes)
+
+real	3m36,541s
+user	3m36,120s
+sys	0m0,223s
+rc_auditoria=0
+### cadena bounce->contact (23 casos x 3 interpretes)
+
+real	2m39,517s
+user	2m39,207s
+sys	0m0,133s
+rc_cadena=1

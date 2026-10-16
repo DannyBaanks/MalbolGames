@@ -1,0 +1,133 @@
+{
+  "experiment": "PONG_V0 / intento de cadena bounce->contact dentro de UN programa MBIR (ruta NESTED_VM)",
+  "run_id": "2026-10-16T003512Z",
+  "compose": "b1f170b8e8e53617bfb5b4f730827a4731581bb10a3f240826cd8d46ed3f430a",
+  "encargo_punto": "G2-siguiente: encadenar el rebote vertical y la puerta de gol en un solo programa, haciendo que la VM DERIVE la fila post-vertical en vez de recibirla pre-codificada por ruta",
+  "solicitado_por_usuario": "con este nuevo enfoque crees que ahora si podriamos intentar algo como malpong -> vale demosle por ahi -> si intentemos eso",
+  "workspace": "ISyCo Git/MALGAMES",
+  "workspace_es_repo_git": false,
+  "fecha_utc": "2026-10-16T00:35:12Z (inicio) a 2026-10-16T01:00:00Z (sellado)",
+  "hipotesis_que_se_puso_a_prueba": "El despacho N-way de `vm/classic/` cuesta ~1 100-1 300 B por ruta y por eso 32 rutas no ensamblan. Si en vez de despachar por (by,vy,pl) se expression la transicion como DATAFLOW sobre el kernel MBIR ya sellado (PUSH/SUB/ADD/CMP_EQ), el costo deja de depender del producto de estados y la cadena cabe. El kernel sellado es `alu_rel_pass25.mb` (57 511 B, 25/25).",
+  "condiciones_falsables_pactadas": {
+    "a": "el `by` derivado dentro de la VM debe reproducir las salidas ya selladas (8/8 bounce y 16/16 contact)",
+    "b": "el artefacto debe ensamblar con lmao rc=0 y medir <= 56 361 B",
+    "declaracion_a5": "esta intentona reduce ALCANCE (solo dominio interior by en {1,2}; los bordes exigen bifurcacion condicional que el kernel no tiene), NO reduce encoding. Ningun fixture congelado ni doc upstream se toco.",
+    "resultado_a": "FALSA. 0/4 en la derivacion de ny y 12/16 en la puerta; los 4 fallos son exactamente los 4 casos donde la puerta debe valer 1.",
+    "resultado_b": "NO APLICA. No se ensamblo nada nuevo: se reuso el kernel sellado de 57 511 B. La condicion de tamano no fue el obstaculo, asi que no se afirma ni una cosa ni la otra por esa via."
+  },
+  "cadena_de_evidencia": [
+    "raw/00_entorno_y_comandos.txt        entorno, sha de herramientas, comandos exactos, estado de los repos abiertos en solo lectura",
+    "raw/00_corridas_timed.txt            tiempos y rc de la primera ola (rejilla 45 + cadena)",
+    "raw/auditoria_isa.json               rejilla 45 casos x 3 interpretes (primera pasada, op2=0..2)",
+    "raw/informe_cadena.json              cadena bounce->contact: 3 controles + 4 derivaciones ny + 16 puertas",
+    "raw/01_replay_timed.txt              tiempo y rc del replay de los 25 vectores sellados",
+    "raw/replay_alu_rel.json              25 vectores de ALU_REL_STATUS.md, transcripcion literal, salida Y pasos",
+    "raw/02_auditoria75_timed.txt         tiempo y rc de la rejilla extendida",
+    "raw/auditoria_isa_75.json            rejilla 75 casos x 3 interpretes (op1=0..4, op2=0..4): diagonal a==a cubierta entera",
+    "raw/06_matrices_operadores.txt       matrices, vocabulario imprimible y diagonal derivados de los dos informes",
+    "raw/07_estructura_kernel_alu_rel.txt mecanismo en el HeLL sellado: 6 etiquetas de resultado y 5 constantes ROT",
+    "raw/08_framing_por_interprete.txt    control de framing A/B con 0x0A final, C sin el (3 vectores)"
+  ],
+  "entorno": {
+    "so": "Ubuntu 24.04, kernel 7.0.0-38-generic, x86_64",
+    "python": "3.12.3",
+    "otras_cosas": "ningun paquete nuevo; solo stdlib. Ningun comando destructivo, sin sudo, sin red."
+  },
+  "herramientas_externas_usadas_solo_lectura": {
+    "MALBOLGE-MB-DATABASE": "HEAD d479473, `git status --porcelain` = 0 lineas antes y despues de la campana",
+    "oracle_classic.py_sha256": "5dae8f31eaa296fdc5bb1a65b9bab93e94b3f230de5d1929d5d5d904dd4778cf",
+    "mbir_dispatch_gen.py_sha256": "c756fac6f8b55e852618c755e9f5b4e66b737d007d217457e62efd7f2e4285b4 (identico al citado en el sellado G2)",
+    "mbir_alu_rel_gen.py_sha256": "8c1d0fdb4cc07e29c04126dcf49be83b5127f9997dded864470188342337b5ff (identico al sellado)",
+    "heLL_generado_sha256": "54eb0723027b3e322ab19aa4e45809c4c8574344eb3b945164e452340ec773db (identico al documentado en ALU_REL_STATUS.md: generate() es byte-fiel al fuente sellado)",
+    "lmao_sha256": "5a6039efd995af1cf57b9bf4d6ec70da3a5303efe0ec6a1fe0fad3abc03f3f44 (no invocado: no hubo ensamblado nuevo)",
+    "ALU_REL_STATUS.md_sha256": "ef9a98a2b820d0427e618c96c95f90f4ac9f30327ba205ef3ced2611a2195f62",
+    "Malbolge-Engine": "HEAD 2f3424a; 2 lineas `??` preexistentes (malbolge, malbolge-ipc). Esta campana no creo ni modifico nada ahi."
+  },
+  "interpretes_clasicos_independientes": {
+    "A": "Malbolge-Engine/malbolge  sha256 3257f1ae98bcd3e86a1b93d1b53a4b3d3512d8265cb7052f2bcb56b1e95ea231",
+    "B": "MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge  sha256 3257f1ae98bcd3e86a1b93d1b53a4b3d3512d8265cb7052f2bcb56b1e95ea231",
+    "C": "MALBOLGE-MB-DATABASE/tools/oracle_classic.py  (modelo Python, independiente por codigo)",
+    "advertencia_honestidad": "A y B son el MISMO ELF (sha identico). Son tres ejecuciones pero solo DOS implementaciones independientes. Se reporta asi, sin inflar la cuenta a tres vias reales."
+  },
+  "kernel_reutilizado": {
+    "archivoMALGAMES": "vm/nested/mbir_alu_rel_pass25.mb",
+    "sha256": "3b6c011bf3f8f1c7bb610b99812956d7268719557b81ec7e85d481edf240f977",
+    "bytes": 57511,
+    "celdas_clasico": 59049,
+    "margen_celdas": 1538,
+    "origen": "copia verbatim (cmp == 0) de MALBOLGE-MB-DATABASE/vm_malbolge/evidence/artifacts/alu_rel_pass25.mb",
+    "verificacion_previa": "check_kernel() aborta si el sha o el tamano difieren; corro en las tres campanas de esta corrida"
+  },
+  "medida_de_capacidad": {
+    "replay_25_vectores_sellados": {
+      "resultado": "25/25 FIEL_A_EVIDENCIA_SELLADA",
+      "control": "doble: salida == hex documentado Y pasos A == B == C == pasos documentados (58 689 a 83 478)",
+      "max_steps": 300000,
+      "desacuerdos_entre_interpretes": 0,
+      "significado": "descarta la explicacion alternativa de que MALGAMES lea mal la ISA. El harness es exacto contra la evidencia upstream, asi que lo que falla abajo es propiedad del kernel."
+    },
+    "rejilla_de_operadores": {
+      "primera_pasada_op2_0a2": {"total": 45, "ADD_correcto": 2, "SUB_correcto": 4, "CMPEQ_correcto": 13, "desacuerdos": 0},
+      "pasada_extendida_op2_0a4": {"total": 75, "ADD_correcto": 5, "SUB_correcto": 4, "CMPEQ_correcto": 19, "desacuerdos": 0},
+      "vocabulario_imprimible_medido": ["0x00", "0x01", "0x02", "0x05", "0x07"],
+      "valores_del_tick_no_imprimibles": [3],
+      "CMPEQ_verdadero_exactamente_en": [[2, 2], [2, 3], [2, 4]],
+      "CMPEQ_equivalente_empirico": "op1 == 2 Y op2 en {2,3,4} sobre los 25 pares probados. NO es igualdad: falla en 0==0, 1==1, 3==3, 4==4 y da falso positivo en 2==3 y 2==4.",
+      "ADD_correcto_en": [[1, 1], [2, 0], [2, 3], [3, 4], [4, 3]],
+      "SUB_correcto_en": [[2, 0], [2, 1], [2, 2], [4, 2]],
+      "nota_de_rango": "la caracterizacion es empirica en el dominio probado 0..4 x 0..4; no es una prueba para operandos mayores."
+    },
+    "mecanismo_en_el_heLL_sellado": {
+      "etiquetas_de_resultado": ["diff_is_0", "diff_is_1", "diff_is_2_from_phase2", "sum_is_2", "sum_is_5", "sum_is_7"],
+      "constantes_ROT_que_materializan_el_byte": [0, 3, 6, 15, 21],
+      "lectura": "el 'resultado' no es un entero calculado: es una etiqueta de clasificacion elegida por una cadena de decrementos con carry, y cada etiqueta se imprime con UNA constante ROT. Eso acota el vocabulario imprimible a 5 valores y explica por que 3 y 4 no salen nunca.",
+      "coherencia": "upstream ya lo documenta asi en M2_ALU_STATUS.md ('Small-operand lookup ... the result byte is ROT 0, 3, 6, 15, or 21'). No se re-clasifica el kernel: se mide su techo."
+    }
+  },
+  "resultados_negativos": [
+    "N-A: la derivacion de ny dentro de la VM falla 4/4. El stream `PUSH by PUSH 1 SUB PUSH e ADD PUSH e ADD OUT` imprime 0xc6 para los CUATRO puntos interiores, es decir ni siquiera un entero del dominio: con tres operaciones encadenadas el kernel pierde la codificacion del valor.",
+    "N-B: la puerta encadenada acierta 12/16 y falla PRECISAMENTE en los 4 casos donde debe valer 1 (pl == ny). Todo caso 'no hay golpe' pasa por inercia: el kernel imprime 00 para cualquier comparacion que no toque op1==2.",
+    "N-C: el valor 3 del tablero 8x4 no es imprimible por este kernel (vocabulario medido {0,1,2,5,7}), con independencia del stream.",
+    "N-D: no se ensamblaron alternativas mas baratas: con el techo de capacidad demostrado, cualquier codificacion que dependa de 'igualdad' sobre 0..3 queda bloqueada; cambiar el stream no cambia el techo."
+  ],
+  "estado_del_arte_resultante": {
+    "G2": "sin cambios: dos predicados de un byte sobre dominio finito,DEMOSTRADOS en VM Clasica (8/8 y 16/16, sellado 2026-10-15T203244Z)",
+    "G2_siguiente_cadena_en_un_programa": "FALSA la hipotesis de dataflow sobre ALU_REL. Queda bloqueada por CAPACIDAD MEDIDA del kernel, no por tamano ni por mi codificacion.",
+    "techo_real_reportado": "el kernel MBIR 'Relational ALU' es un clasificador de operandos acotado, no una ALU. Su corpus 25/25 es real y fiel (replay 25/25), pero no ejerce la reflexividad fuera del 2."
+  },
+  "tabla_de_claims": [
+    {"claim": "El harness de MALGAMES reproduce bit-a-bit el corpus sellado de ALU_REL (salida y pasos)", "estado": "DEMOSTRADO", "sosten": "raw/replay_alu_rel.json, 25/25, desacuerdos 0"},
+    {"claim": "CMP_EQ del kernel es igualdad sobre el dominio del tick (0..3)", "estado": "FALSO", "sosten": "raw/auditoria_isa_75.json: diagonal solo acierta en 2; falso positivo en (2,3),(2,4)"},
+    {"claim": "La fila post-vertical puede DERIVARSE por dataflow dentro del kernel sellado", "estado": "FALSO en el dominio probado", "sosten": "raw/informe_cadena.json: 0/4 en ny (todos 0xc6), 12/16 en la puerta"},
+    {"claim": "El vocabulario imprimible del kernel es {0,1,2,5,7} y por tanto 3 no es expresable", "estado": "DEMOSTRADO (medida 0..4 x 0..4)", "sosten": "raw/06_matrices_operadores.txt"},
+    {"claim": "El mecanismo es clasificacion por etiqueta + constante ROT, no aritmetica general", "estado": "DEMOSTRADO (lectura del HeLL sellado, sha verificado)", "sosten": "raw/07_estructura_kernel_alu_rel.txt"},
+    {"claim": "El bloqueo es por tamano/celdas", "estado": "FALSO", "sosten": "se reuso un artefacto ya sellado de 57 511 B; ninguna corrida dependio de ensamblar mas rutas"},
+    {"claim": "ONE_TICK_NO_COLLISION_VM / STATEFUL_MIN_PONG_VM / VM_RENDER_8x4 / FULL_FRAME_VM", "estado": "NOT_DEMONSTRATED", "sosten": "sin cambio respecto del sellado G2"},
+    {"claim": "MALPONG jugable (o cualquier pieza con estado)", "estado": "NOT_DEMONSTRATED", "sosten": "no se intento; esta corrida acota por que el escalon anterior estaba bloqueado"}
+  ],
+  "alcance_de_G2": "G2 sigue siendo DOS predicados independientes de un byte. Esta corrida cierra la pregunta 'se pueden encadenar dentro de un programa' con un negativo fundamentado: no con este kernel.",
+  "no_se_toco": [
+    "MALBOLGE-MB-DATABASE completo (0 archivos modificados, HEAD d479473)",
+    "fixtures congelados: pong_bounce_v0.mb/.hell, pong_contact_v0.mb/.hell y sus sha del sellado 2026-10-15T203244Z",
+    "docs/agent/* del monorepo ISyCo, GUS/00_CANON, pipeline de sellos de MALDOOM",
+    "Malbolge-Engine (solo lectura del ELF ya presente)",
+    "nada publicado: sin push, sin rama remota, sin PR, sin release"
+  ],
+  "not_demonstrated": [
+    "aritmetica general en VM Malbolge Clasica sobre enteros del dominio de pong (0..4 ya excede el kernel sellado)",
+    "cualquier predicado que requiera igualdad reflexiva para un valor != 2",
+    "encadenado de mas de dos operaciones aritmeticas conservando el valor",
+    "bordes del tablero (by=0,vy=-1 y by=h-1,vy=+1): requieren bifurcacion condicional",
+    "un solo programa que calcule las DOS puertas del tick con entrada de estado compuesta"
+  ],
+  "artefactos": {
+    "tools/pong_nested.py": "stream builder + oracle por via independiente + runner de 3 vias (ruta NESTED_VM)",
+    "tools/audit_alu_rel_isa.py": "rejilla de operandos por opcode; OP2 extendido a 0..4 en esta campana",
+    "tools/replay_alu_rel.py": "transcripcion literal de los 25 vectores sellados con control de salida Y pasos",
+    "tools/matriz_operadores.py": "analisis determinista de un informe: matrices, vocabulario imprimible, diagonal",
+    "tools/extracta_estructura_kernel.py": "extraccion del mecanismo en el HeLL sellado (usa generate(), sin tocar el arbol)",
+    "artifacts/mbir_alu_rel_pass25.mb": "copia verbatim del kernel sellado (sha 3b6c011b..., 57 511 B)"
+  },
+  "nota_apagon": "ninguna corrida de esta campana dependio de estado en memoria de una sesion anterior; cada informe es autocontenido y aborta si el sha del kernel no coincide.",
+  "repro_esfera": "cd 'ISyCo Git/MALGAMES/vm/nested' && python3 replay_alu_rel.py run && python3 audit_alu_rel_isa.py run && python3 pong_nested.py run && python3 matriz_operadores.py ../../evidence/pong_v0/2026-10-16T003512Z/raw/auditoria_isa_75.json && python3 extracta_estructura_kernel.py. Coste: ~4 min (replay), ~6 min (rejilla 75), ~2.5 min (cadena). Todo en Clasico 3^10, max_steps 300 000-500 000."
+}

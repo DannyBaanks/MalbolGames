@@ -1,0 +1,56 @@
+# raw/11 no-determinismo de cola del ensamblador LMAO v0.6.0 (hallazgo de esta corrida)
+
+## qué se buscaba
+
+Comprobar si `lmao -o x.mb x.hell` es reproductible, porque la sección «Reproducir» de
+`README.md` y de `verdict.md` manda re-ensamblar desde el `.hell` y comparar.
+
+## qué se midió
+
+Mismo `.hell` ensamblado 3 veces + el `.mb` ya sellado, comparados byte a byte:
+
+| predicado | tamaño | prefijo común (mín.) | cola divergente | bytes distintos en la cola |
+|---|---|---|---|---|
+| bounce  | 34 105 | 34 010 B (99,72 %) | 94–95 B | 70–72 |
+| contact | 45 109 | 44 882 B (99,50 %) | 226–227 B | 182–192 |
+
+El **tamaño del `.mb` es estable**; solo cambia el contenido del final. Los sha difieren:
+
+```
+bounce  sellado 177e7fcea2b99c31 | reensamblados 7945a3c351beb083, c0a41efe33bfdb17, c0a41efe33bfdb17
+contact sellado 21486b5c5c74974a | reensamblados 772c23e80ff53446, b3f1c056facf9598, (tercero id.)
+```
+
+Nota: dos de los tres ensamblados de `bounce` salieron idénticos entre sí, así que no es
+«siempre distinto»; es que el contenido de esa cola depende del estado del proceso. La firma
+—prefijo idéntico, cola variable, tamaño fijo— es la de un relleno escrito desde
+memoria sin inicializar, no de un diseño aleatorizado. No lo afirmo como diagnóstico: es una
+hipótesis compatible con lo medido, y distinguiría un `valgrind`/`strace` sobre `lmao`, fuera
+del alcance de esta corrida.
+
+## si importa o no (esto es lo que decide el claim)
+
+Se ejecutaron los **tres reensamblados** en los **tres intérpretes Clásicos**, sobre los 8
+puntos del dominio, y se comparó con el informe del artefacto sellado:
+
+```
+sellado        pasos A = [37395, 38187, 38557, 39052, 39853, 40232, 40736, 41849]
+reensamblado 0 pasos A = idéntico   (sha 7945a3c3…)
+reensamblado 1 pasos A = idéntico   (sha c0a41efe…)
+reensamblado 2 pasos A = idéntico   (sha c0a41efe…)
+salidas de A, B y C: idénticas entre los cuatro binarios y al informe sellado (8/8 en cada uno)
+```
+
+**La cola divergente es conductualmente inerte.** El programa que se ejecuta —el prefijo— sí es
+determinista.
+
+## consecuencia para el sello y para cualquier regresión futura
+
+1. El artefacto canónico es el **`.mb` byte a byte**, sellado en `artifacts/`. Su sha no es
+   re-derivable desde el `.hell`; quien reensamble obtendrá otro sha y debe esperar eso.
+2. Un test de regresión **no** puede ser `sha256(lmao(.hell)) == sha sellado`. Debe ser, o bien
+   el `.mb` sellado en disco, o bien `sha del .hell` + igualdad de comportamiento (salidas y
+   pasos). Dejarlo escrito evita el falso negativo.
+3. Ningún claim de esta corrida depende de la reproducibilidad byte a byte del ensamblador. Los
+   claims de `raw/01` y `raw/02` se sostienen sobre el binario sellado, y la repetición de
+   corridas (`raw/03`, `raw/04`) usó ese mismo binario: informes JSON byte-idénticos.

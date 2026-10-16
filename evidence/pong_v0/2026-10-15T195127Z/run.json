@@ -1,0 +1,80 @@
+{
+  "schema": "malgames_pong_v0_run/1",
+  "run_id": "2026-10-15T195127Z",
+  "gate": "G2_PRECHECK",
+  "objective": "verificar en vivo, sin intermediarios, si existe una VM Malbolge Clasico ejecutable en este host y cual es el blocker real para calcular una transicion pong1 dentro de ella",
+  "timestamp_utc": "2026-10-15T19:51:27Z",
+  "workspace": "/home/danny/Development/ISyCo Git/MALGAMES",
+  "writes_outside_workspace": false,
+  "commands_run": [
+    "ls -l /home/danny/Development/ISyCo Git/Malbolge-Engine/malbolge",
+    "ls -l /home/danny/Development/ISyCo/workspace/assembly/malbolge/reference_interpreter_classic",
+    "printf '' | Malbolge-Engine/malbolge MALDOOM/vendor/classic/hello.mal 100000",
+    "timeout 10 reference_interpreter_classic MALDOOM/vendor/classic/hello.mal",
+    "printf 0 | Malbolge-Engine/malbolge MALDOOM/vendor/classic_synthesis/malpad/truth_machine.mal 200",
+    "printf 1 | Malbolge-Engine/malbolge .../truth_machine.mal 200",
+    "printf '\\x01\\x00\\x01\\x01\\x02\\x10\\x00' | MALBOLGE-MB-DATABASE/runners/malbolge-original/malbolge lt_pass12.mb 600000",
+    "stat -c%s sobre mbir_alu_rel.mb, mbir_cmp_lt.mb, lt_pass12.mb",
+    "Malbolge-Engine/malbolge meow_vm_malbolge/vm/meow_vm.mal 10000",
+    "reference_interpreter_classic meow_vm_malbolge/vm/meow_vm.mal",
+    "grep -o '\"pipeline\": ...' sobre MALDOOM/evidence/M0_*/run.json"
+  ],
+  "verified": [
+    {
+      "id": "V1",
+      "finding": "dos interpretes Malbolge Clasico nativos Linux existen y son ejecutables sin compilar nada: Malbolge-Engine/malbolge (17336 B, 2026-10-07) y workspace/assembly/malbolge/reference_interpreter_classic (16536 B, 2026-10-14)"
+    },
+    {
+      "id": "V2",
+      "finding": "hello.mal corre en ambos; el engine emite 13 bytes (anade un newline de framing) y la referencia emite 12 bytes exactos. Mismo programa, distinta cuenta de bytes de salida.",
+      "consequence": "el contrato de framing de salida debe fijarse por interprete antes de hashear cualquier frame"
+    },
+    {
+      "id": "V3",
+      "finding": "dentro de la VM Clasica, truth_machine.mal ramifica sobre stdin: entrada '0' -> stdout 300a en 136 pasos HALTED; entrada '1' -> once 0x31 en 200 pasos TIMEOUT",
+      "consequence": "leer stdin y decidir dentro de Malbolge Clasico es real y medido; ademas el exit code es 0 tambien en TIMEOUT, asi que el estado debe leerse del stderr"
+    },
+    {
+      "id": "V4",
+      "finding": "reproduje el claim Clasico mas fuerte del repositorio: lt_pass12.mb (SHA 79160ecf906ce3a44a90aed9320954890e04b9444a3da30ad9c88e7cbecb61d2, 57511 B) con entrada 01 00 01 01 02 10 00 -> stdout 010a en 81977 pasos, HALTED. Coincide con el numero de pasos registrado en la evidencia.",
+      "consequence": "hay un programa Clasico real que lee bytes, compara y escribe: es la unidad de calculo disponible"
+    },
+    {
+      "id": "V5",
+      "finding": "presupuesto medido: mbir_alu_rel.mb 57511 B, mbir_cmp_lt.mb 57512 B, lt_pass12.mb 57511 B contra una capacidad Clasica de 59049 celulas. Un kernel de una sola operacion consume el 97.4% de la imagen; margen 1538 celulas.",
+      "consequence": "la linea de trabajo pong1 ('pong1;8,4,4,2,1,-1,0,0,0,0,0;0,0' = 33 caracteres ASCII, 11 campos) no es expresable con los generadores existentes: no es un problema de VM sino de capacidad y de codegen"
+    },
+    {
+      "id": "V6",
+      "finding": "meow_vm_malbolge/vm/meow_vm.mal (8220 B) contiene 8158 bytes NUL y es rechazado por los dos interpretes ('invalid character 0x00 in program' / 'invalid character in source file'). No hay runner ni evidencia de ejecucion.",
+      "consequence": "queda cerrado el punto G6 del Compose: no es un candidato de motor"
+    },
+    {
+      "id": "V7",
+      "finding": "premise correction medida en raw/11_m0_pipelines.txt: de los 15 MALDOOM/evidence/M0_*/run.json, 7 registran pipeline 8CC_FAILED_127+GCC_REF (gcc nativo, NO en VM; son JSON de forma array y M0_KILLER aporta 5 entradas), 7 registran EIR(escrito a mano)->HeLL->mu(LMFAO)->VM en Unshackled, y 1 (M0_HELL_VM) registra HeLL->LMFAO->Unshackled TARGET_A. M0_HELL_VM/run.json empieza ademas con BOM UTF-8, la clase de defecto que MALDOOM E7/E8/E9 documenta.",
+      "consequence": "la premisa del Compose que presentaba '7/7 de aritmetica dentro de VM' como Clasica es falsa: el calculo en VM existe, pero en Unshackled y con EIR escrito a mano; los M0_* a secas son referencias de compilacion nativa"
+    },
+    {
+      "id": "V8",
+      "finding": "divergencia entre el fuente vivo y el artefacto sellado: vm_malbolge/src/mbir_cmp_lt.mb mide 57512 B mientras lt_pass12.mb sellado mide 57511 B. No los he comparado byte a byte; solo he medido las longitudes.",
+      "consequence": "cualquier claim futuro debe citar el artefacto sellado, no el fuente vivo"
+    }
+  ],
+  "not_verified_here": [
+    "los numeros 25/25 y 12/12 de mbir_alu_rel / cmp_lt / cmp_gt: los cito solo como registros ajenos; yo reproduje un unico vector (V4)",
+    "la fidelidad Clasica de gost.c, Rustbolge, malbolge-oracle, Calcbolge, Walbolge y meowbolge: no los ejecute",
+    "el pipeline de malbolge-anchuring como transporte de estado entre VMs frescas: no lo execute",
+    "que REA despache capacidades de Malbolge: ver docs/PROVENANCE.md (VERIFIED_ABSENT)"
+  ],
+  "gate_decision": {
+    "vm_fiable_existe": true,
+    "g2_con_pong1_completo": "BLOQUEADO por capacidad y codegen, no por falta de VM",
+    "g2_parcial_alcance": "una transicion con 2-3 operandos de un digito cada uno (tablero 8x4 -> valores 0..7) es el unico rango donde existe un calculo en VM demostrado (V3, V4)",
+    "experimento_minimo_sugerido": "ejecutar mbir_alu_rel.mb sobre el predicado de rebote vertical (ny fuera de rango) con operandos de un digito y registrar pasos + SHA; si el encuadre de entrada no lo permite, documentarlo como blocker de framing. Despues, transporte de estado con una VM fresca por tick sobre el patron de malbolge-anchuring.",
+    "claim_resultante_permite": "a lo sumo un predicado de tick calculado en VM; NO autoriza ONE_TICK_NO_COLLISION_VM ni STATEFUL_MIN_PONG_VM ni ninguna expresion de juego funcionando"
+  },
+  "environment": {
+    "kernel": "Linux 7.0.0-38-generic x86_64 (Ubuntu 24.04)",
+    "nota": "los interpretes son binarios preexistentes; este run no compilo ni modifico nada fuera de MALGAMES"
+  }
+}

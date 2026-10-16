@@ -1,0 +1,4 @@
+id	nombre	estado	frame_esperado
+F1	paleta izquierda y pelota visibles	pong1;8,4,2,2,1,-1,0,3,1,2,5	|.......\n........\n..o.....\n.......|\n
+F2	pelota sobre paleta: gana la pelota	pong1;8,4,0,0,1,1,0,3,0,0,0	o.......\n........\n........\n.......|\n
+F3	pelota sobre la paleta derecha	pong1;8,4,7,2,-1,1,0,2,0,0,0	|.......\n........\n.......o\n........\n

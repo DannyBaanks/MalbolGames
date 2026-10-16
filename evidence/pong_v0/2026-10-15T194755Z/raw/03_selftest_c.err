@@ -1,0 +1,12 @@
+entrada invalida: prefijo 'pong1;' ausente: pong2;8,4,0,0,1,1,0,0,0,0,0
+entrada invalida: tablero fuera de 2..64
+entrada invalida: pelota fuera de tablero
+entrada invalida: velocidades deben ser -1 o +1
+entrada invalida: se esperaban 11 campos
+entrada invalida: marcador fuera de 0..99
+entrada invalida: se esperaban 11 campos
+entrada invalida: entero no canonico: 08
+entrada invalida: entero no canonico: -0
+entrada invalida: movimiento fuera de -1,0,+1
+entrada invalida: se esperaban exactamente 2 movimientos
+entrada invalida: se esperaban 11 campos

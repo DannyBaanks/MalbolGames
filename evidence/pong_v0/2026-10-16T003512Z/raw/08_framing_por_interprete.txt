@@ -1,0 +1,24 @@
+# control de framing por interprete (Anexo A.1) - 3 vectores sellados
+# fecha utc: 2026-10-16T00:59:35Z
+
+stream        : 01 02 01 02 04 10 00
+  A stdout    : b'\x01\n'
+  B stdout    : b'\x01\n'
+  C stdout    : b'\x01'
+  pasos A/B/C : 74530 74530 74530
+  A==B crudo  : True    C = A sin el 0x0A final: True
+
+stream        : 00
+  A stdout    : b'\n'
+  B stdout    : b'\n'
+  C stdout    : b''
+  pasos A/B/C : 58689 58689 58689
+  A==B crudo  : True    C = A sin el 0x0A final: True
+
+stream        : 01 41 01 42 10 10 00
+  A stdout    : b'BA\n'
+  B stdout    : b'BA\n'
+  C stdout    : b'BA'
+  pasos A/B/C : 69179 69179 69179
+  A==B crudo  : True    C = A sin el 0x0A final: True
+

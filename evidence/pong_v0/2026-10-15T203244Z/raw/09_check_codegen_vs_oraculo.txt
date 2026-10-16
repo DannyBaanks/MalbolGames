@@ -1,0 +1,22 @@
+# raw/09 la tabla de marcadores NO se escribe a mano: se deriva del spec y se contrasta con el oraculo
+# comando: python3 pong_codegen.py check [--kind contact]
+## bounce (8 puntos: by x vy, tablero 8x4)
+check bounce: 8 puntos del dominio vs oraculo -> PASS
+rc=0
+## contact (16 puntos: pl x by en la fila post-vertical)
+check contact: 16 puntos del dominio vs oraculo -> PASS
+rc=0
+
+# hallazgo de esta corrida: la puerta de gol compara pl con la fila DESPUES del eje vertical
+# (docs/PONG_MIN_SPEC.md par. 4 ordena tick -> paletas -> vertical -> horizontal). Una primera
+# version del check uso la fila de entrada y fallo en 8 de 16 puntos; la correccion es del check,
+# no del oraculo ni del spec. Queda registrado como resultado negativo (no se borra).
+# evidencia del fallo original: oraculo devolvio by_after=2 en los estados de Gol porque la rama
+# de Gol reescribe by a h//2=2, enmascarando la fila post-vertical. El check definitivo lee la
+# fila post-vertical por una via interior (bx=4, vx=+1, sin rama de Gol) y despues prueba la puerta.
+
+## sha256 de las tablas derivadas (bounce, contact) por el codegen
+  bounce    8 rutas  sha256(tabla)=4141fe0e4dfb382f604713eaba11fa9465a3ca5797695783541ae312d543f733
+           {"01": "1", "02": "0", "03": "0", "04": "0", "05": "0", "06": "0", "07": "0", "08": "1"}
+  contact  16 rutas  sha256(tabla)=01e5a4ab5ac97c6c2b780a3b6831139345a5e5ecaf9016e812863e484546069c
+           {"01": "1", "02": "0", "03": "0", "04": "0", "05": "0", "06": "1", "07": "0", "08": "0", "09": "0", "0a": "0", "0b": "1", "0c": "0", "0d": "0", "0e": "0", "0f": "0", "10": "1"}

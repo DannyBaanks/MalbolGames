@@ -1,0 +1,15 @@
+# raw/10 linea base: el generador upstream INTACTO sobre las mismas 8 rutas (marcas de letras)
+# comando: /home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/vm_malbolge/tools/mbir_dispatch_gen.py --opcodes 000102030405060708 -o probe8.hell | lmao -o probe8.mb
+# hell=10075 B  mb=35515 B  sha_mb=e7bae0b560748ee1dd9aea0d78820b326190a8e7a69fa0f488afb27a7922e969
+# upstream sha=c756fac6f8b55e852618c755e9f5b4e66b737d007d217457e62efd7f2e4285b4
+opcode   marca_en_intacta pasos
+0x01    P                38450
+0x02    R                39242
+0x03    U                39612
+0x04    L                40107
+0x05    S                40908
+0x06    A                41287
+0x07    B                41791
+0x08    M                42904
+# conclusion: la maquina de despacho ya funcionaba antes de la extension; lo unico que faltaba
+# era poder cambiar la tabla de marcas. Eso acota el defecto de codegen al punto exacto (MARKERS).

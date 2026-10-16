@@ -1,0 +1,23 @@
+## V7 medicion exacta: MALDOOM/evidence/M0_*/run.json
+# forma del JSON, BOM y valor de la clave pipeline, medido con python3 json
+
+M0_A_CONST/run.json                shape=array  bom=False entries=1 pipeline=8CC_FAILED_127+GCC_REF
+M0_A_CONST_UNSHACKLED_V0/run.json  shape=object bom=False entries=1 pipeline=EIR(hand-written)->HeLL(elc)->mu(LMFAO)->VM; 8cc bypassed, C sourc
+M0_B_ARITH/run.json                shape=array  bom=False entries=1 pipeline=8CC_FAILED_127+GCC_REF
+M0_B_ARITH_UNSHACKLED_V0/run.json  shape=object bom=False entries=1 pipeline=EIR(hand-written)->HeLL(elc)->mu(LMFAO)->VM; 8cc bypassed, C sourc
+M0_C_BRANCH/run.json               shape=array  bom=False entries=1 pipeline=8CC_FAILED_127+GCC_REF
+M0_C_BRANCH_UNSHACKLED_V0/run.json shape=object bom=False entries=1 pipeline=EIR(hand-written)->HeLL(elc)->mu(LMFAO)->VM; 8cc bypassed, C sourc
+M0_D_LOOP/run.json                 shape=array  bom=False entries=1 pipeline=8CC_FAILED_127+GCC_REF
+M0_D_LOOP_UNSHACKLED_V0/run.json   shape=object bom=False entries=1 pipeline=EIR(hand-written)->HeLL(elc)->mu(LMFAO)->VM; 8cc bypassed, C sourc
+M0_E_MEMORY/run.json               shape=array  bom=False entries=1 pipeline=8CC_FAILED_127+GCC_REF
+M0_E_MEMORY_UNSHACKLED_V0/run.json shape=object bom=False entries=1 pipeline=EIR(hand-written)->HeLL(elc)->mu(LMFAO)->VM; 8cc bypassed, C sourc
+M0_F_INPUT/run.json                shape=array  bom=False entries=1 pipeline=8CC_FAILED_127+GCC_REF
+M0_F_INPUT_UNSHACKLED_V0/run.json  shape=object bom=False entries=1 pipeline=EIR(hand-written)->HeLL(elc)->mu(LMFAO)->VM; 8cc bypassed, C sourc
+M0_HELL_VM/run.json                shape=object bom=True  entries=1 pipeline=HeLL→LMFAO→Unshackled VM demonstrated (TARGET_A)
+M0_KILLER/run.json                 shape=array  bom=False entries=5 pipeline=8CC_FAILED_127+GCC_REF
+M0_KILLER_UNSHACKLED_V0/run.json   shape=object bom=False entries=1 pipeline=EIR(hand-written)->HeLL(elc)->mu(LMFAO)->VM; 8cc bypassed, C sourc
+
+7 dirs -> 8CC_FAILED_127+GCC_REF
+7 dirs -> EIR(hand-written)->HeLL(elc)->mu(LMFAO)->VM; 8cc bypassed, C source is reference-only
+1 dirs -> HeLL→LMFAO→Unshackled VM demonstrated (TARGET_A)
+total run.json = 15

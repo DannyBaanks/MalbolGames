@@ -1,0 +1,120 @@
+# HeLL generado por /home/danny/Development/ISyCo Git/MALBOLGE-MB-DATABASE/vm_malbolge/tools/mbir_alu_rel_gen.py
+# sha256 del fuente del generador: 8c1d0fdb4cc07e29c04126dcf49be83b5127f9997dded864470188342337b5ff
+# sha256 del HeLL generado: 54eb0723027b3e322ab19aa4e45809c4c8574344eb3b945164e452340ec773db   (13217 bytes, 794 lineas)
+# solo lectura: el arbol upstream no se toco en esta campana
+# lineas que deciden COMO se materializa un resultado:
+
+  143| NO_MORE_CARRY_FLAG:
+  182| 	U_ROT value
+  305| 	NO_MORE_CARRY_FLAG disc_1
+  314| 	NO_MORE_CARRY_FLAG disc_2
+  322| 	OP1_FLAG return_from_dec_op1_3 R_OP1_FLAG
+  323| 	NO_MORE_CARRY_FLAG disc_3
+  331| 	NO_MORE_CARRY_FLAG disc_4
+  339| 	NO_MORE_CARRY_FLAG dispatch_fallback
+  392| add_val_clean:
+  393| 	OP1_FLAG add_val_clean_op1 R_OP1_FLAG
+  395| 	ROT C2 R_ROT
+  414| return_from_dec_op2_1:
+  415| 	OP1_FLAG return_from_dec_op1_1 R_OP1_FLAG
+  416| 	NO_MORE_CARRY_FLAG op2_nonzero
+  417| 	MOVED sum_is_2
+  419| op2_nonzero:
+  423| return_from_dec_op2_2:
+  424| 	OP1_FLAG return_from_dec_op1_2 R_OP1_FLAG
+  425| 	NO_MORE_CARRY_FLAG op2_is_3
+  426| 	SUB_FLAG diff_is_1 R_SUB_FLAG
+  427| 	MOVED sum_is_2
+  429| op2_is_3:
+  434| add_val_clean_op1:
+  437| 	ROT C2 R_ROT
+  450| return_from_dec_op1_1:
+  455| return_from_dec_op1_2:
+  460| return_from_dec_op1_3:
+  461| 	NO_MORE_CARRY_FLAG check_add_or_sub_high
+  462| 	SUB_FLAG diff_is_0 R_SUB_FLAG
+  463| 	MOVED sum_is_5
+  465| check_add_or_sub_high:
+  466| 	SUB_FLAG diff_is_2_from_phase2 R_SUB_FLAG
+  467| 	MOVED sum_is_7
+  469| sum_is_7:
+  473| 	MOVED sum_is_2
+  475| diff_is_2_from_phase2:
+  476| 	MOVED sum_is_2
+  478| diff_is_0:
+  481| 	MOVED sum_is_2
+  483| diff_is_1:
+  486| 	MOVED sum_is_2
+  488| sum_is_5:
+  491| 	MOVED sum_is_2
+  493| sum_is_2:
+  496| 	ROT C1 R_ROT
+  500| add_rst0_done:
+  501| 	CMP_FLAG cmp_diff_2 R_CMP_FLAG
+  502| 	OP1_FLAG check_results R_OP1_FLAG
+  503| 	ROT 6 R_ROT
+  506| cmp_diff_2:
+  507| 	OP1_FLAG check_results_cmp R_OP1_FLAG
+  508| 	ROT 0 R_ROT
+  511| check_results_cmp:
+  512| 	SUBROUTINE_FLAG6 load_diff_1 R_SUBROUTINE_FLAG6
+  513| 	SUBROUTINE_FLAG5 load_diff_0 R_SUBROUTINE_FLAG5
+  514| 	ROT 0 R_ROT
+  517| check_results:
+  518| 	SUBROUTINE_FLAG4 load_sum_7 R_SUBROUTINE_FLAG4
+  519| 	SUBROUTINE_FLAG5 load_diff_1 R_SUBROUTINE_FLAG5
+  520| 	SUBROUTINE_FLAG6 load_diff_0 R_SUBROUTINE_FLAG6
+  521| 	ROT 15 R_ROT
+  524| load_sum_7:
+  525| 	ROT 21 R_ROT
+  528| load_diff_1:
+  529| 	ROT 3 R_ROT
+  532| load_diff_0:
+  533| 	ROT 0 R_ROT
+  544| 	ROT C1 R_ROT
+  554| 	ROT C2 R_ROT
+  560| 	ROT C2 R_ROT
+  571| 	ROT C1 R_ROT
+  577| 	ROT C2 R_ROT
+  583| 	ROT C0 R_ROT
+  589| 	ROT C1 R_ROT
+  595| 	ROT C2 R_ROT
+  601| 	ROT C0 R_ROT
+  607| 	ADD_FLAG add_rst0_done R_ADD_FLAG
+  612| 	ROT C2 R_ROT
+  618| 	ROT C2 R_ROT
+  629| 	ROT C1 R_ROT
+  635| 	ROT C2 R_ROT
+  641| 	ROT C0 R_ROT
+  647| 	ROT C1 R_ROT
+  653| 	ROT C2 R_ROT
+  659| 	ROT C0 R_ROT
+  671| 	ROT C1 R_ROT
+  677| 	ROT C2 R_ROT
+  683| 	ROT C0 R_ROT
+  689| 	ROT C1 R_ROT
+  695| 	ROT C2 R_ROT
+  701| 	ROT C0 R_ROT
+  707| 	ROT 3 R_ROT
+  713| 	CLEAN_FLAG add_val_clean R_CLEAN_FLAG
+  719| 	// kill NO_MORE_CARRY_FLAG
+  720| 	NO_MORE_CARRY_FLAG nomorecarrykilled_2 R_NO_MORE_CARRY_FLAG
+  724| 	ROT C1 R_ROT
+  731| 	ROT C2 R_ROT
+  761| 	R_NO_MORE_CARRY_FLAG
+  765| 	// after rotating go to increment or rotate again corresponding to the NO_MORE_CARRY_FLAG
+  773| 	NO_MORE_CARRY_FLAG restore_no_more_carry_flag_and_rotate_value_2 R_NO_MORE_CARRY_FLAG
+  779| 	NO_MORE_CARRY_FLAG restore_no_more_carry_flag_and_rotate_value_2 R_NO_MORE_CARRY_FLAG
+  783| 	R_NO_MORE_CARRY_FLAG
+  791| 	SUBROUTINE_FLAG5 return_from_dec_op2_1 R_SUBROUTINE_FLAG5
+  792| 	SUBROUTINE_FLAG6 return_from_dec_op2_2 R_SUBROUTINE_FLAG6
+
+# etiquetas de resultado: ['diff_is_0', 'diff_is_1', 'diff_is_2_from_phase2', 'sum_is_2', 'sum_is_5', 'sum_is_7']
+# subrutinas que empujan el resultado: ['load_diff_0', 'load_diff_1', 'load_loop', 'load_sum_7']
+# constantes ROT enteras: [0, 3, 6, 15, 21]
+# constantes ROT en notacion C: ['C0', 'C1', 'C2']
+# lineas seleccionadas: 104 de 794
+
+# LECTURA: el resultado NO es un entero calculado, es una de un numero finito de
+# etiquetas de clasificacion, cada una materializada por UNA constante ROT. Eso acota
+# el vocabulario de bytes imprimibles del kernel, y es lo que mide el informe de rejilla.
