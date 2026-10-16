@@ -5,7 +5,8 @@ No es un port de Doom. Es la unidad mínima inteligible (Pong) que hace falsable
 M5 y M6 de la escalera MalDoom.
 
 **Nombre.** El proyecto se llama **MalbolGames**. El workspace en disco sigue siendo
-`ISyCo Git/MALGAMES`, y no es timidez: ese nombre lo citan **32 archivos de evidencia sellada** y
+`ISyCo Git/MALGAMES`, y no es timidez: ese nombre lo citan **49 archivos de evidencia sellada**
+(`grep -rl MALGAMES evidence/ | wc -l`, medido de nuevo tras el sello G3; eran 32 antes de él) y
 lo ordena el propio Compose (`composes/COMPOSE_MALGAMES_PONG_V0.md`, líneas 52–53: crear «una ruta
 nueva y segregada `MALGAMES/`», «no reescribir `MALDOOM/`», «no renombrar ni mover MALDOOM en
 ningún escenario»). Mover el directorio invalidaría la cadena de SHA-256. Cambiar solo la marca
@@ -42,8 +43,10 @@ Cada línea dice VM, cálculo y prueba, porque sin esas tres cosas el enunciado 
   corre en Clásico son **predicados sueltos**, cada uno en su propio programa, sobre enteros ya
   traducidos por el host antes de escribir stdin.
 - **Estado.** `STATEFUL_MIN_PONG_VM` → `NOT_DEMONSTRADO`. No hay contador de estado ni lectura
-  cruzada de estado en Clásico: MALDOOM registra P2/P4/P5 como negativos (0 éxitos sobre 2,4 M de
-  candidatos) y `STATE_TRANSITIONS/TICK_INC` dice `found: false`.
+  cruzada de **estado** en Clásico: MALDOOM registra P2/P4/P5 como negativos (0 éxitos sobre 2,4 M de
+  candidatos) y `STATE_TRANSITIONS/TICK_INC` dice `found: false` — que sigue siendo vacío, porque
+  tenía `evaluations: 0`. Precisión tras G3: lo que ahora **sí** cruza entre dos VMs es **un bit**,
+  no el estado; `STATEFUL_CROSS_TICK_HANDOFF` sigue sin demostrarse.
 - **Render ni frame.** `VM_RENDER_8x4` y `FULL_FRAME_VM` → `NOT_DEMONSTRADO`.
 - **Red de dataflow.** Desde G3 sabemos que **una** arista funciona; `MULTI_EDGE_NETWORK_CLASSIC_VM`
   (≥2 aristas simultáneas entre ≥3 VMs) y `STATEFUL_CROSS_TICK_HANDOFF` (que viajan los 11 campos
