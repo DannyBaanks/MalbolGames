@@ -1,8 +1,14 @@
-# MalbolGames — cómo representa Malbolge un videojuego
+# MalbolGames v2.0 — Representación de Videojuegos y Máquinas de Estado en Malbolge
+
+[![Version](https://img.shields.io/badge/version-2.0-blue.svg)](https://github.com/DannyBaanks/MalbolGames)
+[![Gates](https://img.shields.io/badge/gates-G0..G3%20DEMONSTRATED-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/tests-PASS-brightgreen.svg)]()
 
 Pregunta de investigación: **¿quién calcula `S_t → S_{t+1}` en un videojuego escrito en Malbolge?**
 No es un port de Doom. Es la unidad mínima inteligible (Pong) que hace falsables los escalones M4,
 M5 y M6 de la escalera MalDoom.
+
+Parte de la **Suite Experimental de Juegos y Estado v2.0** del ecosistema Malbolge de ISyCo.
 
 **Nombre.** El proyecto se llama **MalbolGames**. El workspace en disco sigue siendo
 `ISyCo Git/MALGAMES`, y no es timidez: ese nombre lo citan **49 archivos de evidencia sellada**
