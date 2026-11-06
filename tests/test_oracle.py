@@ -38,10 +38,11 @@ def oracles(root: Path) -> dict[str, list[str]]:
     }
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", default=".")
-    root = Path(ap.parse_args().root).resolve()
+    parsed = ap.parse_args(argv if argv is not None else sys.argv[1:])
+    root = Path(parsed.root).resolve()
     fails: list[str] = []
 
     def want(tag: str, cond: bool, detail: str = ""):
@@ -111,6 +112,10 @@ def main() -> int:
     for f in fails:
         print("  " + f, file=sys.stderr)
     return 1 if fails else 0
+
+
+def test_oracle_contract():
+    assert main([]) == 0
 
 
 if __name__ == "__main__":
